@@ -1,0 +1,16 @@
+# Send only application code and dependency manifests to the build daemon.
+**
+!Dockerfile
+!Pipfile
+!Pipfile.lock
+!main.py
+!components/
+!components/**
+!utils/
+!utils/**
+!.streamlit/
+!.streamlit/config.toml
+**/__pycache__
+**/*.pyc
+**/*.log
+**/.env*

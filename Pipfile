@@ -1,0 +1,36 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+streamlit = "*"
+ollama = "*"
+llama-index = "*"
+llama-index-llms-ollama = "*"
+python-docx = "*"
+docx2txt = "*"
+rank-bm25 = "*"
+llama-index-readers-web = "*"
+llama-index-readers-file = "*"
+html2text = "*"
+ebooklib = "*"
+llama-index-core = "*"
+fsspec = "*"
+openpyxl = ">=3.1,<4"
+xlrd = ">=2,<3"
+python-pptx = ">=1,<2"
+extract-msg = ">=0.55,<1"
+defusedxml = ">=0.7,<1"
+beautifulsoup4 = ">=4.11,<5"
+striprtf = ">=0.0.26,<1"
+urllib3 = ">=2,<3"
+certifi = "*"
+
+[dev-packages]
+ruff = "*"
+black = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.13"

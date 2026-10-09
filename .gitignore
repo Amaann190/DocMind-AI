@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# App data & caches
+data/
+.index_cache/
+*.log
+.ruff_cache/
+tmp/
+
+# Local credentials
+.env
+.env.*
+!.env.example
+
+# Generated personal artifacts; retain project evaluation evidence
+output/*
+!output/evaluation-*/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
