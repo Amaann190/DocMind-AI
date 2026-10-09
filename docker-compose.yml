@@ -1,0 +1,22 @@
+services:
+  docmind:
+    build: .
+    image: docmind:local
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=512m,mode=1777
+      - /home/appuser/.cache:rw,noexec,nosuid,nodev,size=2g,uid=10001,gid=10001,mode=0700
+    environment:
+      DOCMIND_OLLAMA_ENDPOINT: ${DOCMIND_OLLAMA_ENDPOINT:-http://host.docker.internal:11434}
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    ports:
+      - '127.0.0.1:${DOCMIND_PORT:-8501}:8501'
+    mem_limit: 8g
+    cpus: 4
+    pids_limit: 512

@@ -1,0 +1,744 @@
+{
+  "meta": {
+    "generated": "2026-10-07 19:36",
+    "overall": {
+      "passed": 42,
+      "failed": 0,
+      "skipped": 34,
+      "executed": 42,
+      "total": 76,
+      "overall_score": 1.0,
+      "suites": [
+        "ingestion",
+        "retrieval",
+        "generation",
+        "performance",
+        "robustness",
+        "architecture"
+      ],
+      "mode": "mock",
+      "embedding_model": "hash-mock",
+      "chat_model": null,
+      "endpoint": "http://localhost:11434",
+      "answer_checks": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 34
+      }
+    }
+  },
+  "suites": {
+    "ingestion": {
+      "suite": "ingestion",
+      "results": [
+        {
+          "test": "excluded_patterns",
+          "pass": true,
+          "status": "passed",
+          "detail": "loaded=1 patterns=34",
+          "ms": 838
+        },
+        {
+          "test": "title_aware",
+          "pass": true,
+          "status": "passed",
+          "detail": "title='Annual Report'",
+          "ms": 0
+        },
+        {
+          "test": "dedupe",
+          "pass": true,
+          "status": "passed",
+          "detail": "4 -> 3 (distinct evidence preserved)",
+          "ms": 0
+        },
+        {
+          "test": "multiformat_index",
+          "pass": true,
+          "status": "passed",
+          "detail": "loaded formats=['.csv', '.docx', '.md', '.txt']",
+          "ms": 862
+        },
+        {
+          "test": "cache_key_and_persist",
+          "pass": true,
+          "status": "passed",
+          "detail": "key=d2b8d8b37979a2858984 persist=hit",
+          "ms": 97
+        },
+        {
+          "test": "min_chunk_filter",
+          "pass": true,
+          "status": "passed",
+          "detail": "MIN_CHARS=1 tiny_indexed=True",
+          "ms": 40
+        },
+        {
+          "test": "helpers_github_normalize",
+          "pass": true,
+          "status": "passed",
+          "detail": "owner/repo=True url=True reject_gitlab=True",
+          "ms": 0
+        }
+      ],
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "total": 7,
+      "executed": 7,
+      "score": 1.0
+    },
+    "retrieval": {
+      "suite": "retrieval",
+      "results": [
+        {
+          "query": "What is the refund policy?",
+          "expected": "refund_policy.txt",
+          "feature": "basic",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "refund_policy.txt",
+          "hybrid_top": "refund_policy.txt",
+          "plain_score": 0.467,
+          "hybrid_score": 0.467,
+          "plain_latency": 0.0038,
+          "hybrid_latency": 0.0041,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "money back rules",
+          "expected": "refund_policy.txt",
+          "feature": "synonym",
+          "plain_hit": false,
+          "hybrid_hit": true,
+          "plain_top": null,
+          "hybrid_top": "refund_policy.txt",
+          "plain_score": 0.0,
+          "hybrid_score": 0.151,
+          "plain_latency": 0.001,
+          "hybrid_latency": 0.0019,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "30-day returns",
+          "expected": "refund_policy.txt",
+          "feature": "hyphen",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "refund_policy.txt",
+          "hybrid_top": "refund_policy.txt",
+          "plain_score": 0.35,
+          "hybrid_score": 0.35,
+          "plain_latency": 0.001,
+          "hybrid_latency": 0.0021,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "refund policy batao",
+          "expected": "refund_policy.txt",
+          "feature": "hinglish",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "refund_policy.txt",
+          "hybrid_top": "refund_policy.txt",
+          "plain_score": 0.603,
+          "hybrid_score": 0.603,
+          "plain_latency": 0.0009,
+          "hybrid_latency": 0.002,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "annual report revenue growth",
+          "expected": "annual_report.txt",
+          "feature": "title-aware",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "annual_report.txt",
+          "hybrid_top": "annual_report.txt",
+          "plain_score": 0.48,
+          "hybrid_score": 0.48,
+          "plain_latency": 0.0009,
+          "hybrid_latency": 0.0021,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "How to fetch a URL in Python?",
+          "expected": "python_guide.txt",
+          "feature": "basic",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "python_guide.txt",
+          "hybrid_top": "python_guide.txt",
+          "plain_score": 0.495,
+          "hybrid_score": 0.495,
+          "plain_latency": 0.0011,
+          "hybrid_latency": 0.0022,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "How many leave days per year?",
+          "expected": "hr_policy.txt",
+          "feature": "basic",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "hr_policy.txt",
+          "hybrid_top": "hr_policy.txt",
+          "plain_score": 0.522,
+          "hybrid_score": 0.522,
+          "plain_latency": 0.001,
+          "hybrid_latency": 0.0021,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "pasta cooking time",
+          "expected": "cooking.txt",
+          "feature": "basic",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "cooking.txt",
+          "hybrid_top": "cooking.txt",
+          "plain_score": 0.526,
+          "hybrid_score": 0.526,
+          "plain_latency": 0.0012,
+          "hybrid_latency": 0.0021,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "What is the capital of France?",
+          "expected": null,
+          "feature": "no-match",
+          "plain_hit": false,
+          "hybrid_hit": true,
+          "plain_top": "hr_policy.txt",
+          "hybrid_top": null,
+          "plain_score": 0.335,
+          "hybrid_score": 0.0,
+          "plain_latency": 0.0008,
+          "hybrid_latency": 0.002,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "quantum physics equations",
+          "expected": null,
+          "feature": "no-match",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": null,
+          "hybrid_top": null,
+          "plain_score": 0.0,
+          "hybrid_score": 0.0,
+          "plain_latency": 0.0011,
+          "hybrid_latency": 0.0021,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "refunded purchases",
+          "expected": "refund_policy.txt",
+          "feature": "stemming",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "refund_policy.txt",
+          "hybrid_top": "refund_policy.txt",
+          "plain_score": 0.492,
+          "hybrid_score": 0.492,
+          "plain_latency": 0.0011,
+          "hybrid_latency": 0.002,
+          "pass": true,
+          "status": "passed"
+        },
+        {
+          "query": "tell me about the annual report",
+          "expected": "annual_report.txt",
+          "feature": "filler-filter",
+          "plain_hit": true,
+          "hybrid_hit": true,
+          "plain_top": "annual_report.txt",
+          "hybrid_top": "annual_report.txt",
+          "plain_score": 0.305,
+          "hybrid_score": 0.305,
+          "plain_latency": 0.0012,
+          "hybrid_latency": 0.0026,
+          "pass": true,
+          "status": "passed"
+        }
+      ],
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "total": 12,
+      "executed": 12,
+      "score": 1.0,
+      "summary": {
+        "plain_hit_rate": 0.9,
+        "hybrid_hit_rate": 1.0,
+        "plain_rejection": 0.5,
+        "hybrid_rejection": 1.0,
+        "plain_avg_ms": 1.3,
+        "hybrid_avg_ms": 2.3,
+        "is_hybrid": true,
+        "embedding": "hash-mock",
+        "hybrid_basic_rate": 1.0,
+        "hybrid_filler-filter_rate": 1.0,
+        "hybrid_hinglish_rate": 1.0,
+        "hybrid_hyphen_rate": 1.0,
+        "hybrid_no-match_rate": 1.0,
+        "hybrid_stemming_rate": 1.0,
+        "hybrid_synonym_rate": 1.0,
+        "hybrid_title-aware_rate": 1.0
+      }
+    },
+    "generation": {
+      "suite": "generation",
+      "results": [
+        {
+          "test": "qa_template_guards",
+          "pass": true,
+          "status": "passed",
+          "detail": "has_guards=True len=766",
+          "ms": 0
+        },
+        {
+          "test": "query_helpers",
+          "pass": true,
+          "status": "passed",
+          "detail": "hyphen=True hinglish=True synonym=True",
+          "ms": 1
+        },
+        {
+          "test": "no_hallucination_fallback",
+          "pass": true,
+          "status": "passed",
+          "detail": "fallback=hit",
+          "ms": 1423
+        },
+        {
+          "test": "tone_presets",
+          "pass": true,
+          "status": "passed",
+          "detail": "presets=6 distinct=True",
+          "ms": 5
+        },
+        {
+          "test": "multi_turn_history",
+          "pass": true,
+          "status": "passed",
+          "detail": "messages_in_prompt=5",
+          "ms": 4
+        },
+        {
+          "test": "refund_days",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "electronics_exception",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "exact_numbers",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "different_source_policies",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "conflicting_policies",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "unrelated_question",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "missing_detail",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "document_instruction_injection",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "follow_up",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.csv",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.doc",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.docx",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.eml",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.epub",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.htm",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.html",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.ipynb",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.json",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.jsonl",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.markdown",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.mbox",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.md",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.mhtml",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.msg",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.odt",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.pdf",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.ppt",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.pptx",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.rtf",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.tsv",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.txt",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.xls",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.xlsx",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        },
+        {
+          "test": "format.xml",
+          "kind": "live_answer",
+          "pass": null,
+          "status": "skipped",
+          "detail": "Live answer check requires Ollama; --mock does not measure answer quality"
+        }
+      ],
+      "passed": 5,
+      "failed": 0,
+      "skipped": 34,
+      "total": 39,
+      "executed": 5,
+      "score": 1.0
+    },
+    "performance": {
+      "suite": "performance",
+      "results": [
+        {
+          "test": "ingest_5_docs",
+          "pass": true,
+          "status": "passed",
+          "detail": "0.0s for 5 docs",
+          "ms": 57
+        },
+        {
+          "test": "cache_hit_faster",
+          "pass": true,
+          "status": "passed",
+          "detail": "cold 0.0s vs cache 0.03s",
+          "ms": 73
+        },
+        {
+          "test": "retrieval_latency",
+          "pass": true,
+          "status": "passed",
+          "detail": "vector 1ms hybrid 2ms",
+          "ms": 49
+        },
+        {
+          "test": "eco_mode_trims",
+          "pass": true,
+          "status": "passed",
+          "detail": "ctx 4800->3200 pred 512->256 batch 16->4",
+          "ms": 1
+        },
+        {
+          "test": "batch_oom_resilience",
+          "pass": true,
+          "status": "passed",
+          "detail": "shrunk to 4 after OOM",
+          "ms": 0
+        }
+      ],
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "total": 5,
+      "executed": 5,
+      "score": 1.0
+    },
+    "robustness": {
+      "suite": "robustness",
+      "results": [
+        {
+          "test": "github_validation",
+          "pass": true,
+          "status": "passed",
+          "detail": "5/5 cases",
+          "ms": 0
+        },
+        {
+          "test": "url_validation",
+          "pass": true,
+          "status": "passed",
+          "detail": "mock DNS: https=True bad=True xss=True",
+          "ms": 1
+        },
+        {
+          "test": "empty_docs_rejected",
+          "pass": true,
+          "status": "passed",
+          "detail": "No files could be loaded.\nempty.txt: No readable text found. The file may be emp",
+          "ms": 41
+        },
+        {
+          "test": "binary_exclusion",
+          "pass": true,
+          "status": "passed",
+          "detail": "loaded 1 (png excluded)",
+          "ms": 32
+        },
+        {
+          "test": "special_chars_tokenization",
+          "pass": true,
+          "status": "passed",
+          "detail": "tokens=['30', 'day', 'money', 'back', 'refund']",
+          "ms": 0
+        },
+        {
+          "test": "hinglish_filler_filter",
+          "pass": true,
+          "status": "passed",
+          "detail": "rewritten='refund polici plea'",
+          "ms": 0
+        }
+      ],
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "total": 6,
+      "executed": 6,
+      "score": 1.0
+    },
+    "architecture": {
+      "suite": "architecture",
+      "results": [
+        {
+          "test": "backend_presets",
+          "pass": true,
+          "status": "passed",
+          "detail": "presets=['Ollama', 'OpenAI', 'LM Studio (Local AI)', 'TabbyAPI']",
+          "ms": 1852
+        },
+        {
+          "test": "export_docx",
+          "pass": true,
+          "status": "passed",
+          "detail": "docx 36713 bytes",
+          "ms": 35
+        },
+        {
+          "test": "browser_settings_keys",
+          "pass": true,
+          "status": "passed",
+          "detail": "key=browser_settings_persisted_hash",
+          "ms": 0
+        },
+        {
+          "test": "ollama_helpers",
+          "pass": true,
+          "status": "passed",
+          "detail": "estimate=2 trim=1",
+          "ms": 2
+        },
+        {
+          "test": "embedding_verify",
+          "pass": true,
+          "status": "passed",
+          "detail": "mock verify",
+          "ms": 0
+        },
+        {
+          "test": "r2r_health",
+          "pass": true,
+          "status": "passed",
+          "detail": "health mocked",
+          "ms": 0
+        },
+        {
+          "test": "no_torch_at_import",
+          "pass": true,
+          "status": "passed",
+          "detail": "Fresh-process import checks: .\n----------------------------------------------------------------------\nRan 1 test in 7.776s\n\nOK\n",
+          "ms": 8491
+        }
+      ],
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "total": 7,
+      "executed": 7,
+      "score": 1.0
+    }
+  }
+}

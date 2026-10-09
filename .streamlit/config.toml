@@ -1,0 +1,17 @@
+[browser]
+gatherUsageStats = false
+
+[server]
+maxUploadSize = 25
+
+[theme]
+base = "dark"
+primaryColor = "#8B5CF6"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#161B26"
+textColor = "#E6E8EF"
+
+#https://docs.streamlit.io/develop/concepts/configuration/https-support
+#[server]
+#sslCertFile = '/path/to/certchain.pem'
+#sslKeyFile = '/path/to/private.key'

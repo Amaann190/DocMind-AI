@@ -1,0 +1,2 @@
+target-version = "py313"
+extend-exclude = ["tmp", "output"]
