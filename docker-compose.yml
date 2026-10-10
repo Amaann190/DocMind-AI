@@ -18,5 +18,5 @@ services:
     ports:
       - '127.0.0.1:${DOCMIND_PORT:-8501}:8501'
     mem_limit: 8g
-    cpus: 4
+    cpus: ${DOCMIND_CPUS:-4}
     pids_limit: 512

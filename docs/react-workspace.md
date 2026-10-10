@@ -1,7 +1,8 @@
 # DocMind Workspace: React edition
 
-This is a separate checkout on branch `react-redesign`. The original project folder
-and GitHub `main` remain unchanged. No migration changes have been pushed to GitHub.
+The React edition was developed in a separate `react-redesign` checkout and is now
+included in the repository's `main` release. The original local Streamlit checkout
+was preserved, and Streamlit remains available in this repository.
 
 ## Run
 
@@ -23,6 +24,11 @@ cd ..
 Open **http://127.0.0.1:8765**. The launcher uses one server for the built React
 application and its API. It does not stop or replace Streamlit on port 8501.
 Use `./run-react.ps1 -Port 8766` to choose another port.
+
+The existing Docker image/Compose launcher still runs the retained Streamlit
+edition. Its CPU limit is configurable with `DOCMIND_CPUS` (default 4); the GitHub
+container smoke check sets it to 2 to fit the runner. Use the React launcher above
+for the new website. Pushing the repository does not host a public website.
 
 On other platforms, after building the frontend:
 

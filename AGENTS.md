@@ -2,11 +2,11 @@
 
 Guidance for AI coding agents working in this repository.
 
-## React migration checkout
+## React and retained Streamlit editions
 
-This branch adds `frontend/` (React/Vite) and `backend/app.py` (FastAPI). Use
-`run-react.ps1` for the new UI on port 8765. Preserve the original checkout and do
-not push migration work to `main`. See `docs/react-workspace.md` for setup and UI
+The repository includes `frontend/` (React/Vite) and `backend/app.py` (FastAPI). Use
+`run-react.ps1` for the new UI on port 8765. Preserve the original local checkout.
+The user authorized publishing the React edition to `main`. See `docs/react-workspace.md` for setup and UI
 verification. Keep API request state isolated through `utils/runtime.py`; never
 replace global Streamlit state with an API session. The legacy notes below still
 apply to retained Streamlit functionality and shared ingestion safety.

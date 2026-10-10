@@ -1,8 +1,8 @@
 # DocMind Workspace — React edition
 
-This separate `react-redesign` branch introduces a React interface and a local
-Python API. The original Streamlit checkout and its public `main` branch are
-preserved. Start this edition with **`./run-react.ps1`**, then open
+The default edition now provides a React interface and a local Python API.
+The original Streamlit application remains available through `run.ps1`.
+Start the React edition with **`./run-react.ps1`**, then open
 **http://127.0.0.1:8765**.
 
 The React workspace includes saved, searchable conversations; individual source
