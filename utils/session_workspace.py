@@ -3,7 +3,7 @@
 import tempfile
 from pathlib import Path
 
-import streamlit as st
+from utils.runtime import st
 
 
 def session_directory(kind, state=None):

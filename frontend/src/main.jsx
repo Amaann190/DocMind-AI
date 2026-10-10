@@ -1,0 +1,1552 @@
+import React, { useEffect, useRef, useState } from "react";
+import { createRoot } from "react-dom/client";
+import ReactMarkdown from "react-markdown";
+import "@fontsource/dm-sans/latin-400.css";
+import "@fontsource/dm-sans/latin-500.css";
+import "@fontsource/dm-sans/latin-600.css";
+import "@fontsource/dm-sans/latin-700.css";
+import "@fontsource/manrope/latin-500.css";
+import "@fontsource/manrope/latin-600.css";
+import "@fontsource/manrope/latin-700.css";
+import "@fontsource/manrope/latin-800.css";
+import {
+  ArrowUp,
+  ArrowUpRight,
+  ArrowRight,
+  Plus,
+  MessageSquare,
+  Library,
+  Settings2,
+  FileText,
+  Globe2,
+  Github,
+  X,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Sparkles,
+  Download,
+  Trash2,
+  PanelRightClose,
+  PanelRightOpen,
+  LoaderCircle,
+  RefreshCw,
+  ShieldCheck,
+  Search,
+  Paperclip,
+  Cpu,
+  Menu,
+  AlertCircle,
+  BookOpen,
+  Copy,
+  CheckCheck,
+  FolderOpen,
+  Zap,
+} from "lucide-react";
+import "./style.css";
+
+const storageKey = "docmind-react-preferences";
+async function api(path, options = {}) {
+  const headers = { "X-DocMind-Client": "react", ...options.headers };
+  if (options.body && !(options.body instanceof FormData))
+    headers["Content-Type"] = "application/json";
+  const response = await fetch("/api" + path, { ...options, headers });
+  if (!response.ok) {
+    let detail;
+    try {
+      detail = (await response.json()).detail;
+    } catch {
+      detail = response.statusText;
+    }
+    throw new Error(
+      typeof detail === "string"
+        ? detail
+        : "Check your settings and try again.",
+    );
+  }
+  return response.json();
+}
+function storePreferences(settings) {
+  const { api_key, r2r_key, ...safe } = settings;
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(safe));
+  } catch {
+    /* Session still works without browser storage. */
+  }
+}
+function Brand({ small = false }) {
+  return (
+    <div className={"brand " + (small ? "small" : "")}>
+      <span className="brand-mark">
+        <span />
+        <span />
+        <span />
+      </span>
+      {!small && (
+        <>
+          docmind<span className="brand-dot">.</span>
+        </>
+      )}
+    </div>
+  );
+}
+function IconButton({ title, children, ...props }) {
+  return (
+    <button
+      type="button"
+      className="icon-button"
+      aria-label={title}
+      title={title}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+function Modal({ title, subtitle, close, children, wide = false }) {
+  const ref = useRef();
+  useEffect(() => {
+    const previous = document.activeElement;
+    ref.current.showModal();
+    return () => previous?.focus();
+  }, []);
+  return (
+    <dialog
+      ref={ref}
+      className={"modal " + (wide ? "wide" : "")}
+      onCancel={(event) => {
+        event.preventDefault();
+        close();
+      }}
+      onClick={(event) => {
+        if (event.target === ref.current) close();
+      }}
+    >
+      <div className="modal-header">
+        <div>
+          <h2>{title}</h2>
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+        <IconButton title="Close dialog" onClick={close}>
+          <X size={20} />
+        </IconButton>
+      </div>
+      {children}
+    </dialog>
+  );
+}
+
+function App() {
+  const [workspace, setWorkspace] = useState(null),
+    [page, setPage] = useState("chat");
+  const [error, setError] = useState(""),
+    [busy, setBusy] = useState(false),
+    [streaming, setStreaming] = useState(false);
+  const [modal, setModal] = useState(null),
+    [preview, setPreview] = useState(null),
+    [showSources, setShowSources] = useState(true);
+  const [online, setOnline] = useState(null),
+    [question, setQuestion] = useState(""),
+    [mobileNav, setMobileNav] = useState(false);
+  const [search, setSearch] = useState(""),
+    [copied, setCopied] = useState(-1),
+    [boot, setBoot] = useState(0);
+  const bottom = useRef(),
+    input = useRef(),
+    alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    (async () => {
+      try {
+        let current = await api("/session", { method: "POST" });
+        let saved;
+        try {
+          saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+        } catch {
+          saved = null;
+        }
+        // Do not overwrite a live workspace's configuration on refresh.
+        if (saved && !current.sources.length && !current.messages.length) {
+          try {
+            current = await api("/settings", {
+              method: "PUT",
+              body: JSON.stringify(saved),
+            });
+          } catch {
+            setError(
+              "Saved preferences could not be restored. Default settings are available.",
+            );
+          }
+        }
+        if (!alive.current) return;
+        setWorkspace(current);
+        try {
+          const models = await api("/models");
+          if (alive.current) setOnline(models.online);
+        } catch {
+          if (alive.current) setOnline(false);
+        }
+      } catch (e) {
+        if (alive.current) setError(e.message);
+      }
+    })();
+    return () => {
+      alive.current = false;
+    };
+  }, [boot]);
+  useEffect(() => {
+    bottom.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [workspace?.messages?.length, streaming]);
+  useEffect(() => {
+    if (!busy && !workspace?.busy) return;
+    const timer = setInterval(
+      () =>
+        api("/state")
+          .then((s) =>
+            setWorkspace((old) =>
+              busy ? { ...old, status: s.status, progress: s.progress } : s,
+            ),
+          )
+          .catch(() => {}),
+      1000,
+    );
+    return () => clearInterval(timer);
+  }, [busy, workspace?.busy]);
+  async function action(path, options, success) {
+    setBusy(true);
+    setError("");
+    try {
+      const result = await api(path, options);
+      setWorkspace(result);
+      success?.(result);
+      return result;
+    } catch (e) {
+      setError(e.message);
+      try {
+        setWorkspace(await api("/state"));
+      } catch {}
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function send(text = question, without = false) {
+    text = text.trim();
+    if (!text || busy || streaming || workspace?.busy) return;
+    setQuestion("");
+    setError("");
+    setStreaming(true);
+    setPage("chat");
+    setWorkspace((old) => ({
+      ...old,
+      messages: [
+        ...old.messages,
+        { role: "user", content: text },
+        { role: "assistant", content: "", sources: [] },
+      ],
+    }));
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-DocMind-Client": "react",
+        },
+        body: JSON.stringify({ text, without_documents: without }),
+      });
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.detail || "The request failed.");
+      }
+      const reader = response.body.getReader(),
+        decoder = new TextDecoder();
+      let pending = "";
+      const consume = (line) => {
+        if (!line.trim()) return;
+        const event = JSON.parse(line);
+        setWorkspace((old) => {
+          const messages = [...old.messages];
+          const last = messages.length - 1;
+          if (event.type === "token")
+            messages[last] = {
+              ...messages[last],
+              content: messages[last].content + event.text,
+            };
+          else if (event.message) messages[last] = event.message;
+          return { ...old, messages };
+        });
+      };
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        pending += decoder.decode(value, { stream: true });
+        const lines = pending.split("\n");
+        pending = lines.pop();
+        lines.forEach(consume);
+      }
+      pending += decoder.decode();
+      if (pending.trim()) consume(pending);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setStreaming(false);
+      try {
+        setWorkspace(await api("/state"));
+      } catch {}
+      input.current?.focus();
+    }
+  }
+  async function sample() {
+    setModal(null);
+    await action(
+      "/import",
+      { method: "POST", body: JSON.stringify({ kind: "sample" }) },
+      () => setPage("chat"),
+    );
+  }
+  const disabled = busy || streaming || workspace?.busy;
+  const sources = workspace?.sources || [],
+    messages = workspace?.messages || [];
+  const settings = workspace?.settings;
+  const nav = (id) => {
+    setPage(id);
+    setMobileNav(false);
+  };
+  async function copy(text, i) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(i);
+      setTimeout(() => setCopied(-1), 1800);
+    } catch {
+      setError("Copy unavailable. Select the answer text to copy it.");
+    }
+  }
+
+  return (
+    <div className="app-shell">
+      <aside className={"sidebar " + (mobileNav ? "mobile-open" : "")}>
+        <Brand />
+        <div className="workspace-switch">
+          <span className="workspace-avatar">A</span>
+          <div>
+            Personal workspace<small>Your private thinking space</small>
+          </div>
+          <ChevronDown size={14} />
+        </div>
+        <button
+          className="new-chat"
+          disabled={disabled || !messages.length}
+          onClick={() => setModal("new-chat")}
+        >
+          <Plus size={18} />
+          New conversation<span>↗</span>
+        </button>
+        <div className="nav-label">WORKSPACE</div>
+        <nav aria-label="Main navigation">
+          <button
+            className={page === "chat" ? "active" : ""}
+            onClick={() => nav("chat")}
+          >
+            <MessageSquare size={18} />
+            Chat
+            <span className="nav-indicator" />
+          </button>
+          <button
+            className={page === "library" ? "active" : ""}
+            onClick={() => nav("library")}
+          >
+            <Library size={18} />
+            Source library<span className="count">{sources.length}</span>
+          </button>
+          <button
+            className={page === "settings" ? "active" : ""}
+            onClick={() => nav("settings")}
+          >
+            <Settings2 size={18} />
+            Settings
+          </button>
+        </nav>
+        <div className="nav-label recent-label">THIS CONVERSATION</div>
+        <button className="recent-chat" onClick={() => nav("chat")}>
+          <span className="tiny-dot" />
+          <span>
+            {messages.find((m) => m.role === "user")?.content ||
+              "A fresh perspective"}
+          </span>
+        </button>
+        <div className="sidebar-bottom">
+          <div className="local-card">
+            <span className="local-card-icon">
+              <ShieldCheck size={19} />
+            </span>
+            <strong>Your ideas. Your space.</strong>
+            <p>
+              {settings?.provider === "Ollama" && !settings?.r2r
+                ? "Documents stay with your configured Ollama server."
+                : "Connected to your chosen model provider."}
+            </p>
+            <span className="local-caption">BUILT FOR CURIOUS MINDS</span>
+          </div>
+          <button className="profile" onClick={() => nav("settings")}>
+            <span className="profile-avatar">A</span>
+            <div>
+              My workspace<small>On this device · local session</small>
+            </div>
+            <Settings2 size={16} />
+          </button>
+        </div>
+      </aside>
+      <main className="main">
+        <header className="topbar">
+          <div className="breadcrumb">
+            <IconButton
+              title="Toggle navigation"
+              onClick={() => setMobileNav(!mobileNav)}
+            >
+              <Menu size={18} />
+            </IconButton>
+            <span>Workspace</span>
+            <ChevronRight size={14} />
+            <strong>
+              {
+                {
+                  chat: "Chat",
+                  library: "Source library",
+                  settings: "Settings",
+                }[page]
+              }
+            </strong>
+          </div>
+          <div className="top-actions">
+            <span className={"connection " + (online ? "connected" : "")}>
+              <span />
+              {online === null
+                ? "Checking connection"
+                : online
+                  ? "Model connected"
+                  : "Model offline"}
+            </span>
+            <button
+              className="primary small-button"
+              onClick={() => setModal("import")}
+              disabled={!workspace || disabled}
+            >
+              <Plus size={16} /> Add source
+            </button>
+          </div>
+        </header>
+        {error && (
+          <div className="error-banner" role="alert">
+            <AlertCircle size={18} />
+            <span>{error}</span>
+            <IconButton title="Dismiss error" onClick={() => setError("")}>
+              <X size={16} />
+            </IconButton>
+          </div>
+        )}
+        {!workspace ? (
+          <div className="loading-page">
+            <Brand small />
+            <h2>Opening your thinking space</h2>
+            {error ? (
+              <button
+                className="primary"
+                onClick={() => {
+                  setError("");
+                  setBoot(boot + 1);
+                }}
+              >
+                Try again
+              </button>
+            ) : (
+              <LoaderCircle className="spin" />
+            )}
+          </div>
+        ) : (
+          <>
+            {busy && (
+              <div className="task-banner" role="status">
+                <LoaderCircle size={17} className="spin" />
+                <span>
+                  {workspace.status === "Ready"
+                    ? "Preparing your workspace…"
+                    : workspace.status}
+                </span>
+                {workspace.progress && (
+                  <span>
+                    {workspace.progress.done} / {workspace.progress.total}{" "}
+                    chunks
+                  </span>
+                )}
+              </div>
+            )}
+            {workspace.warnings.length > 0 && (
+              <div className="warning-banner" role="status">
+                <AlertCircle size={17} />
+                <div>
+                  <strong>Some files couldn’t be read</strong>
+                  {workspace.warnings.map((w, i) => (
+                    <p key={i}>
+                      {w.file}: {w.error}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+            {page === "chat" && (
+              <div className="chat-layout">
+                <section className="chat-area">
+                  <div className="chat-toolbar">
+                    <span className="eyebrow">YOUR THINKING SPACE</span>
+                    <div>
+                      <button
+                        className="text-button"
+                        disabled={!messages.length || disabled}
+                        onClick={() => window.location.assign("/api/export")}
+                      >
+                        <Download size={15} />
+                        Export
+                      </button>
+                      <IconButton
+                        title={
+                          showSources
+                            ? "Hide source panel"
+                            : "Show source panel"
+                        }
+                        onClick={() => setShowSources(!showSources)}
+                      >
+                        {showSources ? (
+                          <PanelRightClose size={18} />
+                        ) : (
+                          <PanelRightOpen size={18} />
+                        )}
+                      </IconButton>
+                    </div>
+                  </div>
+                  <div className="conversation-scroll">
+                    {!messages.length ? (
+                      <div className="welcome">
+                        <div className="welcome-symbol">
+                          <Sparkles size={25} />
+                        </div>
+                        <span className="welcome-kicker">
+                          LESS SEARCHING. MORE UNDERSTANDING.
+                        </span>
+                        <h1>
+                          A clearer view of
+                          <br />
+                          <em>everything you know.</em>
+                        </h1>
+                        <p>
+                          Bring your documents. Follow your curiosity.
+                          <br />
+                          Find the answers hiding between the lines.
+                        </p>
+                        <div className="start-card">
+                          <div className="paper-art" aria-hidden="true">
+                            <div className="paper paper-back" />
+                            <div className="paper paper-front">
+                              <span />
+                              <span />
+                              <span />
+                              <span />
+                              <i>
+                                <Check size={13} />
+                              </i>
+                            </div>
+                            <span className="art-spark">✦</span>
+                          </div>
+                          <div>
+                            <span className="eyebrow">START WITH A SOURCE</span>
+                            <h3>
+                              {sources.length
+                                ? "Your knowledge is ready."
+                                : "Good questions start here."}
+                            </h3>
+                            <p>
+                              {sources.length
+                                ? `${sources.length} source${sources.length === 1 ? "" : "s"} ready to explore. Ask your first question below.`
+                                : "Add a document, a website, or a repository. We’ll help you make sense of it."}
+                            </p>
+                            <button
+                              className="text-link"
+                              onClick={() =>
+                                sources.length
+                                  ? input.current?.focus()
+                                  : setModal("import")
+                              }
+                              disabled={disabled}
+                            >
+                              {sources.length
+                                ? "Ask a question"
+                                : "Add your first source"}
+                              <ArrowRight size={16} />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="suggestion-heading">
+                          <span>A LITTLE INSPIRATION</span>
+                          {!sources.length && (
+                            <button disabled={disabled} onClick={sample}>
+                              Try a sample document
+                              <ArrowUpRight size={13} />
+                            </button>
+                          )}
+                        </div>
+                        <div className="suggestion-grid">
+                          {[
+                            {
+                              icon: BookOpen,
+                              title: "Find the big picture",
+                              text: "Summarize my documents",
+                            },
+                            {
+                              icon: Search,
+                              title: "Connect the details",
+                              text: "What are the key dates and decisions?",
+                            },
+                            {
+                              icon: Zap,
+                              title: "Make it actionable",
+                              text: "What are the next steps?",
+                            },
+                          ].map((s) => (
+                            <button
+                              key={s.title}
+                              disabled={disabled}
+                              onClick={() => {
+                                setQuestion(s.text);
+                                input.current?.focus();
+                              }}
+                            >
+                              <s.icon size={18} />
+                              <strong>{s.title}</strong>
+                              <span>{s.text}</span>
+                              <ArrowUpRight size={14} />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="messages">
+                        {messages.map((message, i) => (
+                          <article
+                            key={i}
+                            className={"message " + message.role}
+                          >
+                            <div className="message-avatar">
+                              {message.role === "user" ? "A" : <Brand small />}
+                            </div>
+                            <div className="message-body">
+                              <div className="message-name">
+                                {message.role === "user" ? "You" : "DocMind"}
+                                {message.role === "assistant" && (
+                                  <span>DOCUMENT ASSISTANT</span>
+                                )}
+                              </div>
+                              {message.content ? (
+                                <ReactMarkdown
+                                  components={{
+                                    img: ({ alt }) => (
+                                      <span>
+                                        [Image: {alt || "not loaded"}]
+                                      </span>
+                                    ),
+                                  }}
+                                >
+                                  {message.content}
+                                </ReactMarkdown>
+                              ) : (
+                                <div className="thinking">
+                                  <span />
+                                  <span />
+                                  <span />
+                                </div>
+                              )}
+                              {message.sources?.length > 0 && (
+                                <div className="citation-list">
+                                  {message.sources.map((source) => (
+                                    <button
+                                      key={source.number}
+                                      onClick={() => setPreview(source)}
+                                    >
+                                      <span>{source.number}</span>
+                                      <FileText size={12} />
+                                      {source.name}
+                                      <ArrowUpRight size={12} />
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                              {message.no_evidence && !disabled && (
+                                <button
+                                  className="text-link"
+                                  onClick={() =>
+                                    send(messages[i - 1]?.content || "", true)
+                                  }
+                                >
+                                  Ask without documents
+                                  <ArrowRight size={14} />
+                                </button>
+                              )}
+                              {message.content &&
+                                message.role === "assistant" && (
+                                  <IconButton
+                                    title="Copy answer"
+                                    onClick={() => copy(message.content, i)}
+                                  >
+                                    {copied === i ? (
+                                      <CheckCheck size={14} />
+                                    ) : (
+                                      <Copy size={14} />
+                                    )}
+                                  </IconButton>
+                                )}
+                            </div>
+                          </article>
+                        ))}
+                        <div ref={bottom} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="composer-wrap">
+                    <form
+                      className="composer"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        send();
+                      }}
+                    >
+                      <textarea
+                        ref={input}
+                        aria-label="Ask DocMind"
+                        placeholder={
+                          sources.length
+                            ? "Ask anything about your sources…"
+                            : "What would you like to understand?"
+                        }
+                        value={question}
+                        maxLength={6000}
+                        onChange={(e) => setQuestion(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            send();
+                          }
+                        }}
+                      />
+                      <div className="composer-bottom">
+                        <div>
+                          <IconButton
+                            title="Add a source"
+                            disabled={disabled}
+                            onClick={() => setModal("import")}
+                          >
+                            <Paperclip size={18} />
+                          </IconButton>
+                          <span className="composer-divider" />
+                          <button
+                            type="button"
+                            className="model-button"
+                            onClick={() => nav("settings")}
+                          >
+                            <Cpu size={14} />
+                            {settings.r2r ? "R2R" : settings.chat_model}
+                            <ChevronDown size={12} />
+                          </button>
+                        </div>
+                        <button
+                          className="send-button"
+                          type="submit"
+                          aria-label="Send message"
+                          disabled={!question.trim() || disabled}
+                        >
+                          {streaming ? (
+                            <LoaderCircle className="spin" size={19} />
+                          ) : (
+                            <ArrowUp size={20} />
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                    <div className="composer-note">
+                      <span>
+                        <span className="tiny-dot" />
+                        {sources.length
+                          ? "Answers grounded in your sources"
+                          : "Add sources for document-grounded answers"}
+                      </span>
+                      <span>Always verify important details.</span>
+                    </div>
+                  </div>
+                </section>
+                {showSources && (
+                  <aside className="source-panel">
+                    <div className="source-panel-header">
+                      <div>
+                        <Library size={17} />
+                        <strong>Sources</strong>
+                        <span className="source-count">{sources.length}</span>
+                      </div>
+                      <IconButton
+                        title="Add source"
+                        disabled={disabled}
+                        onClick={() => setModal("import")}
+                      >
+                        <Plus size={17} />
+                      </IconButton>
+                    </div>
+                    <p className="panel-description">
+                      The context behind your answers.
+                    </p>
+                    {sources.length ? (
+                      <div className="source-list">
+                        {sources.map((source) => (
+                          <button
+                            key={source.id}
+                            onClick={() => setPreview(source)}
+                          >
+                            <span className={"file-icon " + source.kind}>
+                              {source.kind === "website" ? (
+                                <Globe2 size={18} />
+                              ) : source.kind === "github" ? (
+                                <Github size={18} />
+                              ) : (
+                                <FileText size={18} />
+                              )}
+                            </span>
+                            <div>
+                              <strong>{source.name}</strong>
+                              <small>
+                                {source.kind === "sample"
+                                  ? "Sample document"
+                                  : source.kind === "r2r"
+                                    ? "Remote index"
+                                    : `${Math.ceil(source.characters / 1000)}k characters`}{" "}
+                                · Ready
+                              </small>
+                            </div>
+                            <Check size={13} />
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="source-empty">
+                        <div className="empty-stack">
+                          <FileText size={26} />
+                        </div>
+                        <h3>A home for your knowledge</h3>
+                        <p>
+                          Your sources will appear here.
+                          <br />
+                          Add something worth exploring.
+                        </p>
+                        <button
+                          className="secondary"
+                          disabled={disabled}
+                          onClick={() => setModal("import")}
+                        >
+                          <Plus size={15} />
+                          Add sources
+                        </button>
+                      </div>
+                    )}
+                    <div className="supported-note">
+                      <span>ROOM FOR EVERY KIND OF IDEA</span>
+                      <div>
+                        <b>PDF</b>
+                        <b>DOCX</b>
+                        <b>TXT</b>
+                        <b>+22</b>
+                      </div>
+                      <p>
+                        Documents, spreadsheets, emails
+                        <br />
+                        and more. Up to 25 MB per file.
+                      </p>
+                    </div>
+                    {sources.length > 0 && (
+                      <button
+                        className="text-button remove-sources"
+                        disabled={disabled}
+                        onClick={() => setModal("remove")}
+                      >
+                        <Trash2 size={14} />
+                        Remove all sources
+                      </button>
+                    )}
+                    <div className="source-tip">
+                      <Sparkles size={16} />
+                      <p>
+                        <strong>Stay curious.</strong> Try asking the same
+                        question across different sources.
+                      </p>
+                    </div>
+                  </aside>
+                )}
+              </div>
+            )}
+            {page === "library" && (
+              <section className="library-page">
+                <span className="eyebrow">YOUR KNOWLEDGE, TOGETHER</span>
+                <h1>
+                  Source library<span>.</span>
+                </h1>
+                <p>Everything your current conversation can draw from.</p>
+                <div className="library-tools">
+                  <label>
+                    <Search size={17} />
+                    <input
+                      aria-label="Search sources"
+                      placeholder="Find a source…"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </label>
+                  <span>{sources.length} sources in this workspace</span>
+                </div>
+                {sources.length ? (
+                  <div className="library-grid">
+                    {sources
+                      .filter((s) =>
+                        s.name.toLowerCase().includes(search.toLowerCase()),
+                      )
+                      .map((source) => (
+                        <button
+                          className="library-card"
+                          key={source.id}
+                          onClick={() => setPreview(source)}
+                        >
+                          <div>
+                            <span className="file-icon">
+                              <FileText size={24} />
+                            </span>
+                            <ArrowUpRight size={17} />
+                          </div>
+                          <h3>{source.name}</h3>
+                          <p>{source.preview?.slice(0, 130)}</p>
+                          <footer>
+                            <span>{source.kind}</span>
+                            <span className="ready-dot">Ready</span>
+                          </footer>
+                        </button>
+                      ))}
+                  </div>
+                ) : (
+                  <div className="library-empty">
+                    <FolderOpen size={38} />
+                    <h2>Your next insight starts with a source.</h2>
+                    <p>
+                      Bring a document, website or public GitHub repository.
+                    </p>
+                    <button
+                      className="primary"
+                      disabled={disabled}
+                      onClick={() => setModal("import")}
+                    >
+                      <Plus size={17} />
+                      Add a source
+                    </button>
+                  </div>
+                )}
+              </section>
+            )}
+            {page === "settings" && (
+              <SettingsPage
+                settings={settings}
+                disabled={disabled}
+                save={async (draft) => {
+                  const result = await action("/settings", {
+                    method: "PUT",
+                    body: JSON.stringify(draft),
+                  });
+                  if (result) {
+                    storePreferences(result.settings);
+                    setOnline(null);
+                    try {
+                      setOnline((await api("/models")).online);
+                    } catch {
+                      setOnline(false);
+                    }
+                  }
+                  return result;
+                }}
+                reset={() => setModal("reset")}
+              />
+            )}
+          </>
+        )}
+      </main>
+      {modal === "import" && (
+        <ImportModal
+          close={() => !busy && setModal(null)}
+          disabled={disabled}
+          hasSources={sources.length > 0}
+          formats={workspace?.formats || []}
+          sample={sample}
+          submit={async (kind, value) => {
+            let options, path;
+            if (kind === "files") {
+              const form = new FormData();
+              value.forEach((f) => form.append("files", f));
+              path = "/upload";
+              options = { method: "POST", body: form };
+            } else {
+              path = "/import";
+              options = {
+                method: "POST",
+                body: JSON.stringify({ kind, value }),
+              };
+            }
+            setModal(null);
+            await action(path, options, () => setPage("chat"));
+          }}
+        />
+      )}
+      {["remove", "reset", "new-chat"].includes(modal) && (
+        <Modal
+          title={
+            modal === "reset"
+              ? "Reset this workspace?"
+              : modal === "remove"
+                ? "Remove all sources?"
+                : "Start a fresh conversation?"
+          }
+          subtitle={
+            modal === "reset"
+              ? "This clears documents, conversation, credentials and settings."
+              : modal === "remove"
+                ? "Future answers will no longer use these sources or the earlier document conversation. Remote R2R copies will be deleted."
+                : "Your sources stay ready. The current conversation will be cleared; export it first if you need a copy."
+          }
+          close={() => setModal(null)}
+        >
+          <div className="modal-footer">
+            <button className="secondary" onClick={() => setModal(null)}>
+              Keep working
+            </button>
+            <button
+              className="primary"
+              onClick={() => {
+                const type = modal;
+                setModal(null);
+                action(
+                  type === "reset"
+                    ? "/session"
+                    : type === "remove"
+                      ? "/sources"
+                      : "/chat",
+                  { method: "DELETE" },
+                  (result) => {
+                    if (type === "reset") storePreferences(result.settings);
+                    setPage("chat");
+                  },
+                );
+              }}
+            >
+              Confirm{" "}
+              {modal === "reset"
+                ? "reset"
+                : modal === "remove"
+                  ? "removal"
+                  : "new chat"}
+            </button>
+          </div>
+        </Modal>
+      )}
+      {preview && (
+        <Modal
+          title={preview.name}
+          subtitle={
+            preview.number
+              ? `Source ${preview.number} · Retrieved supporting passage`
+              : "Extracted text preview · first 16,000 characters"
+          }
+          close={() => setPreview(null)}
+          wide
+        >
+          <div className="source-preview">
+            {preview.text || preview.preview || "No text preview available."}
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+function ImportModal({ close, disabled, hasSources, formats, submit, sample }) {
+  const [tab, setTab] = useState("files"),
+    [files, setFiles] = useState([]),
+    [value, setValue] = useState(""),
+    [error, setError] = useState(""),
+    [drag, setDrag] = useState(false);
+  const picker = useRef();
+  function choose(items) {
+    const list = Array.from(items);
+    setError("");
+    if (
+      list.length > 10 ||
+      list.some((f) => f.size > 25 * 1024 * 1024) ||
+      list.reduce((n, f) => n + f.size, 0) > 100 * 1024 * 1024
+    ) {
+      setError("Choose up to 10 files, 25 MB each and 100 MB total.");
+      return;
+    }
+    setFiles(list);
+  }
+  return (
+    <Modal
+      title="Bring your knowledge in."
+      subtitle="A document, a link, an idea worth understanding."
+      close={close}
+    >
+      <div className="import-tabs">
+        {[
+          { id: "files", label: "Upload files", Icon: FileText },
+          { id: "website", label: "Website", Icon: Globe2 },
+          { id: "github", label: "GitHub", Icon: Github },
+        ].map(({ id, label, Icon }) => (
+          <button
+            key={id}
+            className={tab === id ? "active" : ""}
+            onClick={() => {
+              setTab(id);
+              setValue("");
+            }}
+          >
+            <Icon size={16} />
+            {label}
+          </button>
+        ))}
+      </div>
+      {hasSources && (
+        <div className="inline-note">
+          <AlertCircle size={15} />
+          Importing replaces the current source collection.
+        </div>
+      )}
+      {tab === "files" ? (
+        <>
+          <input
+            type="file"
+            hidden
+            multiple
+            accept={formats.join(",")}
+            ref={picker}
+            onChange={(e) => choose(e.target.files)}
+          />
+          <button
+            className={"dropzone " + (drag ? "drag" : "")}
+            onClick={() => picker.current.click()}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDrag(true);
+            }}
+            onDragLeave={() => setDrag(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDrag(false);
+              choose(e.dataTransfer.files);
+            }}
+          >
+            <span>
+              <Paperclip size={24} />
+            </span>
+            <strong>
+              {files.length
+                ? `${files.length} file${files.length === 1 ? "" : "s"} selected`
+                : "Drop your documents here"}
+            </strong>
+            <p>
+              or <u>browse files</u> from your computer
+            </p>
+            <small>25 formats · 25 MB per file · 10 files at a time</small>
+          </button>
+          <div className="selected-files">
+            {files.map((f) => (
+              <div key={f.name}>
+                <FileText size={15} />
+                <span>{f.name}</span>
+                <small>{(f.size / 1024).toFixed(0)} KB</small>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <label className="field import-field">
+          {tab === "website"
+            ? "Public HTTPS links (one per line)"
+            : "Public repository"}
+          <textarea
+            rows={3}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder={
+              tab === "website"
+                ? "https://example.com/article"
+                : "owner/repository"
+            }
+          />
+          <small>
+            {tab === "website"
+              ? "Up to 5 pages. Private and local network addresses are blocked."
+              : "Use owner/repository or a GitHub repository URL."}
+          </small>
+        </label>
+      )}
+      {error && <p className="field-error">{error}</p>}
+      <div className="modal-footer">
+        <button className="text-button" disabled={disabled} onClick={sample}>
+          Try a sample instead
+          <ArrowUpRight size={14} />
+        </button>
+        <button
+          className="primary"
+          disabled={
+            disabled || (tab === "files" ? !files.length : !value.trim())
+          }
+          onClick={() => submit(tab, tab === "files" ? files : value)}
+        >
+          {disabled ? (
+            <LoaderCircle className="spin" size={16} />
+          ) : (
+            <Plus size={16} />
+          )}
+          Add to workspace
+        </button>
+      </div>
+    </Modal>
+  );
+}
+
+function SettingsPage({ settings, disabled, save, reset }) {
+  const [draft, setDraft] = useState({ ...settings, api_key: "", r2r_key: "" }),
+    [models, setModels] = useState(null),
+    [notice, setNotice] = useState(""),
+    [refreshing, setRefreshing] = useState(false);
+  useEffect(() => {
+    setDraft({ ...settings, api_key: "", r2r_key: "" });
+  }, [settings]);
+  const update = (key, value) => setDraft((old) => ({ ...old, [key]: value }));
+  const presets = {
+    Ollama: [
+      "http://localhost:11434",
+      "llama3:latest",
+      "nomic-embed-text:latest",
+    ],
+    OpenAI: [
+      "https://api.openai.com/v1",
+      "gpt-4o-mini",
+      "text-embedding-3-small",
+    ],
+    "LM Studio (Local AI)": [
+      "http://localhost:1234/v1",
+      "local-model",
+      "local-embedding-model",
+    ],
+    TabbyAPI: [
+      "http://localhost:5000/v1",
+      "local-model",
+      "local-embedding-model",
+    ],
+  };
+  return (
+    <section className="settings-page">
+      <span className="eyebrow">MAKE ROOM FOR YOUR WAY OF THINKING</span>
+      <h1>
+        A workspace that fits<span>.</span>
+      </h1>
+      <p>Your models, your preferences, your pace.</p>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setNotice("");
+          if (await save(draft)) setNotice("Preferences saved.");
+        }}
+      >
+        <div className="settings-section">
+          <div className="section-heading">
+            <span className="section-icon">
+              <Cpu size={19} />
+            </span>
+            <div>
+              <h2>Model connection</h2>
+              <p>Choose the intelligence behind your workspace.</p>
+            </div>
+          </div>
+          <div className="form-grid">
+            <label className="field">
+              Provider
+              <select
+                value={draft.provider}
+                onChange={(e) => {
+                  const [endpoint, chat_model, embedding_model] =
+                    presets[e.target.value];
+                  setDraft({
+                    ...draft,
+                    provider: e.target.value,
+                    endpoint,
+                    chat_model,
+                    embedding_model,
+                    api_key: "",
+                  });
+                }}
+              >
+                {Object.keys(presets).map((p) => (
+                  <option key={p}>{p}</option>
+                ))}
+              </select>
+            </label>
+            <label className="field">
+              Server address
+              <input
+                value={draft.endpoint}
+                onChange={(e) => update("endpoint", e.target.value)}
+                required
+              />
+            </label>
+            <label className="field">
+              Chat model
+              <input
+                list="chat-models"
+                value={draft.chat_model}
+                onChange={(e) => update("chat_model", e.target.value)}
+                required
+              />
+              <datalist id="chat-models">
+                {models?.chat.map((m) => (
+                  <option key={m}>{m}</option>
+                ))}
+              </datalist>
+            </label>
+            <label className="field">
+              Embedding model
+              <input
+                list="embedding-models"
+                value={draft.embedding_model}
+                onChange={(e) => update("embedding_model", e.target.value)}
+                required
+              />
+              <datalist id="embedding-models">
+                {models?.embeddings.map((m) => (
+                  <option key={m}>{m}</option>
+                ))}
+              </datalist>
+            </label>
+            {draft.provider !== "Ollama" && (
+              <label className="field full">
+                API key
+                <input
+                  type="password"
+                  autoComplete="off"
+                  value={draft.api_key}
+                  placeholder="Optional for local servers · stored in server memory only"
+                  onChange={(e) => update("api_key", e.target.value)}
+                />
+              </label>
+            )}
+          </div>
+          <div className="settings-inline">
+            <button
+              type="button"
+              className="secondary"
+              disabled={disabled || refreshing}
+              onClick={async () => {
+                setRefreshing(true);
+                try {
+                  const result = await api("/models");
+                  setModels(result);
+                  setNotice(
+                    result.online
+                      ? "Models loaded from the saved connection."
+                      : "No models found. Check the saved connection.",
+                  );
+                } catch (e) {
+                  setNotice(e.message);
+                } finally {
+                  setRefreshing(false);
+                }
+              }}
+            >
+              <RefreshCw size={14} className={refreshing ? "spin" : ""} />
+              Refresh model list
+            </button>
+            <span>Uses your saved connection.</span>
+          </div>
+          {notice && (
+            <p className="settings-notice" role="status">
+              {notice}
+            </p>
+          )}
+        </div>
+        <div className="settings-section">
+          <div className="section-heading">
+            <span className="section-icon">
+              <Sparkles size={19} />
+            </span>
+            <div>
+              <h2>The way you get answers</h2>
+              <p>A little more detail, or straight to the point.</p>
+            </div>
+          </div>
+          <div className="style-options">
+            {[
+              "Balanced",
+              "Concise",
+              "Detailed",
+              "Bulleted",
+              "Technical",
+              "Simple",
+            ].map((style) => (
+              <button
+                type="button"
+                className={draft.style === style ? "chosen" : ""}
+                key={style}
+                onClick={() => update("style", style)}
+              >
+                {style}
+                {draft.style === style && <Check size={14} />}
+              </button>
+            ))}
+          </div>
+          <label className="toggle-row">
+            <div>
+              <strong>Eco mode</strong>
+              <p>
+                Smaller batches and shorter answers for lighter resource use.
+              </p>
+            </div>
+            <input
+              type="checkbox"
+              checked={draft.eco}
+              onChange={(e) => update("eco", e.target.checked)}
+            />
+          </label>
+          <details>
+            <summary>
+              Retrieval & advanced controls
+              <ChevronDown size={15} />
+            </summary>
+            <div className="form-grid advanced-grid">
+              {[
+                {
+                  key: "temperature",
+                  label: "Creativity",
+                  min: 0,
+                  max: 1.5,
+                  step: 0.05,
+                },
+                {
+                  key: "top_k",
+                  label: "Sources per answer",
+                  min: 1,
+                  max: 10,
+                  step: 1,
+                },
+                {
+                  key: "similarity",
+                  label: "Relevance threshold",
+                  min: 0,
+                  max: 1,
+                  step: 0.05,
+                },
+                {
+                  key: "chunk_size",
+                  label: "Chunk size",
+                  min: 64,
+                  max: 8192,
+                  step: 1,
+                },
+                {
+                  key: "overlap",
+                  label: "Chunk overlap",
+                  min: 0,
+                  max: 4096,
+                  step: 1,
+                },
+              ].map((f) => (
+                <label className="field" key={f.key}>
+                  {f.label}
+                  <input
+                    type="number"
+                    required
+                    min={f.min}
+                    max={f.max}
+                    step={f.step}
+                    value={draft[f.key]}
+                    onChange={(e) => update(f.key, Number(e.target.value))}
+                  />
+                </label>
+              ))}
+            </div>
+          </details>
+          <details>
+            <summary>
+              External RAG server (R2R)
+              <ChevronDown size={15} />
+            </summary>
+            <label className="toggle-row">
+              <div>
+                <strong>Use R2R</strong>
+                <p>Requires your own R2R server. File uploads only.</p>
+              </div>
+              <input
+                type="checkbox"
+                checked={draft.r2r}
+                onChange={(e) => update("r2r", e.target.checked)}
+              />
+            </label>
+            {draft.r2r && (
+              <div className="form-grid">
+                <label className="field">
+                  R2R address
+                  <input
+                    value={draft.r2r_url}
+                    onChange={(e) => update("r2r_url", e.target.value)}
+                  />
+                </label>
+                <label className="field">
+                  R2R API key
+                  <input
+                    type="password"
+                    autoComplete="off"
+                    value={draft.r2r_key}
+                    onChange={(e) => update("r2r_key", e.target.value)}
+                  />
+                </label>
+              </div>
+            )}
+          </details>
+        </div>
+        <div className="settings-footer">
+          <p>
+            <ShieldCheck size={16} />
+            Preferences stay in this browser. Keys stay in server memory.
+            <br />
+            Changing embedding or server settings clears the current source
+            index.
+          </p>
+          <button className="primary" disabled={disabled} type="submit">
+            <Check size={16} />
+            Save preferences
+          </button>
+        </div>
+      </form>
+      <div className="reset-row">
+        <div>
+          <strong>Start with a clean slate</strong>
+          <p>Remove sources, conversation and saved preferences.</p>
+        </div>
+        <button
+          className="text-button danger"
+          disabled={disabled}
+          onClick={reset}
+        >
+          <Trash2 size={15} />
+          Reset workspace
+        </button>
+      </div>
+    </section>
+  );
+}
+
+createRoot(document.getElementById("root")).render(<App />);

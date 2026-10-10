@@ -1,13 +1,24 @@
-# 🧠 DocMind AI — Private Offline RAG Assistant
+# DocMind Workspace — React edition
 
-> **Import files, GitHub repos, or websites — then chat with grounded answers. Everything runs locally. No data ever leaves your device.**
+This separate `react-redesign` branch introduces a React interface and a local
+Python API. The original Streamlit checkout and its public `main` branch are
+preserved. Start this edition with **`./run-react.ps1`**, then open
+**http://127.0.0.1:8765**.
+
+See **[React setup, architecture and verification](docs/react-workspace.md)** for
+installation and development commands. The reference documentation below describes
+the retained Streamlit edition; its `run.ps1` launcher still starts that UI.
+
+## Original edition reference
+
+> Import files, GitHub repositories or websites and ask questions with retrieved evidence. Processing uses your configured model server; remote providers and online imports involve network access.
 
 [![Quality](https://github.com/Amaann190/DocMind-AI/actions/workflows/quality.yml/badge.svg)](https://github.com/Amaann190/DocMind-AI/actions/workflows/quality.yml)
 [![Docker Build](https://github.com/Amaann190/DocMind-AI/actions/workflows/main.yaml/badge.svg)](https://github.com/Amaann190/DocMind-AI/actions/workflows/main.yaml)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green)
 
-> **Try it in 3 clicks:** `1` Upload files / paste GitHub or website → `2` Wait ~5 s (index built, cached) → `3` Ask anything — answers are cited from *your* docs. No account, no upload to cloud.
+> Add sources, wait for indexing, then ask a question. Processing time and answer quality depend on the documents, model and hardware. Verify important answers against their sources.
 
 ---
 
