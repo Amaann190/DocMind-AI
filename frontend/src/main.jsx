@@ -525,7 +525,9 @@ function App() {
   const sources = workspace?.sources || [],
     messages = workspace?.messages || [];
   const settings = workspace?.settings;
-  const conversations = chatResults ?? workspace?.conversations ?? [];
+  const conversations = (chatResults ?? workspace?.conversations ?? []).filter(
+    (chat) => chat.started,
+  );
   const navigationVisible = mobile ? mobileNav : showNavigation;
   const toggleNavigation = () =>
     mobile ? setMobileNav(!mobileNav) : setShowNavigation(!showNavigation);
@@ -673,6 +675,11 @@ function App() {
             ))}
             {chatSearch && !conversations.length && (
               <p className="history-note">No matching conversations.</p>
+            )}
+            {!chatSearch && !conversations.length && (
+              <p className="history-note">
+                Your chats will appear here after your first message.
+              </p>
             )}
           </div>
           <p className="history-note">

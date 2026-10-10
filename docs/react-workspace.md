@@ -51,6 +51,8 @@ and `nomic-embed-text:latest`. Provider presets do not install models or servers
   HTTPS website import, public GitHub import, and an explicitly labeled sample.
 - Incremental streamed answers, copy, Word export, answer style and model controls.
 - Automatically saved conversations with rename, content/title search, reopen and delete.
+  Titles use the first 70 characters of the first question until manually renamed.
+  Empty drafts are reused and stay out of saved history until the first message.
 - Individual source retry/reindex, replacement and removal from each source preview.
   Failed files stay visible for recovery; a failed replacement keeps the working source.
 - Stop saves partial output; regenerate replaces the latest answer without duplicating

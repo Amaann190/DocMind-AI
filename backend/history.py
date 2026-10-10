@@ -26,7 +26,9 @@ def connect():
 def listing(owner, query=""):
     with connect() as db:
         return [dict(row) for row in db.execute(
-            "SELECT id, title, updated FROM conversations WHERE owner=? AND instr(lower(title || payload), lower(?)) > 0 ORDER BY updated DESC", (owner, query))]
+            """SELECT id, title, updated, json_array_length(payload, '$.messages') > 0 AS started
+               FROM conversations WHERE owner=? AND instr(lower(title || payload), lower(?)) > 0
+               ORDER BY updated DESC""", (owner, query))]
 
 
 def read(owner, conversation_id):
