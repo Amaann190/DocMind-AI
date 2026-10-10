@@ -3,7 +3,7 @@ import time
 import re
 
 import requests
-import streamlit as st
+from utils.runtime import st
 
 import utils.logs as logs
 
@@ -592,6 +592,10 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
             )
             sources.append((file_name, node_score.score))
         st.session_state["last_doc_sources"] = sources
+        st.session_state["last_doc_passages"] = [
+            {"name": name, "text": node.node.get_content(), "number": i}
+            for i, ((name, _score), node) in enumerate(zip(sources, nodes), 1)
+        ]
 
         context = "\n\n".join(numbered_context)
 

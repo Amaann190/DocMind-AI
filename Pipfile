@@ -26,6 +26,9 @@ beautifulsoup4 = ">=4.11,<5"
 striprtf = ">=0.0.26,<1"
 urllib3 = ">=2,<3"
 certifi = "*"
+fastapi = "==0.143.0"
+uvicorn = "==0.54.0"
+python-multipart = "==0.0.32"
 
 [dev-packages]
 ruff = "*"

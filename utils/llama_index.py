@@ -13,7 +13,7 @@ from typing import Optional
 # during startup. Keep app logs focused on failures we can act on.
 os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")
 
-import streamlit as st
+from utils.runtime import st
 import ollama
 from pydantic import Field, PrivateAttr
 from rank_bm25 import BM25Plus

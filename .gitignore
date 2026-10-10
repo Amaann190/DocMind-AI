@@ -9,6 +9,12 @@ data/
 .index_cache/
 *.log
 .ruff_cache/
+node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+*.pid
+requirements-react-base.txt
 tmp/
 
 # Local credentials

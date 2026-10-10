@@ -2,6 +2,15 @@
 
 Guidance for AI coding agents working in this repository.
 
+## React migration checkout
+
+This branch adds `frontend/` (React/Vite) and `backend/app.py` (FastAPI). Use
+`run-react.ps1` for the new UI on port 8765. Preserve the original checkout and do
+not push migration work to `main`. See `docs/react-workspace.md` for setup and UI
+verification. Keep API request state isolated through `utils/runtime.py`; never
+replace global Streamlit state with an API session. The legacy notes below still
+apply to retained Streamlit functionality and shared ingestion safety.
+
 ## Project Overview
 
 DocMind is a Streamlit application for offline retrieval augmented generation with Ollama, LlamaIndex, local files, GitHub repositories, and websites.
