@@ -1,0 +1,258 @@
+/* Theme overrides stay scoped so the original light palette is preserved. */
+:root[data-theme="dark"] {
+  --ink: #e8ece3;
+  --muted: #acb5a7;
+  --line: #39433a;
+  --orange: #ef9b75;
+  --paper: #171c19;
+  --dark: #111712;
+  --surface: #202822;
+  --raised: #2b352d;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+[data-theme="dark"]
+  :is(
+    .topbar,
+    .source-panel,
+    .source-panel-header,
+    .modal,
+    .settings-section,
+    .library-card,
+    .library-tools label,
+    .suggestion-grid button,
+    .composer,
+    .secondary,
+    .source-list > button,
+    .source-preview,
+    .dropzone,
+    .style-options button
+  ) {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--ink);
+}
+[data-theme="dark"]
+  :is(.field input, .field select, .field textarea, .rename-label input) {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--line);
+}
+[data-theme="dark"] :is(.composer textarea, .library-tools input) {
+  color: var(--ink);
+}
+[data-theme="dark"] :is(input, textarea)::placeholder {
+  color: var(--muted);
+}
+[data-theme="dark"]
+  :is(
+    .breadcrumb strong,
+    .start-card h3,
+    .suggestion-grid button strong,
+    .source-panel-header strong,
+    .source-empty h3,
+    .message-body,
+    .library-empty h2,
+    .toggle-row strong,
+    .dropzone strong,
+    .section-heading h2,
+    .message-name
+  ) {
+  color: var(--ink);
+}
+[data-theme="dark"]
+  :is(
+    .breadcrumb,
+    .connection,
+    .eyebrow,
+    .welcome-kicker,
+    .welcome > p,
+    .start-card p,
+    .suggestion-heading > span,
+    .suggestion-heading button,
+    .suggestion-grid button span,
+    .composer-note,
+    .model-button,
+    .icon-button,
+    .text-button,
+    .panel-description,
+    .source-panel-header > div,
+    .source-empty p,
+    .supported-note,
+    .supported-note > span,
+    .supported-note p,
+    .source-tip,
+    .source-tip p,
+    .source-tip strong,
+    .source-list small,
+    .message-name > span,
+    .library-page > p,
+    .settings-page > p,
+    .library-tools > span,
+    .library-tools label,
+    .library-card > div,
+    .library-card p,
+    .library-card footer,
+    .library-empty,
+    .field,
+    .field small,
+    .section-heading p,
+    .settings-inline > span,
+    .settings-notice,
+    .toggle-row p,
+    summary,
+    .settings-footer p,
+    .reset-row p,
+    .modal-header p,
+    .import-tabs button,
+    .dropzone p,
+    .dropzone small,
+    .selected-files > div,
+    .response-status,
+    .citation-explanation,
+    .loading-page h2,
+    .loading-page > .spin
+  ) {
+  color: var(--muted);
+}
+[data-theme="dark"] :is(.welcome h1 em, .ready-dot) {
+  color: #b5c8a4;
+}
+[data-theme="dark"] .start-card {
+  background: linear-gradient(120deg, #283129, #202822);
+  border-color: var(--line);
+}
+[data-theme="dark"] :is(.primary, .send-button:not(:disabled)) {
+  background: #e28d66;
+  color: #231c16;
+}
+[data-theme="dark"] .primary:hover:not(:disabled) {
+  background: #f0a47f;
+}
+[data-theme="dark"]
+  :is(
+    .secondary:hover,
+    .icon-button:hover,
+    .suggestion-grid button:hover,
+    .dropzone:hover,
+    .dropzone.drag,
+    .source-list > button:hover,
+    .library-card:hover
+  ) {
+  background: var(--raised);
+  color: var(--ink);
+  border-color: #839278;
+}
+[data-theme="dark"] :is(.text-button:hover, .import-tabs .active) {
+  color: var(--orange);
+}
+[data-theme="dark"] .import-tabs .active {
+  border-color: var(--orange);
+}
+[data-theme="dark"] :is(.welcome-symbol, .file-icon, .message-avatar) {
+  background: #3a3028;
+  border-color: #574538;
+  color: #eeb590;
+}
+[data-theme="dark"]
+  :is(
+    .source-count,
+    .supported-note b,
+    .empty-stack,
+    .assistant .message-avatar,
+    .section-icon,
+    .dropzone > span,
+    .message-body pre,
+    .message-body code,
+    .citation-list button,
+    .stop-button,
+    .task-banner,
+    .file-icon.website,
+    .file-icon.github
+  ) {
+  background: var(--raised);
+  border-color: var(--line);
+  color: #c1d0b5;
+}
+[data-theme="dark"] .empty-stack {
+  box-shadow:
+    5px 5px 0 -1px var(--surface),
+    6px 6px 0 0 var(--line);
+}
+[data-theme="dark"] .citation-list button > span {
+  background: #43523e;
+  color: #ecf1e7;
+}
+[data-theme="dark"] .citation-list button:hover {
+  background: #394634;
+}
+[data-theme="dark"] .style-options button.chosen {
+  color: #f6bd95;
+  border-color: #ab7956;
+  background: #3a3026;
+}
+[data-theme="dark"] :is(.inline-note, .warning-banner) {
+  background: #352e21;
+  color: #e3c28e;
+  border-color: #675137;
+}
+[data-theme="dark"] :is(.error-banner, .danger-button) {
+  background: #392723;
+  color: #f1b09c;
+  border-color: #734a3e;
+}
+[data-theme="dark"] :is(.source-error, .field-error, .danger, .remove-sources) {
+  color: #f1b09c;
+}
+[data-theme="dark"] .source-preview mark {
+  background: #594a24;
+  color: #ffe3a0;
+}
+[data-theme="dark"]
+  :is(
+    .supported-note,
+    .source-tip,
+    .library-card footer,
+    details,
+    .reset-row,
+    .import-tabs,
+    .selected-files > div
+  ) {
+  border-color: var(--line);
+}
+[data-theme="dark"]
+  :is(.source-panel, .conversation-scroll, .source-preview, .modal) {
+  scrollbar-color: #677361 transparent;
+}
+[data-theme="dark"] .send-button:disabled {
+  background: #303a30;
+  color: #aab39f;
+}
+[data-theme="dark"] .composer:focus-within {
+  border-color: #a87b59;
+  box-shadow: 0 0 0 3px #ef9b7520;
+}
+[data-theme="dark"] .modal::backdrop {
+  background: #080c09b3;
+}
+[data-theme="dark"] .paper {
+  background: #374136;
+  border-color: #59604d;
+}
+[data-theme="dark"] .paper-back {
+  background: #2c352b;
+}
+[data-theme="dark"] .paper-front > span {
+  background: #7c896f;
+}
+[data-theme="dark"] .paper-front i {
+  border-color: var(--surface);
+  color: #202822;
+}
+[data-theme="dark"] :is(button, a, summary):focus-visible {
+  outline-color: #efb38e;
+}
+[data-theme="dark"] :is(input, textarea, select):focus {
+  outline-color: #ce9979;
+}

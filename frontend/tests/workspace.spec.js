@@ -254,6 +254,7 @@ test("live upload, grounded answer, export and source removal", async ({
 test("streamed answer, source preview and export controls", async ({
   page,
 }) => {
+  await page.emulateMedia({ colorScheme: "dark" });
   // The real API is covered separately; this test checks streamed UI rendering deterministically.
   await page.route("**/api/chat", async (route) => {
     const message = {
@@ -306,11 +307,101 @@ test("streamed answer, source preview and export controls", async ({
     "Launch: November 12, 2026.",
   );
   await expect(page.getByRole("dialog")).toContainText("Page 7");
+  await page.screenshot({ path: "../output/react-dark-citation.png" });
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("button", { name: "Export", exact: true }),
   ).toBeEnabled();
   await page.screenshot({ path: "../output/react-chat.png", fullPage: true });
+});
+
+test("dark theme follows the system initially, persists a choice and covers every screen", async ({
+  page,
+}) => {
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  const root = page.locator("html");
+  await expect(root).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator(".composer")).toHaveCSS(
+    "background-color",
+    "rgb(32, 40, 34)",
+  );
+  await page
+    .getByRole("textbox", { name: "Ask DocMind" })
+    .fill("Keep this draft");
+  await page.getByRole("button", { name: "Switch to light mode" }).click();
+  await expect(root).toHaveAttribute("data-theme", "light");
+  await expect(page.getByRole("textbox", { name: "Ask DocMind" })).toHaveValue(
+    "Keep this draft",
+  );
+  await page.reload();
+  await expect(root).toHaveAttribute("data-theme", "light");
+  const toggle = page.getByRole("button", { name: "Switch to dark mode" });
+  await toggle.focus();
+  await page.keyboard.press("Enter");
+  await expect(root).toHaveAttribute("data-theme", "dark");
+  await page.reload();
+  await expect(root).toHaveAttribute("data-theme", "dark");
+  await expect(
+    page.getByRole("textbox", { name: "Ask DocMind" }),
+  ).toBeVisible();
+  await page.screenshot({ path: "../output/react-dark-desktop.png" });
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await expect(page.locator(".settings-section").first()).toHaveCSS(
+    "background-color",
+    "rgb(32, 40, 34)",
+  );
+  await expect(page.locator(".field input").first()).toHaveCSS(
+    "color",
+    "rgb(232, 236, 227)",
+  );
+  await page.screenshot({ path: "../output/react-dark-settings.png" });
+  await page.getByRole("button", { name: /Source library/ }).click();
+  await expect(
+    page.getByRole("heading", { name: "Source library." }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Add source", exact: true }).click();
+  await expect(page.getByRole("dialog")).toHaveCSS(
+    "background-color",
+    "rgb(32, 40, 34)",
+  );
+  await page.screenshot({ path: "../output/react-dark-import.png" });
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Chat", exact: true }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(
+    page.getByRole("button", { name: "Switch to light mode" }),
+  ).toBeInViewport();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBeTruthy();
+  await page.screenshot({ path: "../output/react-dark-mobile.png" });
+  expect(errors).toEqual([]);
+});
+
+test("theme switching still works when browser storage is unavailable", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Storage.prototype.getItem = () => {
+      throw new DOMException("Storage blocked", "SecurityError");
+    };
+    Storage.prototype.setItem = () => {
+      throw new DOMException("Storage blocked", "SecurityError");
+    };
+  });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.getByRole("button", { name: "Switch to light mode" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(
+    page.getByRole("textbox", { name: "Ask DocMind" }),
+  ).toBeVisible();
 });
 
 test("saved conversations rename, search, reopen and delete; panel widths persist", async ({
