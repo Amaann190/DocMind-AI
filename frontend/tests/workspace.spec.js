@@ -170,13 +170,16 @@ test("live upload, grounded answer, export and source removal", async ({
   test.setTimeout(300000);
   await page.goto("/");
   await page.getByRole("button", { name: "Add your first source" }).click();
-  await page.locator("input[type=file]").setInputFiles({
-    name: "demo-brief.txt",
-    mimeType: "text/plain",
-    buffer: Buffer.from(
-      "Aurora project brief. The approved budget is $24,000. The launch date is November 12, 2026. Maya Chen leads the design team.",
-    ),
-  });
+  await page
+    .getByRole("dialog")
+    .locator("input[type=file]")
+    .setInputFiles({
+      name: "demo-brief.txt",
+      mimeType: "text/plain",
+      buffer: Buffer.from(
+        "Aurora project brief. The approved budget is $24,000. The launch date is November 12, 2026. Maya Chen leads the design team.",
+      ),
+    });
   await page.getByRole("button", { name: "Add to workspace" }).click();
   await expect(
     page.getByRole("heading", { name: "Your knowledge is ready." }),
@@ -199,6 +202,46 @@ test("live upload, grounded answer, export and source removal", async ({
   expect((await download).suggestedFilename()).toBe(
     "DocMind-conversation.docx",
   );
+  await page
+    .getByRole("button", { name: "Add source", exact: true })
+    .first()
+    .click();
+  await page
+    .getByRole("dialog")
+    .locator("input[type=file]")
+    .setInputFiles({
+      name: "second.txt",
+      mimeType: "text/plain",
+      buffer: Buffer.from("The second project is named Meridian."),
+    });
+  await page.getByRole("button", { name: "Add to workspace" }).click();
+  const sourceList = page.locator(".source-list");
+  await expect(sourceList.getByRole("button")).toHaveCount(2, {
+    timeout: 60000,
+  });
+  await sourceList.getByRole("button", { name: /second.txt/ }).click();
+  await page
+    .getByRole("button", { name: "Reindex source", exact: true })
+    .click();
+  await expect(page.getByRole("button", { name: "Replace file" })).toBeEnabled({
+    timeout: 60000,
+  });
+  await page.getByLabel("Replacement file").setInputFiles({
+    name: "updated.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("The updated project is named Solstice."),
+  });
+  await expect(
+    page.getByRole("dialog").getByRole("heading", { name: "updated.txt" }),
+  ).toBeVisible({ timeout: 60000 });
+  await page
+    .getByRole("button", { name: "Remove source", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Confirm removal" }).click();
+  await expect(sourceList.getByRole("button")).toHaveCount(1, {
+    timeout: 60000,
+  });
+  await expect(sourceList).toContainText("demo-brief.txt");
   await page.getByRole("button", { name: "Remove all sources" }).click();
   await page.getByRole("button", { name: "Confirm removal" }).click();
   await expect(
@@ -221,6 +264,7 @@ test("streamed answer, source preview and export controls", async ({
           number: 1,
           name: "Project brief.txt",
           text: "Launch: November 12, 2026.",
+          page: "7",
         },
       ],
     };
@@ -254,13 +298,120 @@ test("streamed answer, source preview and export controls", async ({
   await expect(
     page.getByText("The launch is November 12, 2026 [1].", { exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "1 Project brief.txt" }).click();
+  await page.getByRole("button", { name: /1 Project brief.txt/ }).click();
   await expect(page.getByRole("dialog")).toContainText(
     "Launch: November 12, 2026.",
   );
+  await expect(page.getByRole("dialog").locator("mark")).toHaveText(
+    "Launch: November 12, 2026.",
+  );
+  await expect(page.getByRole("dialog")).toContainText("Page 7");
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("button", { name: "Export", exact: true }),
   ).toBeEnabled();
   await page.screenshot({ path: "../output/react-chat.png", fullPage: true });
+});
+
+test("saved conversations rename, search, reopen and delete; panel widths persist", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Rename New conversation", exact: true })
+    .click();
+  await page.getByLabel("Conversation name").fill("Research notes");
+  await page.getByRole("button", { name: "Save name", exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await page
+    .getByRole("button", { name: /New conversation/ })
+    .first()
+    .click();
+  await expect(page.locator(".conversation-row")).toHaveCount(2);
+  await page
+    .getByRole("textbox", { name: "Search conversations" })
+    .fill("Research");
+  await expect(page.locator(".conversation-row")).toHaveCount(1);
+  await page
+    .getByRole("button", { name: "Research notes", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Research notes", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Research notes", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  const left = page.getByRole("separator", { name: "Resize navigation panel" });
+  const right = page.getByRole("separator", { name: "Resize sources panel" });
+  await left.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(left).toHaveAttribute("aria-valuenow", "254");
+  const handle = await right.boundingBox();
+  await page.mouse.move(handle.x + 3, handle.y + 150);
+  await page.mouse.down();
+  await page.mouse.move(handle.x - 47, handle.y + 150);
+  await page.mouse.up();
+  await expect(right).toHaveAttribute("aria-valuenow", "324");
+  await page.reload();
+  await expect(left).toHaveAttribute("aria-valuenow", "254");
+  await expect(right).toHaveAttribute("aria-valuenow", "324");
+  await page
+    .getByRole("button", { name: "Delete Research notes", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Confirm deletion" }).click();
+  await expect(
+    page.getByRole("button", { name: "Research notes", exact: true }),
+  ).toHaveCount(0);
+});
+
+test("stop and regenerate controls preserve a single conversation turn", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(
+    page.getByRole("textbox", { name: "Ask DocMind" }),
+  ).toBeVisible();
+  const initial = await page.request.get("/api/state").then((r) => r.json());
+  let finish;
+  const stopped = new Promise((resolve) => {
+    finish = resolve;
+  });
+  let count = 0;
+  await page.route("**/api/chat", async (route) => {
+    const request = route.request().postDataJSON();
+    if (count++ === 0) await stopped;
+    else expect(request.regenerate).toBe(true);
+    const message = {
+      role: "assistant",
+      content: count === 1 ? "Partial answer" : "Regenerated answer",
+      stopped: count === 1,
+      sources: [],
+    };
+    await page.route("**/api/state", (r) =>
+      r.fulfill({
+        json: {
+          ...initial,
+          messages: [{ role: "user", content: "Explain this" }, message],
+        },
+      }),
+    );
+    await route.fulfill({
+      contentType: "application/x-ndjson",
+      body: JSON.stringify({ type: "done", message }) + "\n",
+    });
+  });
+  await page.route("**/api/chat/stop", async (route) => {
+    await route.fulfill({ json: { stopping: true } });
+    finish();
+  });
+  await page.getByRole("textbox", { name: "Ask DocMind" }).fill("Explain this");
+  await page.getByRole("button", { name: "Send message" }).click();
+  await page.getByRole("button", { name: "Stop generating" }).click();
+  await expect(page.getByText("Stopped · Partial answer saved")).toBeVisible();
+  await page.getByRole("button", { name: "Regenerate answer" }).click();
+  await expect(
+    page.getByText("Regenerated answer", { exact: true }),
+  ).toBeVisible();
+  await expect(page.locator("article.message.user")).toHaveCount(1);
 });

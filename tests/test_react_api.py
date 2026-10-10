@@ -2,6 +2,9 @@
 import importlib
 import json
 import unittest
+import tempfile
+import threading
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
@@ -16,6 +19,11 @@ HEADERS = {"X-DocMind-Client": "react"}
 
 class ReactApiTests(unittest.TestCase):
     def setUp(self):
+        self.storage = tempfile.TemporaryDirectory()
+        self.addCleanup(self.storage.cleanup)
+        self.history_path = patch.object(api.history, "DB_PATH", Path(self.storage.name) / "history.sqlite3")
+        self.history_path.start()
+        self.addCleanup(self.history_path.stop)
         self.client = TestClient(api.app, headers=HEADERS)
         self.client.post("/api/session").raise_for_status()
         self.state = api.sessions[self.client.cookies[api.COOKIE]]
@@ -114,6 +122,137 @@ class ReactApiTests(unittest.TestCase):
             self.assertEqual(self.client.delete("/api/session").status_code, 502)
         self.assertEqual(self.state["r2r_document_ids"], ["owned"])
         self.assertTrue(self.state["r2r_ingestion_failed"])
+
+    def test_saved_conversations_rename_search_reopen_restart_and_owner_isolation(self):
+        with patch.object(api.ollama, "chat", return_value=iter(["Unique answer CEDAR-83"])):
+            self.client.post("/api/chat", json={"text": "Remember this"}).raise_for_status()
+        first = self.client.get("/api/state").json()["conversation_id"]
+        self.client.put(f"/api/conversations/{first}", json={"title": "Research notes"}).raise_for_status()
+        fresh = self.client.post("/api/conversations").json()
+        self.assertEqual(fresh["messages"], [])
+        self.assertEqual(len(fresh["conversations"]), 2)
+        self.assertEqual(self.client.get("/api/conversations", params={"q": "CEDAR-83"}).json()[0]["id"], first)
+        restored = self.client.post(f"/api/conversations/{first}/open").json()
+        self.assertEqual(restored["messages"][-1]["content"], "Unique answer CEDAR-83")
+        token = self.client.cookies[api.COOKIE]
+        api.sessions.pop(token)
+        restarted = self.client.post("/api/session").json()
+        self.state = api.sessions[token]
+        self.assertEqual(restarted["title"], "Research notes")
+        self.assertEqual(restarted["messages"], restored["messages"])
+        self.assertEqual(self.state["chat_history_start"], 0)
+        second = TestClient(api.app, headers=HEADERS)
+        self.clients.append(second)
+        second.post("/api/session")
+        self.assertEqual(second.post(f"/api/conversations/{first}/open").status_code, 404)
+        self.assertEqual(second.delete(f"/api/conversations/{first}").status_code, 404)
+        self.assertEqual(second.get("/api/conversations", params={"q": "CEDAR"}).json(), [])
+        self.client.delete(f"/api/conversations/{first}").raise_for_status()
+        self.assertEqual(self.client.get("/api/conversations", params={"q": "CEDAR"}).json(), [])
+        self.client.delete("/api/session").raise_for_status()
+        self.assertEqual(len(self.client.get("/api/conversations").json()), 1)
+
+    def test_individual_sources_add_retry_replace_failure_and_remove(self):
+        with patch.object(api.indexer, "setup_embedding_model", side_effect=self.embedding), \
+                patch.object(api.ollama, "create_llm", return_value=MockLLM()):
+            def upload(name, data):
+                return self.client.post("/api/upload", files=[("files", (name, data, "text/plain"))]).json()
+            first = upload("first.txt", b"First document with the approval code CEDAR.")["sources"][0]
+            added = upload("second.txt", b"Second document is about the ocean.")
+            self.assertEqual(len(added["sources"]), 2)
+            first_id = first["id"]
+            self.client.post(f"/api/sources/{first_id}/retry").raise_for_status()
+            original_engine = self.state["query_engine"]
+            with patch.object(api.indexer, "create_query_engine", side_effect=RuntimeError("Embedding offline")):
+                response = self.client.put(f"/api/sources/{first_id}", files=[("files", ("replacement.txt", b"Replacement document", "text/plain"))])
+            self.assertEqual(response.status_code, 400)
+            self.assertIs(self.state["query_engine"], original_engine)
+            self.assertEqual(next(s for s in self.state["sources"] if s["id"] == first_id)["name"], "first.txt")
+            replaced = self.client.put(f"/api/sources/{first_id}", files=[("files", ("replacement.txt", b"Replacement document", "text/plain"))]).json()
+            self.assertEqual({s["name"] for s in replaced["sources"]}, {"replacement.txt", "second.txt"})
+            failed = upload("empty.txt", b"")
+            empty = next(s for s in failed["sources"] if s["status"] == "error")
+            self.assertEqual(self.client.post(f"/api/sources/{empty['id']}/retry").status_code, 400)
+            repaired = self.client.put(f"/api/sources/{empty['id']}", files=[("files", ("fixed.txt", b"A readable document", "text/plain"))]).json()
+            self.assertTrue(all(s["status"] == "ready" for s in repaired["sources"]))
+            removed = self.client.delete(f"/api/sources/{first_id}").json()
+            self.assertEqual(len(removed["sources"]), 2)
+            self.assertTrue(removed["has_index"])
+            self.assertNotIn(first_id, self.state["source_inputs"])
+            self.assertEqual(self.client.delete("/api/sources/not-owned").status_code, 404)
+
+    def test_stop_saves_partial_answer_and_regenerate_replaces_one_turn(self):
+        started, release, closed = threading.Event(), threading.Event(), threading.Event()
+        def chunks(*args):
+            try:
+                yield "Partial"
+                started.set()
+                release.wait(5)
+                yield " unwanted"
+            finally:
+                closed.set()
+        results = []
+        with patch.object(api.ollama, "chat", side_effect=chunks):
+            thread = threading.Thread(target=lambda: results.append(self.client.post("/api/chat", json={"text": "Hello", "without_documents": True})))
+            thread.start()
+            try:
+                self.assertTrue(started.wait(5))
+                self.client.post("/api/chat/stop").raise_for_status()
+                self.assertEqual(self.client.post("/api/conversations").status_code, 409)
+            finally:
+                release.set()
+                thread.join(5)
+        self.assertFalse(thread.is_alive())
+        self.assertTrue(closed.is_set())
+        stopped = self.client.get("/api/state").json()["messages"][-1]
+        self.assertTrue(stopped["stopped"])
+        self.assertEqual(stopped["content"], "Partial")
+        with patch.object(api.ollama, "chat", return_value=iter(["Complete answer"])):
+            self.client.post("/api/chat", json={"text": "ignored", "regenerate": True}).raise_for_status()
+        messages = self.client.get("/api/state").json()["messages"]
+        self.assertEqual(len(messages), 2)
+        self.assertEqual(messages[0]["content"], "Hello")
+        self.assertTrue(messages[0]["without_documents"])
+        self.assertEqual(messages[1]["content"], "Complete answer")
+
+    def test_citations_keep_reader_page_metadata(self):
+        from llama_index.core.schema import Document
+        with patch.object(api.indexer, "setup_embedding_model", side_effect=self.embedding), \
+                patch.object(api.ollama, "create_llm", return_value=MockLLM()):
+            with api.operation(self.state):
+                docs = api.tag_documents([Document(text="The approval code is ORBIT-7429.", metadata={"file_name": "report.pdf", "page_label": "7"})], "page-source", "file")
+                api.commit_documents(self.state, docs)
+        llm = Mock()
+        llm.stream_chat.return_value = iter([SimpleNamespace(delta="ORBIT-7429 [1]")])
+        with patch.object(api.ollama, "create_llm", return_value=llm):
+            response = self.client.post("/api/chat", json={"text": "What is the approval code?"})
+        source = json.loads(response.text.splitlines()[-1])["message"]["sources"][0]
+        self.assertEqual(source["page"], "7")
+        self.assertEqual(source["source_id"], "page-source")
+
+    def test_remote_individual_controls_preserve_other_ids_on_failure(self):
+        self.state["config"].r2r = True
+        created = []
+        def upload(paths, ids):
+            document_id = f"owned-{len(created)}"
+            created.append(document_id)
+            ids.append(document_id)
+            return ids
+        with patch.object(api.R2RClient, "upload_documents", side_effect=upload), \
+                patch.object(api.R2RClient, "delete_documents", return_value=[]) as delete:
+            for name in ("one.txt", "two.txt"):
+                self.client.post("/api/upload", files=[("files", (name, b"Remote text", "text/plain"))]).raise_for_status()
+            first = self.state["sources"][0]
+            self.assertEqual(len(self.state["r2r_document_ids"]), 2)
+            delete.side_effect = [[first["remote_id"]], []]
+            response = self.client.put(f"/api/sources/{first['id']}", files=[("files", ("new.txt", b"New text", "text/plain"))])
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(self.state["sources"][0], first)
+            self.assertEqual(self.state["r2r_document_ids"], ["owned-0", "owned-1"])
+            delete.side_effect = None
+            self.client.delete(f"/api/sources/{first['id']}").raise_for_status()
+            self.assertEqual(self.state["r2r_document_ids"], ["owned-1"])
+            self.assertEqual(self.state["sources"][0]["name"], "two.txt")
 
 
 if __name__ == "__main__":

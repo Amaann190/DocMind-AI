@@ -517,8 +517,14 @@ def chat(prompt: str):
 
         recent_messages = ([chat_messages[0]] + history) if system_prompt else history
         stream = llm.stream_chat(recent_messages)
-        for chunk in stream:
-            yield chunk.delta
+        try:
+            for chunk in stream:
+                if st.session_state.get("cancel") is not None and st.session_state["cancel"].is_set():
+                    break
+                yield chunk.delta
+        finally:
+            if hasattr(stream, "close"):
+                stream.close()
     except Exception as err:
         logs.log.error(f"Ollama chat stream error: {err}")
         if _active_backend() == "OpenAI":
@@ -593,7 +599,10 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
             sources.append((file_name, node_score.score))
         st.session_state["last_doc_sources"] = sources
         st.session_state["last_doc_passages"] = [
-            {"name": name, "text": node.node.get_content(), "number": i}
+            {"name": name, "text": node.node.get_content(), "number": i,
+             "source_id": node.node.metadata.get("docmind_source_id"),
+             "page": next((node.node.metadata[key] for key in ("page_label", "page_number", "page")
+                           if node.node.metadata.get(key) is not None), None)}
             for i, ((name, _score), node) in enumerate(zip(sources, nodes), 1)
         ]
 
@@ -629,10 +638,16 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
         )
         stream = llm.stream_chat(messages)
         answer_parts = []
-        for chunk in stream:
-            delta = chunk.delta or ""
-            answer_parts.append(delta)
-            yield delta
+        try:
+            for chunk in stream:
+                if st.session_state.get("cancel") is not None and st.session_state["cancel"].is_set():
+                    break
+                delta = chunk.delta or ""
+                answer_parts.append(delta)
+                yield delta
+        finally:
+            if hasattr(stream, "close"):
+                stream.close()
         citations = {int(value) for value in re.findall(r"\[(\d+)\]", "".join(answer_parts))}
         if any(value < 1 or value > len(sources) for value in citations):
             yield "\n\n⚠️ This answer contains an invalid source reference. Verify it against the source documents."

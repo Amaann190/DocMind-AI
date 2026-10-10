@@ -5,6 +5,10 @@ Python API. The original Streamlit checkout and its public `main` branch are
 preserved. Start this edition with **`./run-react.ps1`**, then open
 **http://127.0.0.1:8765**.
 
+The React workspace includes saved, searchable conversations; individual source
+retry/replacement/removal; stop and regenerate controls; highlighted citation
+passages with available page labels; and collapsible, resizable desktop panels.
+
 See **[React setup, architecture and verification](docs/react-workspace.md)** for
 installation and development commands. The reference documentation below describes
 the retained Streamlit edition; its `run.ps1` launcher still starts that UI.

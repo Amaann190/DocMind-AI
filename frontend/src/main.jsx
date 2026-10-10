@@ -43,6 +43,9 @@ import {
   CheckCheck,
   FolderOpen,
   Zap,
+  Pencil,
+  Square,
+  Replace,
 } from "lucide-react";
 import "./style.css";
 
@@ -137,6 +140,133 @@ function Modal({ title, subtitle, close, children, wide = false }) {
   );
 }
 
+function ResizeHandle({ side, value, change }) {
+  const start = useRef(null);
+  const min = side === "left" ? 220 : 240;
+  const max = side === "left" ? 400 : 440;
+  function resize(next) {
+    change(
+      Math.max(
+        min,
+        Math.min(
+          max,
+          window.innerWidth * (side === "left" ? 0.32 : 0.36),
+          next,
+        ),
+      ),
+    );
+  }
+  return (
+    <div
+      className={`resize-handle ${side}`}
+      role="separator"
+      tabIndex={0}
+      aria-label={`Resize ${side === "left" ? "navigation" : "sources"} panel`}
+      aria-orientation="vertical"
+      aria-valuemin={min}
+      aria-valuemax={max}
+      aria-valuenow={Math.round(value)}
+      onPointerDown={(e) => {
+        start.current = { x: e.clientX, value };
+        e.currentTarget.setPointerCapture(e.pointerId);
+      }}
+      onPointerMove={(e) => {
+        if (start.current)
+          resize(
+            start.current.value +
+              (e.clientX - start.current.x) * (side === "left" ? 1 : -1),
+          );
+      }}
+      onPointerUp={() => {
+        start.current = null;
+      }}
+      onLostPointerCapture={() => {
+        start.current = null;
+      }}
+      onKeyDown={(e) => {
+        if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) {
+          e.preventDefault();
+          resize(
+            e.key === "Home"
+              ? min
+              : e.key === "End"
+                ? max
+                : value +
+                  (e.key === "ArrowRight" ? 10 : -10) *
+                    (side === "left" ? 1 : -1),
+          );
+        }
+      }}
+    />
+  );
+}
+
+function RenameConversation({ conversation, close, save, disabled }) {
+  const [title, setTitle] = useState(conversation.title);
+  return (
+    <Modal title="Rename conversation" close={close}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          save(title.trim());
+        }}
+      >
+        <label className="rename-label">
+          Conversation name
+          <input
+            autoFocus
+            value={title}
+            maxLength={100}
+            required
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </label>
+        <div className="modal-footer">
+          <button className="primary" disabled={disabled || !title.trim()}>
+            Save name
+          </button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+function PassagePreview({ source, sources }) {
+  const document = sources.find((s) => s.id === source.source_id);
+  const text = document?.preview || "";
+  const position = source.text ? text.indexOf(source.text) : -1;
+  return (
+    <>
+      {source.number && (
+        <p className="citation-explanation">
+          Highlighted text was retrieved for this answer.
+          {source.page != null
+            ? ` Page ${source.page}.`
+            : " Page information is not available for this passage."}
+        </p>
+      )}
+      <div className="source-preview">
+        {source.number ? (
+          position >= 0 ? (
+            <>
+              {text.slice(Math.max(0, position - 350), position)}
+              <mark>{source.text}</mark>
+              {text.slice(
+                position + source.text.length,
+                position + source.text.length + 350,
+              )}
+            </>
+          ) : (
+            <mark>{source.text}</mark>
+          )
+        ) : (
+          source.preview || source.error || "No text preview available."
+        )}
+      </div>
+    </>
+  );
+}
+
 function App() {
   const [workspace, setWorkspace] = useState(null),
     [page, setPage] = useState("chat");
@@ -147,6 +277,24 @@ function App() {
     [preview, setPreview] = useState(null),
     [showSources, setShowSources] = useState(() => window.innerWidth > 980);
   const [showNavigation, setShowNavigation] = useState(true);
+  const [chatSearch, setChatSearch] = useState("");
+  const [chatResults, setChatResults] = useState(null);
+  const [editingChat, setEditingChat] = useState(null);
+  const [deletingChat, setDeletingChat] = useState(null);
+  const [removingSource, setRemovingSource] = useState(null);
+  const [stopping, setStopping] = useState(false);
+  const [panelWidths, setPanelWidths] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("docmind-panel-widths"));
+      return {
+        left: Math.max(220, Math.min(400, Number(saved?.left) || 244)),
+        right: Math.max(240, Math.min(440, Number(saved?.right) || 274)),
+      };
+    } catch {
+      return { left: 244, right: 274 };
+    }
+  });
+  const replacement = useRef();
   const [mobile, setMobile] = useState(() => window.innerWidth <= 700);
   const [online, setOnline] = useState(null),
     [question, setQuestion] = useState(""),
@@ -157,6 +305,33 @@ function App() {
   const bottom = useRef(),
     input = useRef(),
     alive = useRef(true);
+  useEffect(() => {
+    try {
+      localStorage.setItem("docmind-panel-widths", JSON.stringify(panelWidths));
+    } catch {}
+  }, [panelWidths]);
+  useEffect(() => {
+    if (!chatSearch.trim()) {
+      setChatResults(null);
+      return;
+    }
+    let active = true;
+    const timer = setTimeout(
+      () =>
+        api("/conversations?q=" + encodeURIComponent(chatSearch))
+          .then((rows) => {
+            if (active) setChatResults(rows);
+          })
+          .catch((e) => {
+            if (active) setError(e.message);
+          }),
+      200,
+    );
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [chatSearch, workspace?.conversations]);
   useEffect(() => {
     const navigation = window.matchMedia("(max-width: 700px)");
     const sources = window.matchMedia("(max-width: 980px)");
@@ -247,17 +422,18 @@ function App() {
       setBusy(false);
     }
   }
-  async function send(text = question, without = false) {
+  async function send(text = question, without = false, regenerate = false) {
     text = text.trim();
     if (!text || busy || streaming || workspace?.busy) return;
     setQuestion("");
     setError("");
     setStreaming(true);
+    setStopping(false);
     setPage("chat");
     setWorkspace((old) => ({
       ...old,
       messages: [
-        ...old.messages,
+        ...(regenerate ? old.messages.slice(0, -2) : old.messages),
         { role: "user", content: text },
         { role: "assistant", content: "", sources: [] },
       ],
@@ -269,7 +445,7 @@ function App() {
           "Content-Type": "application/json",
           "X-DocMind-Client": "react",
         },
-        body: JSON.stringify({ text, without_documents: without }),
+        body: JSON.stringify({ text, without_documents: without, regenerate }),
       });
       if (!response.ok) {
         const err = await response.json();
@@ -281,6 +457,10 @@ function App() {
       const consume = (line) => {
         if (!line.trim()) return;
         const event = JSON.parse(line);
+        if (event.type === "warning") {
+          setError(event.text);
+          return;
+        }
         setWorkspace((old) => {
           const messages = [...old.messages];
           const last = messages.length - 1;
@@ -307,6 +487,7 @@ function App() {
       setError(e.message);
     } finally {
       setStreaming(false);
+      setStopping(false);
       try {
         setWorkspace(await api("/state"));
       } catch {}
@@ -325,6 +506,7 @@ function App() {
   const sources = workspace?.sources || [],
     messages = workspace?.messages || [];
   const settings = workspace?.settings;
+  const conversations = chatResults ?? workspace?.conversations ?? [];
   const navigationVisible = mobile ? mobileNav : showNavigation;
   const toggleNavigation = () =>
     mobile ? setMobileNav(!mobileNav) : setShowNavigation(!showNavigation);
@@ -345,6 +527,10 @@ function App() {
   return (
     <div
       className={"app-shell " + (!navigationVisible ? "navigation-hidden" : "")}
+      style={{
+        "--navigation-width": `${panelWidths.left}px`,
+        "--sources-width": `${panelWidths.right}px`,
+      }}
     >
       <aside
         id="navigation-panel"
@@ -374,8 +560,13 @@ function App() {
           </div>
           <button
             className="new-chat"
-            disabled={disabled || !messages.length}
-            onClick={() => setModal("new-chat")}
+            disabled={disabled}
+            onClick={() =>
+              action("/conversations", { method: "POST" }, () => {
+                setChatSearch("");
+                nav("chat");
+              })
+            }
           >
             <Plus size={18} />
             New conversation<span>↗</span>
@@ -405,14 +596,70 @@ function App() {
               Settings
             </button>
           </nav>
-          <div className="nav-label recent-label">THIS CONVERSATION</div>
-          <button className="recent-chat" onClick={() => nav("chat")}>
-            <span className="tiny-dot" />
-            <span>
-              {messages.find((m) => m.role === "user")?.content ||
-                "A fresh perspective"}
-            </span>
-          </button>
+          <div className="nav-label recent-label">SAVED CONVERSATIONS</div>
+          <label className="chat-search">
+            <Search size={14} />
+            <input
+              aria-label="Search conversations"
+              placeholder="Search chats…"
+              value={chatSearch}
+              onChange={(e) => setChatSearch(e.target.value)}
+            />
+          </label>
+          <div className="conversation-list">
+            {conversations.map((chat) => (
+              <div
+                key={chat.id}
+                className={
+                  "conversation-row " +
+                  (chat.id === workspace?.conversation_id ? "selected" : "")
+                }
+              >
+                <button
+                  className="recent-chat"
+                  disabled={disabled}
+                  aria-current={
+                    chat.id === workspace?.conversation_id ? "page" : undefined
+                  }
+                  onClick={() =>
+                    action(
+                      `/conversations/${chat.id}/open`,
+                      { method: "POST" },
+                      () => {
+                        setQuestion("");
+                        nav("chat");
+                      },
+                    )
+                  }
+                  title={chat.title}
+                >
+                  <MessageSquare size={13} />
+                  <span>{chat.title}</span>
+                </button>
+                <IconButton
+                  title={`Rename ${chat.title}`}
+                  disabled={disabled}
+                  onClick={() => setEditingChat(chat)}
+                >
+                  <Pencil size={13} />
+                </IconButton>
+                <IconButton
+                  title={`Delete ${chat.title}`}
+                  disabled={disabled}
+                  onClick={() => setDeletingChat(chat)}
+                >
+                  <Trash2 size={13} />
+                </IconButton>
+              </div>
+            ))}
+            {chatSearch && !conversations.length && (
+              <p className="history-note">No matching conversations.</p>
+            )}
+          </div>
+          <p className="history-note">
+            Chats save on this device. Conversations share the current source
+            library.
+          </p>
           <div className="sidebar-bottom">
             <div className="local-card">
               <span className="local-card-icon">
@@ -431,10 +678,15 @@ function App() {
         <button className="profile" onClick={() => nav("settings")}>
           <span className="profile-avatar">A</span>
           <div>
-            My workspace<small>On this device · local session</small>
+            My workspace<small>On this device · saved chats</small>
           </div>
           <Settings2 size={16} />
         </button>
+        <ResizeHandle
+          side="left"
+          value={panelWidths.left}
+          change={(left) => setPanelWidths((old) => ({ ...old, left }))}
+        />
       </aside>
       <main className="main">
         <header className="topbar">
@@ -692,6 +944,14 @@ function App() {
                                   <span>DOCUMENT ASSISTANT</span>
                                 )}
                               </div>
+                              {message.stopped && (
+                                <p className="response-status">
+                                  Stopped ·{" "}
+                                  {message.content
+                                    ? "Partial answer saved"
+                                    : "No answer generated"}
+                                </p>
+                              )}
                               {message.content ? (
                                 <ReactMarkdown
                                   components={{
@@ -704,13 +964,13 @@ function App() {
                                 >
                                   {message.content}
                                 </ReactMarkdown>
-                              ) : (
+                              ) : !message.stopped ? (
                                 <div className="thinking">
                                   <span />
                                   <span />
                                   <span />
                                 </div>
-                              )}
+                              ) : null}
                               {message.sources?.length > 0 && (
                                 <div className="citation-list">
                                   {message.sources.map((source) => (
@@ -721,6 +981,9 @@ function App() {
                                       <span>{source.number}</span>
                                       <FileText size={12} />
                                       {source.name}
+                                      {source.page != null && (
+                                        <small>p. {source.page}</small>
+                                      )}
                                       <ArrowUpRight size={12} />
                                     </button>
                                   ))}
@@ -749,6 +1012,24 @@ function App() {
                                       <Copy size={14} />
                                     )}
                                   </IconButton>
+                                )}
+                              {message.role === "assistant" &&
+                                i === messages.length - 1 &&
+                                !streaming && (
+                                  <button
+                                    className="text-button regenerate"
+                                    disabled={disabled}
+                                    onClick={() =>
+                                      send(
+                                        messages[i - 1]?.content || "",
+                                        false,
+                                        true,
+                                      )
+                                    }
+                                  >
+                                    <RefreshCw size={14} />
+                                    Regenerate answer
+                                  </button>
                                 )}
                             </div>
                           </article>
@@ -803,18 +1084,39 @@ function App() {
                             <ChevronDown size={12} />
                           </button>
                         </div>
-                        <button
-                          className="send-button"
-                          type="submit"
-                          aria-label="Send message"
-                          disabled={!question.trim() || disabled}
-                        >
-                          {streaming ? (
-                            <LoaderCircle className="spin" size={19} />
-                          ) : (
-                            <ArrowUp size={20} />
-                          )}
-                        </button>
+                        {streaming ? (
+                          <button
+                            type="button"
+                            className="stop-button"
+                            disabled={stopping}
+                            aria-label="Stop generating"
+                            onClick={async () => {
+                              setStopping(true);
+                              try {
+                                await api("/chat/stop", { method: "POST" });
+                              } catch (e) {
+                                setError(e.message);
+                                setStopping(false);
+                              }
+                            }}
+                          >
+                            <Square size={14} fill="currentColor" />
+                            {stopping ? "Stopping…" : "Stop"}
+                          </button>
+                        ) : (
+                          <button
+                            className="send-button"
+                            type="submit"
+                            aria-label="Send message"
+                            disabled={!question.trim() || disabled}
+                          >
+                            {streaming ? (
+                              <LoaderCircle className="spin" size={19} />
+                            ) : (
+                              <ArrowUp size={20} />
+                            )}
+                          </button>
+                        )}
                       </div>
                     </form>
                     <div className="composer-note">
@@ -829,120 +1131,136 @@ function App() {
                   </div>
                 </section>
                 {showSources && (
-                  <aside
-                    id="sources-panel"
-                    aria-label="Sources"
-                    className="source-panel"
-                  >
-                    <div className="source-panel-header">
-                      <div>
-                        <Library size={17} />
-                        <strong>Sources</strong>
-                        <span className="source-count">{sources.length}</span>
-                      </div>
-                      <div className="source-panel-actions">
-                        <IconButton
-                          title="Add source"
-                          disabled={disabled}
-                          onClick={() => setModal("import")}
-                        >
-                          <Plus size={17} />
-                        </IconButton>
-                        <IconButton
-                          title="Close source panel"
-                          onClick={() => setShowSources(false)}
-                        >
-                          <X size={17} />
-                        </IconButton>
-                      </div>
-                    </div>
-                    <p className="panel-description">
-                      The context behind your answers.
-                    </p>
-                    {sources.length ? (
-                      <div className="source-list">
-                        {sources.map((source) => (
-                          <button
-                            key={source.id}
-                            onClick={() => setPreview(source)}
-                          >
-                            <span className={"file-icon " + source.kind}>
-                              {source.kind === "website" ? (
-                                <Globe2 size={18} />
-                              ) : source.kind === "github" ? (
-                                <Github size={18} />
-                              ) : (
-                                <FileText size={18} />
-                              )}
-                            </span>
-                            <div>
-                              <strong>{source.name}</strong>
-                              <small>
-                                {source.kind === "sample"
-                                  ? "Sample document"
-                                  : source.kind === "r2r"
-                                    ? "Remote index"
-                                    : `${Math.ceil(source.characters / 1000)}k characters`}{" "}
-                                · Ready
-                              </small>
-                            </div>
-                            <Check size={13} />
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="source-empty">
-                        <div className="empty-stack">
-                          <FileText size={26} />
+                  <>
+                    <ResizeHandle
+                      side="right"
+                      value={panelWidths.right}
+                      change={(right) =>
+                        setPanelWidths((old) => ({ ...old, right }))
+                      }
+                    />
+                    <aside
+                      id="sources-panel"
+                      aria-label="Sources"
+                      className="source-panel"
+                    >
+                      <div className="source-panel-header">
+                        <div>
+                          <Library size={17} />
+                          <strong>Sources</strong>
+                          <span className="source-count">{sources.length}</span>
                         </div>
-                        <h3>A home for your knowledge</h3>
+                        <div className="source-panel-actions">
+                          <IconButton
+                            title="Add source"
+                            disabled={disabled}
+                            onClick={() => setModal("import")}
+                          >
+                            <Plus size={17} />
+                          </IconButton>
+                          <IconButton
+                            title="Close source panel"
+                            onClick={() => setShowSources(false)}
+                          >
+                            <X size={17} />
+                          </IconButton>
+                        </div>
+                      </div>
+                      <p className="panel-description">
+                        The context behind your answers.
+                      </p>
+                      {sources.length ? (
+                        <div className="source-list">
+                          {sources.map((source) => (
+                            <button
+                              key={source.id}
+                              onClick={() => setPreview(source)}
+                            >
+                              <span className={"file-icon " + source.kind}>
+                                {source.kind === "website" ? (
+                                  <Globe2 size={18} />
+                                ) : source.kind === "github" ? (
+                                  <Github size={18} />
+                                ) : (
+                                  <FileText size={18} />
+                                )}
+                              </span>
+                              <div>
+                                <strong>{source.name}</strong>
+                                <small>
+                                  {source.kind === "sample"
+                                    ? "Sample document"
+                                    : source.kind === "r2r"
+                                      ? "Remote index"
+                                      : `${Math.ceil(source.characters / 1000)}k characters`}{" "}
+                                  ·{" "}
+                                  {source.status === "error"
+                                    ? "Needs attention"
+                                    : "Ready"}
+                                </small>
+                              </div>
+                              {source.status === "error" ? (
+                                <AlertCircle size={13} />
+                              ) : (
+                                <Check size={13} />
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="source-empty">
+                          <div className="empty-stack">
+                            <FileText size={26} />
+                          </div>
+                          <h3>A home for your knowledge</h3>
+                          <p>
+                            Your sources will appear here.
+                            <br />
+                            Add something worth exploring.
+                          </p>
+                          <button
+                            className="secondary"
+                            disabled={disabled}
+                            onClick={() => setModal("import")}
+                          >
+                            <Plus size={15} />
+                            Add sources
+                          </button>
+                        </div>
+                      )}
+                      <div className="supported-note">
+                        <span>ROOM FOR EVERY KIND OF IDEA</span>
+                        <div>
+                          <b>PDF</b>
+                          <b>DOCX</b>
+                          <b>TXT</b>
+                          <b>+22</b>
+                        </div>
                         <p>
-                          Your sources will appear here.
+                          Documents, spreadsheets, emails
                           <br />
-                          Add something worth exploring.
+                          and more. Up to 25 MB per file.
                         </p>
+                      </div>
+                      {sources.length > 0 && (
                         <button
-                          className="secondary"
+                          className="text-button remove-sources"
                           disabled={disabled}
-                          onClick={() => setModal("import")}
+                          onClick={() => setModal("remove")}
                         >
-                          <Plus size={15} />
-                          Add sources
+                          <Trash2 size={14} />
+                          Remove all sources
                         </button>
+                      )}
+                      <div className="source-tip">
+                        <Sparkles size={16} />
+                        <p>
+                          <strong>Stay curious.</strong> Try asking the same
+                          question across different sources.
+                        </p>
                       </div>
-                    )}
-                    <div className="supported-note">
-                      <span>ROOM FOR EVERY KIND OF IDEA</span>
-                      <div>
-                        <b>PDF</b>
-                        <b>DOCX</b>
-                        <b>TXT</b>
-                        <b>+22</b>
-                      </div>
-                      <p>
-                        Documents, spreadsheets, emails
-                        <br />
-                        and more. Up to 25 MB per file.
-                      </p>
-                    </div>
-                    {sources.length > 0 && (
-                      <button
-                        className="text-button remove-sources"
-                        disabled={disabled}
-                        onClick={() => setModal("remove")}
-                      >
-                        <Trash2 size={14} />
-                        Remove all sources
-                      </button>
-                    )}
-                    <div className="source-tip">
-                      <Sparkles size={16} />
-                      <p>
-                        <strong>Stay curious.</strong> Try asking the same
-                        question across different sources.
-                      </p>
-                    </div>
-                  </aside>
+                    </aside>
+                  </>
                 )}
               </div>
             )}
@@ -987,7 +1305,11 @@ function App() {
                           <p>{source.preview?.slice(0, 130)}</p>
                           <footer>
                             <span>{source.kind}</span>
-                            <span className="ready-dot">Ready</span>
+                            <span className="ready-dot">
+                              {source.status === "error"
+                                ? "Needs attention"
+                                : "Ready"}
+                            </span>
                           </footer>
                         </button>
                       ))}
@@ -1063,21 +1385,15 @@ function App() {
           }}
         />
       )}
-      {["remove", "reset", "new-chat"].includes(modal) && (
+      {["remove", "reset"].includes(modal) && (
         <Modal
           title={
-            modal === "reset"
-              ? "Reset this workspace?"
-              : modal === "remove"
-                ? "Remove all sources?"
-                : "Start a fresh conversation?"
+            modal === "reset" ? "Reset this workspace?" : "Remove all sources?"
           }
           subtitle={
             modal === "reset"
-              ? "This clears documents, conversation, credentials and settings."
-              : modal === "remove"
-                ? "Future answers will no longer use these sources or the earlier document conversation. Remote R2R copies will be deleted."
-                : "Your sources stay ready. The current conversation will be cleared; export it first if you need a copy."
+              ? "This deletes all saved conversations, documents, credentials and settings for this browser."
+              : "Future answers will no longer use these sources or the earlier document conversation. Remote R2R copies will be deleted."
           }
           close={() => setModal(null)}
         >
@@ -1091,11 +1407,7 @@ function App() {
                 const type = modal;
                 setModal(null);
                 action(
-                  type === "reset"
-                    ? "/session"
-                    : type === "remove"
-                      ? "/sources"
-                      : "/chat",
+                  type === "reset" ? "/session" : "/sources",
                   { method: "DELETE" },
                   (result) => {
                     if (type === "reset") storePreferences(result.settings);
@@ -1104,12 +1416,7 @@ function App() {
                 );
               }}
             >
-              Confirm{" "}
-              {modal === "reset"
-                ? "reset"
-                : modal === "remove"
-                  ? "removal"
-                  : "new chat"}
+              Confirm {modal === "reset" ? "reset" : "removal"}
             </button>
           </div>
         </Modal>
@@ -1119,14 +1426,153 @@ function App() {
           title={preview.name}
           subtitle={
             preview.number
-              ? `Source ${preview.number} · Retrieved supporting passage`
+              ? `Source ${preview.number} · Retrieved supporting passage${preview.page != null ? ` · Page ${preview.page}` : ""}`
               : "Extracted text preview · first 16,000 characters"
           }
           close={() => setPreview(null)}
           wide
         >
-          <div className="source-preview">
-            {preview.text || preview.preview || "No text preview available."}
+          <PassagePreview source={preview} sources={sources} />
+          {error && (
+            <p role="alert" className="source-error">
+              {error}
+            </p>
+          )}
+          {!preview.number && (
+            <>
+              {preview.error && (
+                <p role="alert" className="source-error">
+                  {preview.error}
+                </p>
+              )}
+              <div className="modal-footer source-controls">
+                <button
+                  className="secondary"
+                  disabled={disabled}
+                  onClick={async () => {
+                    const result = await action(
+                      `/sources/${preview.id}/retry`,
+                      { method: "POST" },
+                    );
+                    if (result)
+                      setPreview(
+                        result.sources.find((s) => s.id === preview.id) || null,
+                      );
+                  }}
+                >
+                  <RefreshCw size={15} />
+                  {preview.status === "error"
+                    ? "Retry source"
+                    : "Reindex source"}
+                </button>
+                <button
+                  className="secondary"
+                  disabled={disabled}
+                  onClick={() => replacement.current.click()}
+                >
+                  <Replace size={15} />
+                  Replace file
+                </button>
+                <button
+                  className="danger-button"
+                  disabled={disabled}
+                  onClick={() => {
+                    setRemovingSource(preview);
+                    setPreview(null);
+                  }}
+                >
+                  <Trash2 size={15} />
+                  Remove source
+                </button>
+              </div>
+            </>
+          )}
+        </Modal>
+      )}
+      <input
+        hidden
+        ref={replacement}
+        type="file"
+        aria-label="Replacement file"
+        accept={(workspace?.formats || [])
+          .map((f) => "." + f.replace(/^\./, ""))
+          .join(",")}
+        onChange={async (e) => {
+          const file = e.target.files[0];
+          e.target.value = "";
+          if (!file || !preview) return;
+          if (file.size > 25 * 1024 * 1024) {
+            setError("Choose a replacement under 25 MB.");
+            return;
+          }
+          const form = new FormData();
+          form.append("files", file);
+          const id = preview.id;
+          const result = await action(`/sources/${id}`, {
+            method: "PUT",
+            body: form,
+          });
+          if (result)
+            setPreview(result.sources.find((s) => s.id === id) || null);
+        }}
+      />
+      {editingChat && (
+        <RenameConversation
+          conversation={editingChat}
+          disabled={disabled}
+          close={() => setEditingChat(null)}
+          save={(title) =>
+            action(
+              `/conversations/${editingChat.id}`,
+              { method: "PUT", body: JSON.stringify({ title }) },
+              () => setEditingChat(null),
+            )
+          }
+        />
+      )}
+      {(deletingChat || removingSource) && (
+        <Modal
+          title={
+            deletingChat ? "Delete this conversation?" : "Remove this source?"
+          }
+          subtitle={
+            deletingChat
+              ? `“${deletingChat.title}” will be deleted from saved history.`
+              : `“${removingSource.name}” will be removed. Other sources stay available.`
+          }
+          close={() => {
+            setDeletingChat(null);
+            setRemovingSource(null);
+          }}
+        >
+          <div className="modal-footer">
+            <button
+              className="secondary"
+              onClick={() => {
+                setDeletingChat(null);
+                setRemovingSource(null);
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="danger-button"
+              disabled={disabled}
+              onClick={() =>
+                action(
+                  deletingChat
+                    ? `/conversations/${deletingChat.id}`
+                    : `/sources/${removingSource.id}`,
+                  { method: "DELETE" },
+                  () => {
+                    setDeletingChat(null);
+                    setRemovingSource(null);
+                  },
+                )
+              }
+            >
+              Confirm {deletingChat ? "deletion" : "removal"}
+            </button>
           </div>
         </Modal>
       )}
@@ -1182,7 +1628,8 @@ function ImportModal({ close, disabled, hasSources, formats, submit, sample }) {
       {hasSources && (
         <div className="inline-note">
           <AlertCircle size={15} />
-          Importing replaces the current source collection.
+          New sources are added to your library. Existing documents stay
+          available.
         </div>
       )}
       {tab === "files" ? (
