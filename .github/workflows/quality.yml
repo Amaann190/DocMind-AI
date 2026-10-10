@@ -82,6 +82,8 @@ jobs:
   container-smoke:
     name: Read-only container startup
     runs-on: ubuntu-latest
+    env:
+      DOCMIND_CPUS: '2'
     steps:
       - uses: actions/checkout@v7.0.1
       - name: Build and start local image
