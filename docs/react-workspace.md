@@ -50,6 +50,9 @@ and `nomic-embed-text:latest`. Provider presets do not install models or servers
 - Partial-import warnings, progress, reset, source removal and conversation clearing.
 - Responsive navigation and composer, keyboard-accessible dialogs, reduced-motion
   support and recovery when stored preferences cannot be restored.
+- Both side panels can be hidden and reopened. Navigation content scrolls independently
+  with My workspace pinned below it; the source panel scrolls and becomes a closable
+  drawer on narrow screens. The chat area fits the space remaining below status messages.
 - OpenAI-compatible model presets and optional R2R file upload/query integration.
 
 Each import **replaces** the current source collection. Removing sources clears the

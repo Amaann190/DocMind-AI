@@ -72,6 +72,43 @@ a {
   display: flex;
   flex-direction: column;
   z-index: 20;
+  overflow: hidden;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.sidebar-header .icon-button {
+  color: #acb69d;
+  padding: 5px;
+}
+.sidebar-header .icon-button:hover {
+  background: #3c4234;
+  color: #f2f4e8;
+}
+.sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: #657059 transparent;
+  padding-right: 3px;
+}
+.sidebar-scroll > * {
+  flex-shrink: 0;
+}
+.sidebar.panel-hidden {
+  display: none;
+}
+.navigation-hidden .main {
+  margin-left: 0;
+  width: 100%;
 }
 .brand {
   display: flex;
@@ -288,6 +325,9 @@ nav button.active > svg {
   color: #88977c;
 }
 .profile {
+  flex-shrink: 0;
+  border-top: 1px solid #3b4233;
+  margin-top: 12px;
   display: flex;
   align-items: center;
   text-align: left;
@@ -323,9 +363,14 @@ nav button.active > svg {
 .main {
   margin-left: 244px;
   width: calc(100% - 244px);
-  min-height: 100dvh;
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 .topbar {
+  flex-shrink: 0;
   height: 77px;
   display: flex;
   align-items: center;
@@ -346,7 +391,7 @@ nav button.active > svg {
   color: #53564d;
 }
 .breadcrumb .icon-button {
-  display: none;
+  display: inline-flex;
 }
 .top-actions {
   display: flex;
@@ -447,7 +492,9 @@ nav button.active > svg {
 }
 .chat-layout {
   display: flex;
-  height: calc(100dvh - 77px);
+  flex: 1;
+  min-height: 230px;
+  overflow: hidden;
 }
 .chat-area {
   flex: 1;
@@ -796,6 +843,22 @@ h1 {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #b8bfab transparent;
+}
+.source-panel > * {
+  flex-shrink: 0;
+}
+.source-panel-header {
+  position: sticky;
+  top: -23px;
+  z-index: 1;
+  background: #f1f1eb;
+  padding: 5px 0;
+}
+.source-panel-actions {
+  display: flex;
+  gap: 2px;
 }
 .source-panel-header {
   display: flex;
@@ -1671,7 +1734,14 @@ summary {
 }
 @media (max-width: 980px) {
   .source-panel {
-    display: none;
+    display: flex;
+    position: fixed;
+    right: 0;
+    top: 77px;
+    bottom: 0;
+    width: min(300px, 90vw);
+    z-index: 15;
+    box-shadow: -18px 0 45px #26301f20;
   }
   .welcome {
     max-width: 670px;
@@ -1751,7 +1821,10 @@ summary {
     font-size: 10px;
   }
   .chat-layout {
-    height: calc(100dvh - 61px);
+    min-height: 230px;
+  }
+  .source-panel {
+    top: 61px;
   }
   .chat-toolbar {
     height: 48px;
@@ -1764,7 +1837,7 @@ summary {
     gap: 5px;
   }
   .chat-toolbar .icon-button {
-    display: none;
+    display: inline-flex;
   }
   .welcome {
     padding: 0 23px;

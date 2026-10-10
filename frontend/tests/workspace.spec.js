@@ -1,5 +1,91 @@
 import { test, expect } from "@playwright/test";
 
+test("panels close and reopen while workspace stays reachable in short windows", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 480 });
+  await page.goto("/");
+  const navigation = page.getByRole("complementary", {
+    name: "Workspace navigation",
+  });
+  const sources = page.getByRole("complementary", {
+    name: "Sources",
+    exact: true,
+  });
+  const profile = page.getByRole("button", { name: /My workspace/ });
+  await expect(profile).toBeInViewport();
+  const box = await profile.boundingBox();
+  expect(box.y + box.height).toBeLessThanOrEqual(480);
+  await profile.click();
+  await expect(
+    page.getByRole("heading", { name: "A workspace that fits." }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Chat", exact: true }).click();
+  expect(
+    await page
+      .locator(".sidebar-scroll")
+      .evaluate((el) => el.scrollHeight > el.clientHeight),
+  ).toBeTruthy();
+  await page.locator(".sidebar-scroll").hover();
+  await page.mouse.wheel(0, 700);
+  await expect
+    .poll(() => page.locator(".sidebar-scroll").evaluate((el) => el.scrollTop))
+    .toBeGreaterThan(0);
+  await expect(profile).toBeInViewport();
+  await page
+    .getByRole("button", { name: "Hide navigation", exact: true })
+    .click();
+  await expect(navigation).toBeHidden();
+  await expect
+    .poll(() =>
+      page.locator("main").evaluate((el) => el.getBoundingClientRect().x),
+    )
+    .toBe(0);
+  await page.getByRole("button", { name: "Toggle navigation" }).click();
+  await expect(navigation).toBeVisible();
+  await page.getByRole("button", { name: "Close source panel" }).click();
+  await expect(sources).toBeHidden();
+  await page.getByRole("button", { name: "Show source panel" }).click();
+  await expect(sources).toBeVisible();
+  expect(
+    await sources.evaluate((el) => el.scrollHeight > el.clientHeight),
+  ).toBeTruthy();
+  await sources.hover();
+  await page.mouse.wheel(0, 700);
+  await expect
+    .poll(() => sources.evaluate((el) => el.scrollTop))
+    .toBeGreaterThan(0);
+  await expect(
+    page.getByRole("button", { name: "Close source panel" }),
+  ).toBeInViewport();
+  await expect(
+    page.getByRole("textbox", { name: "Ask DocMind" }),
+  ).toBeInViewport();
+  await page.screenshot({
+    path: "../output/react-panels-short.png",
+    animations: "disabled",
+  });
+
+  await page.setViewportSize({ width: 390, height: 500 });
+  await page.getByRole("button", { name: "Toggle navigation" }).click();
+  await expect(profile).toBeInViewport();
+  await profile.click();
+  await expect(
+    page.getByRole("heading", { name: "A workspace that fits." }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Toggle navigation" }).click();
+  await page.getByRole("button", { name: "Chat", exact: true }).click();
+  await page.getByRole("button", { name: "Show source panel" }).click();
+  await expect(sources).toBeVisible();
+  await page.getByRole("button", { name: "Close source panel" }).click();
+  await expect(sources).toBeHidden();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBeTruthy();
+});
+
 test("workspace, settings persistence, source modal and responsive layout", async ({
   page,
 }) => {
@@ -84,15 +170,13 @@ test("live upload, grounded answer, export and source removal", async ({
   test.setTimeout(300000);
   await page.goto("/");
   await page.getByRole("button", { name: "Add your first source" }).click();
-  await page
-    .locator("input[type=file]")
-    .setInputFiles({
-      name: "demo-brief.txt",
-      mimeType: "text/plain",
-      buffer: Buffer.from(
-        "Aurora project brief. The approved budget is $24,000. The launch date is November 12, 2026. Maya Chen leads the design team.",
-      ),
-    });
+  await page.locator("input[type=file]").setInputFiles({
+    name: "demo-brief.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from(
+      "Aurora project brief. The approved budget is $24,000. The launch date is November 12, 2026. Maya Chen leads the design team.",
+    ),
+  });
   await page.getByRole("button", { name: "Add to workspace" }).click();
   await expect(
     page.getByRole("heading", { name: "Your knowledge is ready." }),

@@ -29,13 +29,14 @@ import {
   Trash2,
   PanelRightClose,
   PanelRightOpen,
+  PanelLeftClose,
+  PanelLeftOpen,
   LoaderCircle,
   RefreshCw,
   ShieldCheck,
   Search,
   Paperclip,
   Cpu,
-  Menu,
   AlertCircle,
   BookOpen,
   Copy,
@@ -144,7 +145,9 @@ function App() {
     [streaming, setStreaming] = useState(false);
   const [modal, setModal] = useState(null),
     [preview, setPreview] = useState(null),
-    [showSources, setShowSources] = useState(true);
+    [showSources, setShowSources] = useState(() => window.innerWidth > 980);
+  const [showNavigation, setShowNavigation] = useState(true);
+  const [mobile, setMobile] = useState(() => window.innerWidth <= 700);
   const [online, setOnline] = useState(null),
     [question, setQuestion] = useState(""),
     [mobileNav, setMobileNav] = useState(false);
@@ -154,6 +157,21 @@ function App() {
   const bottom = useRef(),
     input = useRef(),
     alive = useRef(true);
+  useEffect(() => {
+    const navigation = window.matchMedia("(max-width: 700px)");
+    const sources = window.matchMedia("(max-width: 980px)");
+    const updateNavigation = () => {
+      setMobile(navigation.matches);
+      setMobileNav(false);
+    };
+    const updateSources = () => setShowSources(!sources.matches);
+    navigation.addEventListener("change", updateNavigation);
+    sources.addEventListener("change", updateSources);
+    return () => {
+      navigation.removeEventListener("change", updateNavigation);
+      sources.removeEventListener("change", updateSources);
+    };
+  }, []);
   useEffect(() => {
     alive.current = true;
     (async () => {
@@ -307,6 +325,9 @@ function App() {
   const sources = workspace?.sources || [],
     messages = workspace?.messages || [];
   const settings = workspace?.settings;
+  const navigationVisible = mobile ? mobileNav : showNavigation;
+  const toggleNavigation = () =>
+    mobile ? setMobileNav(!mobileNav) : setShowNavigation(!showNavigation);
   const nav = (id) => {
     setPage(id);
     setMobileNav(false);
@@ -322,87 +343,113 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
-      <aside className={"sidebar " + (mobileNav ? "mobile-open" : "")}>
-        <Brand />
-        <div className="workspace-switch">
-          <span className="workspace-avatar">A</span>
-          <div>
-            Personal workspace<small>Your private thinking space</small>
-          </div>
-          <ChevronDown size={14} />
+    <div
+      className={"app-shell " + (!navigationVisible ? "navigation-hidden" : "")}
+    >
+      <aside
+        id="navigation-panel"
+        aria-label="Workspace navigation"
+        className={
+          "sidebar " + (navigationVisible ? "mobile-open" : "panel-hidden")
+        }
+      >
+        <div className="sidebar-header">
+          <Brand />
+          <IconButton
+            title="Hide navigation"
+            onClick={toggleNavigation}
+            aria-controls="navigation-panel"
+            aria-expanded={navigationVisible}
+          >
+            <PanelLeftClose size={18} />
+          </IconButton>
         </div>
-        <button
-          className="new-chat"
-          disabled={disabled || !messages.length}
-          onClick={() => setModal("new-chat")}
-        >
-          <Plus size={18} />
-          New conversation<span>↗</span>
-        </button>
-        <div className="nav-label">WORKSPACE</div>
-        <nav aria-label="Main navigation">
-          <button
-            className={page === "chat" ? "active" : ""}
-            onClick={() => nav("chat")}
-          >
-            <MessageSquare size={18} />
-            Chat
-            <span className="nav-indicator" />
-          </button>
-          <button
-            className={page === "library" ? "active" : ""}
-            onClick={() => nav("library")}
-          >
-            <Library size={18} />
-            Source library<span className="count">{sources.length}</span>
-          </button>
-          <button
-            className={page === "settings" ? "active" : ""}
-            onClick={() => nav("settings")}
-          >
-            <Settings2 size={18} />
-            Settings
-          </button>
-        </nav>
-        <div className="nav-label recent-label">THIS CONVERSATION</div>
-        <button className="recent-chat" onClick={() => nav("chat")}>
-          <span className="tiny-dot" />
-          <span>
-            {messages.find((m) => m.role === "user")?.content ||
-              "A fresh perspective"}
-          </span>
-        </button>
-        <div className="sidebar-bottom">
-          <div className="local-card">
-            <span className="local-card-icon">
-              <ShieldCheck size={19} />
-            </span>
-            <strong>Your ideas. Your space.</strong>
-            <p>
-              {settings?.provider === "Ollama" && !settings?.r2r
-                ? "Documents stay with your configured Ollama server."
-                : "Connected to your chosen model provider."}
-            </p>
-            <span className="local-caption">BUILT FOR CURIOUS MINDS</span>
-          </div>
-          <button className="profile" onClick={() => nav("settings")}>
-            <span className="profile-avatar">A</span>
+        <div className="sidebar-scroll">
+          <div className="workspace-switch">
+            <span className="workspace-avatar">A</span>
             <div>
-              My workspace<small>On this device · local session</small>
+              Personal workspace<small>Your private thinking space</small>
             </div>
-            <Settings2 size={16} />
+            <ChevronDown size={14} />
+          </div>
+          <button
+            className="new-chat"
+            disabled={disabled || !messages.length}
+            onClick={() => setModal("new-chat")}
+          >
+            <Plus size={18} />
+            New conversation<span>↗</span>
           </button>
+          <div className="nav-label">WORKSPACE</div>
+          <nav aria-label="Main navigation">
+            <button
+              className={page === "chat" ? "active" : ""}
+              onClick={() => nav("chat")}
+            >
+              <MessageSquare size={18} />
+              Chat
+              <span className="nav-indicator" />
+            </button>
+            <button
+              className={page === "library" ? "active" : ""}
+              onClick={() => nav("library")}
+            >
+              <Library size={18} />
+              Source library<span className="count">{sources.length}</span>
+            </button>
+            <button
+              className={page === "settings" ? "active" : ""}
+              onClick={() => nav("settings")}
+            >
+              <Settings2 size={18} />
+              Settings
+            </button>
+          </nav>
+          <div className="nav-label recent-label">THIS CONVERSATION</div>
+          <button className="recent-chat" onClick={() => nav("chat")}>
+            <span className="tiny-dot" />
+            <span>
+              {messages.find((m) => m.role === "user")?.content ||
+                "A fresh perspective"}
+            </span>
+          </button>
+          <div className="sidebar-bottom">
+            <div className="local-card">
+              <span className="local-card-icon">
+                <ShieldCheck size={19} />
+              </span>
+              <strong>Your ideas. Your space.</strong>
+              <p>
+                {settings?.provider === "Ollama" && !settings?.r2r
+                  ? "Documents stay with your configured Ollama server."
+                  : "Connected to your chosen model provider."}
+              </p>
+              <span className="local-caption">BUILT FOR CURIOUS MINDS</span>
+            </div>
+          </div>
         </div>
+        <button className="profile" onClick={() => nav("settings")}>
+          <span className="profile-avatar">A</span>
+          <div>
+            My workspace<small>On this device · local session</small>
+          </div>
+          <Settings2 size={16} />
+        </button>
       </aside>
       <main className="main">
         <header className="topbar">
           <div className="breadcrumb">
             <IconButton
               title="Toggle navigation"
-              onClick={() => setMobileNav(!mobileNav)}
+              onClick={toggleNavigation}
+              aria-expanded={navigationVisible}
+              aria-controls="navigation-panel"
             >
-              <Menu size={18} />
+              {navigationVisible ? (
+                <PanelLeftClose size={18} />
+              ) : (
+                <PanelLeftOpen size={18} />
+              )}
             </IconButton>
             <span>Workspace</span>
             <ChevronRight size={14} />
@@ -513,6 +560,8 @@ function App() {
                             : "Show source panel"
                         }
                         onClick={() => setShowSources(!showSources)}
+                        aria-expanded={showSources}
+                        aria-controls="sources-panel"
                       >
                         {showSources ? (
                           <PanelRightClose size={18} />
@@ -780,20 +829,32 @@ function App() {
                   </div>
                 </section>
                 {showSources && (
-                  <aside className="source-panel">
+                  <aside
+                    id="sources-panel"
+                    aria-label="Sources"
+                    className="source-panel"
+                  >
                     <div className="source-panel-header">
                       <div>
                         <Library size={17} />
                         <strong>Sources</strong>
                         <span className="source-count">{sources.length}</span>
                       </div>
-                      <IconButton
-                        title="Add source"
-                        disabled={disabled}
-                        onClick={() => setModal("import")}
-                      >
-                        <Plus size={17} />
-                      </IconButton>
+                      <div className="source-panel-actions">
+                        <IconButton
+                          title="Add source"
+                          disabled={disabled}
+                          onClick={() => setModal("import")}
+                        >
+                          <Plus size={17} />
+                        </IconButton>
+                        <IconButton
+                          title="Close source panel"
+                          onClick={() => setShowSources(false)}
+                        >
+                          <X size={17} />
+                        </IconButton>
+                      </div>
                     </div>
                     <p className="panel-description">
                       The context behind your answers.
