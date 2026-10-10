@@ -531,8 +531,13 @@ def new_conversation(request: Request):
     session = get_session(request)
     with operation(session):
         save_conversation(session)
-        session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False,
-                       messages=[], rag_history_start=0, chat_history_start=0)
+        if session["messages"]:
+            draft = next((c for c in history.listing(session["owner"]) if not c["started"]), None)
+            if draft:
+                open_conversation(session, history.read(session["owner"], draft["id"]))
+            else:
+                session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False,
+                               messages=[], rag_history_start=0, chat_history_start=0)
     return snapshot(session)
 
 

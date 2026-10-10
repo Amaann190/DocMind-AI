@@ -124,9 +124,16 @@ class ReactApiTests(unittest.TestCase):
         self.assertTrue(self.state["r2r_ingestion_failed"])
 
     def test_saved_conversations_rename_search_reopen_restart_and_owner_isolation(self):
+        initial_id = self.state["conversation_id"]
+        for _ in range(2):
+            draft = self.client.post("/api/conversations").json()
+            self.assertEqual(draft["conversation_id"], initial_id)
+            self.assertFalse(draft["conversations"][0]["started"])
         with patch.object(api.ollama, "chat", return_value=iter(["Unique answer CEDAR-83"])):
             self.client.post("/api/chat", json={"text": "Remember this"}).raise_for_status()
         first = self.client.get("/api/state").json()["conversation_id"]
+        self.assertEqual(self.state["title"], "Remember this")
+        self.assertTrue(self.client.get("/api/state").json()["conversations"][0]["started"])
         self.client.put(f"/api/conversations/{first}", json={"title": "Research notes"}).raise_for_status()
         fresh = self.client.post("/api/conversations").json()
         self.assertEqual(fresh["messages"], [])
@@ -134,6 +141,10 @@ class ReactApiTests(unittest.TestCase):
         self.assertEqual(self.client.get("/api/conversations", params={"q": "CEDAR-83"}).json()[0]["id"], first)
         restored = self.client.post(f"/api/conversations/{first}/open").json()
         self.assertEqual(restored["messages"][-1]["content"], "Unique answer CEDAR-83")
+        reused = self.client.post("/api/conversations").json()
+        self.assertEqual(reused["conversation_id"], fresh["conversation_id"])
+        self.assertEqual(len(reused["conversations"]), 2)
+        self.client.post(f"/api/conversations/{first}/open").raise_for_status()
         token = self.client.cookies[api.COOKIE]
         api.sessions.pop(token)
         restarted = self.client.post("/api/session").json()

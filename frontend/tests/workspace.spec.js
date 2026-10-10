@@ -408,8 +408,33 @@ test("saved conversations rename, search, reopen and delete; panel widths persis
   page,
 }) => {
   await page.goto("/");
+  await expect(
+    page.getByRole("textbox", { name: "Ask DocMind" }),
+  ).toBeVisible();
+  await expect(page.locator(".conversation-row")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^Rename / })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^Delete / })).toHaveCount(0);
+  const initial = await page.request.get("/api/state").then((r) => r.json());
+  await page.getByRole("button", { name: /New conversation/ }).click();
+  await page.getByRole("button", { name: /New conversation/ }).click();
+  expect(
+    (await page.request.get("/api/state").then((r) => r.json()))
+      .conversation_id,
+  ).toBe(initial.conversation_id);
+  // A failed first request is still a started chat. R2R without sources fails
+  // locally, giving this UI check a real saved turn without a model dependency.
+  const headers = { "X-DocMind-Client": "react" };
+  await page.request.put("/api/settings", {
+    headers,
+    data: { ...initial.settings, r2r: true },
+  });
+  await page.request.post("/api/chat", {
+    headers,
+    data: { text: "Research question" },
+  });
+  await page.reload();
   await page
-    .getByRole("button", { name: "Rename New conversation", exact: true })
+    .getByRole("button", { name: "Rename Research question", exact: true })
     .click();
   await page.getByLabel("Conversation name").fill("Research notes");
   await page.getByRole("button", { name: "Save name", exact: true }).click();
@@ -418,7 +443,7 @@ test("saved conversations rename, search, reopen and delete; panel widths persis
     .getByRole("button", { name: /New conversation/ })
     .first()
     .click();
-  await expect(page.locator(".conversation-row")).toHaveCount(2);
+  await expect(page.locator(".conversation-row")).toHaveCount(1);
   await page
     .getByRole("textbox", { name: "Search conversations" })
     .fill("Research");
