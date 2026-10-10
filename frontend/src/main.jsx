@@ -46,8 +46,11 @@ import {
   Pencil,
   Square,
   Replace,
+  Moon,
+  Sun,
 } from "lucide-react";
 import "./style.css";
+import "./theme.css";
 
 const storageKey = "docmind-react-preferences";
 async function api(path, options = {}) {
@@ -268,6 +271,22 @@ function PassagePreview({ source, sources }) {
 }
 
 function App() {
+  const [theme, setTheme] = useState(
+    () => document.documentElement.dataset.theme || "light",
+  );
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    document.querySelector('meta[name="theme-color"]').content =
+      theme === "dark" ? "#171c19" : "#f7f6f2";
+  }, [theme]);
+  function toggleTheme() {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    try {
+      localStorage.setItem("docmind-theme", next);
+    } catch {}
+  }
   const [workspace, setWorkspace] = useState(null),
     [page, setPage] = useState("chat");
   const [error, setError] = useState(""),
@@ -716,6 +735,16 @@ function App() {
             </strong>
           </div>
           <div className="top-actions">
+            <IconButton
+              title={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </IconButton>
             <span className={"connection " + (online ? "connected" : "")}>
               <span />
               {online === null

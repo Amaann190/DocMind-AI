@@ -42,6 +42,9 @@ and `nomic-embed-text:latest`. Provider presets do not install models or servers
 - A warm ivory canvas, dark olive navigation, orange accents and locally bundled
   DM Sans/Manrope typography. No Streamlit widgets, reruns or browser component
   are used by the React interface.
+- A moon/sun control in the header switches light and dark mode. The first visit
+  follows the device theme; an explicit choice is saved locally and applied before
+  rendering on later visits. Theme switching also works with browser storage blocked.
 - A dedicated conversation view, source library and settings page. The source rail
   gives access to extracted text; answer citations open their retrieved passages.
 - File selection and drag-and-drop for all 25 existing supported extensions,
@@ -134,6 +137,10 @@ On 2026-10-10, **199 Python tests passed**, with successful compilation and a
 production frontend build. **All six browser tests passed**, including the optional
 live Ollama workflow and its individual source reindex, replacement and removal checks.
 The locked environment's dependency consistency was verified during initial setup.
+
+The dark-mode follow-up passed seven browser checks (the live-model test was not
+rerun for this visual change), including device-theme defaults, saved preference,
+keyboard switching, unavailable browser storage, dark dialogs and mobile layouts.
 
 Desktop/mobile navigation, persisted settings, import dialogs,
 streamed answer display and source previews were checked in a real browser. A live
