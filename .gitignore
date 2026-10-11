@@ -26,9 +26,6 @@ tmp/
 output/*
 !output/evaluation-*/
 
-# Streamlit
-.streamlit/secrets.toml
-
 # OS / editor
 Thumbs.db
 .DS_Store

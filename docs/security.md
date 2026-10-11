@@ -1,46 +1,27 @@
-# Security review: retrieval and ingestion
+# Security boundaries
 
-The October 2026 changes address these concrete boundaries:
+DocMind is a local React/FastAPI application. Run one API worker on loopback.
+The cookie/header/origin checks isolate local browser workspaces; they do not
+provide user authentication for public hosting.
 
-- Each Streamlit session owns a temporary workspace, upload operations and index caches.
-  Model objects are passed explicitly; no shared LlamaIndex model settings or placeholder
-  API-key environment overrides remain. New sessions do not reuse another session's cache.
-- Reset and failed-import cleanup affect only resources owned by the current session or
-  operation. Failed imports invalidate the previous active corpus.
-- Upload validation checks actual buffer sizes, rejects duplicate names ignoring case,
-  and blocks reserved Windows device names. Office/EPUB archive expansion is checked
-  before parsing (100 MB uncompressed, at most 10,000 members).
-- Repository names cannot be dot segments. Clone destinations are generated locally;
-  filenames cannot choose the destination. Source files must remain inside the selected
-  source directory. Git uses a fixed argument list, a timeout, disabled hooks and no
-  local-file transport.
-- Website ingestion connects to the public IP returned by its validation step, checks
-  every redirect, verifies TLS for the original hostname, caps streamed response size,
-  and closes connections on all paths. It uses urllib3's
-  [custom hostname support](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#custom-sni-hostname)
-  without inheriting proxy or netrc credentials.
-- Retrieved content is treated as evidence, not instructions. Old corpus history is
-  excluded after re-ingestion. Citation text is never fabricated by the application.
+- Each API session owns its models, document state, lock and temporary directory.
+- Request context is explicit; processing outside a context fails.
+- Upload validation limits names, types, file size, total retained bytes and archive expansion.
+- Unicode and ordinary punctuation in filenames are allowed; traversal, device names,
+  path separators, control characters and reserved filesystem characters are rejected.
+- HTTPS imports reject private/loopback addresses and pin the validated connection address.
+- GitHub imports validate owner/repository names and isolate subprocesses and clones.
+- Notebook cells and workbook formulas are read as data, never executed.
+- LibreOffice conversion uses isolated profiles with macros disabled.
+- R2R queries and deletion use owned document IDs; failed cleanup blocks further queries.
 
-These are application boundaries, not an operating-system sandbox or authentication
-system. Model endpoints deliberately allow local servers configured by the user.
-Document parsers and LibreOffice run with the application's OS permissions; prompt
-instructions cannot guarantee a model will resist every hostile passage. Process
-crashes can leave temporary files for OS cleanup. The tests exercise the listed
-boundaries with synthetic data, including concurrent sessions and blocked redirects;
-they do not certify arbitrary model answers or a public multi-user deployment.
+SQLite stores transcript text, titles and citation passages. Raw uploads and model
+credentials are not stored there. Browser preferences exclude credentials.
+Documents go to the configured model/server; using Ollama does not imply that
+an arbitrary configured endpoint is on this computer.
 
-Live answer testing observed a model obeying an instruction embedded in a document
-despite the system-level guard. A reminder after the quoted passages made that
-specific case pass with `llama3:latest`; it does not establish general injection
-resistance. See [answer-quality results and limitations](answer-quality.md).
+Docker uses a non-root account, read-only application files, dropped capabilities,
+resource limits, temporary writable caches and a dedicated conversation-history volume.
+Container ports bind to localhost by default. Removing the volume removes history.
 
-Live HTTPS ingestion was verified on 2026-10-06 against Python.org on Windows and
-inside the Linux container, including a real redirect. `example.com` still failed
-DNS resolution in this environment, but other public hosts resolved successfully.
-TLS hostname parameters, public-address pinning, blocked redirects, response limits
-and cleanup also remain covered by deterministic tests.
-
-Regression coverage: `tests/test_session_security_retrieval.py`,
-`tests/test_security_controls.py`, `tests/test_ingestion_correctness.py`, and the
-25-format checks in `tests/test_document_readers.py`.
+Report vulnerabilities using [the repository security policy](../SECURITY.md).

@@ -51,7 +51,7 @@ passing result is not a security guarantee.
 The repository-root [report](../eval_report.md) and [JSON](../eval_results.json)
 record that full live run. Offline verification passed **42 checks** and explicitly
 skipped **34 live answers**. The final regression suite passed **170 tests**;
-compilation, Ruff's configured error checks and a Streamlit health check passed.
+compilation and Ruff's configured error checks passed at that evaluation checkpoint.
 The temporary smoke-test server was stopped afterward.
 
 The same final 34 answer cases were also run with the smaller installed model:
@@ -79,7 +79,7 @@ results will hold for different prompts, settings, documents or model weights.
 
 Use the project environment and installed models. Live runs send synthetic fixture
 content to the configured Ollama endpoint and temporarily use their own workspace.
-They restore the evaluator's Streamlit state afterward.
+They use isolated request-local evaluation state and restore the caller's context afterward.
 
 ```bash
 pipenv run python -m unittest discover -s tests

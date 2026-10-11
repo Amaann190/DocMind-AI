@@ -13,10 +13,15 @@ services:
       - /home/appuser/.cache:rw,noexec,nosuid,nodev,size=2g,uid=10001,gid=10001,mode=0700
     environment:
       DOCMIND_OLLAMA_ENDPOINT: ${DOCMIND_OLLAMA_ENDPOINT:-http://host.docker.internal:11434}
+    volumes:
+      - docmind-data:/home/appuser/data
     extra_hosts:
       - host.docker.internal:host-gateway
     ports:
-      - '127.0.0.1:${DOCMIND_PORT:-8501}:8501'
+      - '127.0.0.1:${DOCMIND_PORT:-8765}:8765'
     mem_limit: 8g
     cpus: ${DOCMIND_CPUS:-4}
     pids_limit: 512
+
+volumes:
+  docmind-data:

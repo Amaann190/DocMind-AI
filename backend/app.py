@@ -3,6 +3,7 @@ import asyncio
 import hashlib
 import io
 import json
+import os
 import secrets
 import re
 import tempfile
@@ -35,7 +36,7 @@ COOKIE = "docmind_workspace"
 
 class Settings(BaseModel):
     provider: Literal["Ollama", "OpenAI", "LM Studio (Local AI)", "TabbyAPI"] = "Ollama"
-    endpoint: str = "http://localhost:11434"
+    endpoint: str = Field(default_factory=lambda: os.environ.get("DOCMIND_OLLAMA_ENDPOINT", "").strip() or "http://localhost:11434")
     chat_model: str = "llama3:latest"
     embedding_model: str = "nomic-embed-text:latest"
     api_key: str = ""
@@ -65,6 +66,7 @@ def new_session():
     return {"config": Settings(), "messages": [], "sources": [], "warnings": [],
             "documents": [], "query_engine": None, "lock": threading.Lock(),
             "conversation_id": secrets.token_hex(16), "title": "New conversation", "renamed": False,
+            "title_generated": False, "naming_titles": set(),
             "corpus_id": "empty", "source_inputs": {}, "cancel": threading.Event(),
             "touched": time.monotonic(), "status": "Ready", "progress": None}
 
@@ -72,10 +74,12 @@ def new_session():
 def save_conversation(session):
     if not session.get("owner"):
         return
-    if not session["renamed"]:
-        session["title"] = next((m["content"][:70] for m in session["messages"] if m["role"] == "user"), "New conversation")
+    if not session["renamed"] and not session.get("title_generated"):
+        first = next((m["content"] for m in session["messages"] if m["role"] == "user"), "")
+        session["title"] = " ".join(first.split()[:8])[:70] or "New conversation"
     history.save(session["owner"], session["conversation_id"], session["title"], {
         "messages": session["messages"], "renamed": session["renamed"], "corpus_id": session["corpus_id"],
+        "title_generated": session.get("title_generated", False),
         "rag_history_start": session.get("rag_history_start", 0), "chat_history_start": session.get("chat_history_start", 0)})
 
 
@@ -84,9 +88,50 @@ def open_conversation(session, record):
     messages = payload["messages"]
     same_corpus = payload.get("corpus_id") == session["corpus_id"]
     session.update(conversation_id=record["id"], title=record["title"], messages=messages,
-        renamed=payload.get("renamed", False),
+        renamed=payload.get("renamed", False), title_generated=payload.get("title_generated", False),
         rag_history_start=payload.get("rag_history_start", 0) if same_corpus else len(messages),
         chat_history_start=payload.get("chat_history_start", 0) if same_corpus else len(messages))
+
+
+def start_title(session):
+    """Name once in the background; re-read ownership/state before saving the result."""
+    conversation_id = session["conversation_id"]
+    if session["renamed"] or session.get("title_generated") or conversation_id in session["naming_titles"]:
+        return
+    cfg = session["config"].model_copy()
+    owner = session["owner"]
+    question = next(m["content"] for m in session["messages"] if m["role"] == "user")
+    answer = session["messages"][-1]["content"]
+    session["naming_titles"].add(conversation_id)
+
+    def generate_title():
+        title = ""
+        try:
+            if not cfg.r2r:
+                with request_state({"eco_mode": cfg.eco}):
+                    title = ollama.conversation_title(question, answer, model=cfg.chat_model,
+                        base_url=cfg.endpoint, api_key=cfg.api_key, backend=cfg.provider)
+        except Exception:
+            pass  # Naming is optional; keep the saved fallback if the provider is unavailable.
+        try:
+            with session["lock"]:
+                record = history.read(owner, conversation_id)
+                first = next((m["content"] for m in record["payload"]["messages"] if m["role"] == "user"), "") if record else ""
+                if record and first == question and not record["payload"].get("renamed"):
+                    title = title or record["title"]
+                    record["payload"]["title_generated"] = True
+                    history.save(owner, conversation_id, title, record["payload"])
+                    if session["conversation_id"] == conversation_id:
+                        session.update(title=title, title_generated=True)
+        except Exception:
+            pass  # A title failure must never interrupt an answer or resurrect a deleted chat.
+        finally:
+            with session["lock"]:
+                session["naming_titles"].discard(conversation_id)
+
+    thread = threading.Thread(target=generate_title, daemon=True)
+    thread.start()
+    return thread
 
 
 @app.middleware("http")
@@ -140,6 +185,7 @@ def configure(session):
 def snapshot(session):
     return {"settings": session["config"].model_dump(exclude={"api_key", "r2r_key"}),
         "conversation_id": session["conversation_id"], "title": session["title"],
+        "naming": bool(session["naming_titles"]),
         "conversations": history.listing(session["owner"]) if session.get("owner") else [],
         "sources": session["sources"], "messages": session["messages"],
         "warnings": session["warnings"], "busy": session["lock"].locked(),
@@ -230,8 +276,9 @@ def models(request: Request):
 
 
 def index_documents(session, documents, kind, warnings=None):
-    if not documents or len(documents) > 300 or sum(len(d.get_content()) for d in documents) > 4 * 1024 * 1024:
-        raise ValueError("Use between 1 and 300 readable documents, with at most 4 MB of extracted text.")
+    if not documents:
+        raise ValueError("At least one readable document is required.")
+    helpers.validate_ingested_documents(documents)
     cfg = session["config"]
     session["status"] = "Connecting to embedding model"
     session_directory("cache", session)
@@ -398,7 +445,7 @@ def ingest_uploads(session, uploads):
                 session["source_inputs"][source_id] = item
                 session["sources"].append({"id": source_id, "name": item["name"], "kind": "file", "status": "error",
                     "characters": 0, "preview": "", "error": str(error)})
-                warnings.append(f"{item['name']}: {error}")
+                warnings.append({"file": item["name"], "error": str(error)})
         session["warnings"] = warnings
     return snapshot(session)
 
@@ -536,7 +583,7 @@ def new_conversation(request: Request):
             if draft:
                 open_conversation(session, history.read(session["owner"], draft["id"]))
             else:
-                session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False,
+                session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False, title_generated=False,
                                messages=[], rag_history_start=0, chat_history_start=0)
     return snapshot(session)
 
@@ -586,7 +633,7 @@ def delete_conversation(conversation_id: str, request: Request):
             raise HTTPException(404, "Conversation not found.")
         history.delete(session["owner"], conversation_id)
         if conversation_id == session["conversation_id"]:
-            session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False,
+            session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False, title_generated=False,
                            messages=[], rag_history_start=0, chat_history_start=0)
     return snapshot(session)
 
@@ -595,7 +642,7 @@ def delete_conversation(conversation_id: str, request: Request):
 def clear_chat(request: Request):
     session = get_session(request)
     with operation(session):
-        session.update(messages=[], chat_history_start=0, rag_history_start=0)
+        session.update(messages=[], chat_history_start=0, rag_history_start=0, title_generated=False)
     return snapshot(session)
 
 
@@ -605,7 +652,7 @@ def reset(request: Request):
     with operation(session):
         clear_corpus(session)
         history.delete(session["owner"])
-        session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False)
+        session.update(conversation_id=secrets.token_hex(16), title="New conversation", renamed=False, title_generated=False)
         session.update(config=Settings(), messages=[], chat_history_start=0, rag_history_start=0)
     return snapshot(session)
 
@@ -641,6 +688,7 @@ async def chat(question: Question, request: Request):
     def generate():
         content = ""
         chunks = None
+        completed = False
         try:
             with request_state(session):
                 configure(session)
@@ -667,6 +715,7 @@ async def chat(question: Question, request: Request):
                     "stopped": session["cancel"].is_set(),
                     "no_evidence": session.get("last_rag_no_result", False)}
                 session["messages"].append(message)
+                completed = not message["stopped"] and bool(content.strip())
                 emit({"type": "done", "message": message})
         except Exception as error:
             message = {"role": "assistant", "content": content + "\n\nResponse interrupted: " + str(error), "sources": []}
@@ -677,6 +726,8 @@ async def chat(question: Question, request: Request):
                 if hasattr(chunks, "close"):
                     chunks.close()
                 save_conversation(session)
+                if completed:
+                    start_title(session)
             except Exception:
                 emit({"type": "warning", "text": "The answer is available, but could not be saved to disk. Export it before closing."})
             finally:

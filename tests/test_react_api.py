@@ -15,10 +15,14 @@ from utils.session_workspace import clear_session_workspace
 
 api = importlib.import_module("backend.app")
 HEADERS = {"X-DocMind-Client": "react"}
+start_title = api.start_title
 
 
 class ReactApiTests(unittest.TestCase):
     def setUp(self):
+        self.title_worker = patch.object(api, "start_title")
+        self.title_worker.start()
+        self.addCleanup(self.title_worker.stop)
         self.storage = tempfile.TemporaryDirectory()
         self.addCleanup(self.storage.cleanup)
         self.history_path = patch.object(api.history, "DB_PATH", Path(self.storage.name) / "history.sqlite3")
@@ -80,7 +84,23 @@ class ReactApiTests(unittest.TestCase):
                 ("files", ("empty.txt", b"", "text/plain"))])
         self.assertEqual(response.status_code, 200, response.text)
         self.assertEqual(len(response.json()["warnings"]), 1)
+        self.assertEqual(response.json()["warnings"][0]["file"], "empty.txt")
+        self.assertIn("No readable text", response.json()["warnings"][0]["error"])
         self.assertEqual(response.json()["sources"][0]["name"], "fact.txt")
+
+    def test_unicode_filename_upload_and_replacement(self):
+        with patch.object(api.indexer, "setup_embedding_model", side_effect=self.embedding), \
+                patch.object(api.ollama, "create_llm", return_value=MockLLM()):
+            response = self.client.post("/api/upload", files=[
+                ("files", ("café (1).txt", b"Approval code ORBIT-7429", "text/plain"))])
+            self.assertEqual(response.status_code, 200, response.text)
+            source = response.json()["sources"][0]
+            self.assertEqual(source["status"], "ready")
+            self.assertEqual(source["name"], "café (1).txt")
+            response = self.client.put(f"/api/sources/{source['id']}", files=[
+                ("files", ("分析 [final].txt", b"Replacement code NOVA-218", "text/plain"))])
+            self.assertEqual(response.status_code, 200, response.text)
+            self.assertIn("NOVA-218", response.json()["sources"][0]["preview"])
 
     def test_sessions_and_credentials_are_isolated(self):
         self.ingest_sample()
@@ -162,6 +182,70 @@ class ReactApiTests(unittest.TestCase):
         self.assertEqual(self.client.get("/api/conversations", params={"q": "CEDAR"}).json(), [])
         self.client.delete("/api/session").raise_for_status()
         self.assertEqual(len(self.client.get("/api/conversations").json()), 1)
+
+    def test_topic_title_persists_and_is_generated_only_once(self):
+        workers = []
+        def launch(session):
+            worker = start_title(session)
+            if worker:
+                workers.append(worker)
+        with patch.object(api, "start_title", side_effect=launch), \
+                patch.object(api.ollama, "conversation_title", return_value="How Photosynthesis Works") as naming, \
+                patch.object(api.ollama, "chat", side_effect=lambda *_: iter(["Plants use sunlight to make food."])):
+            self.client.post("/api/chat", json={"text": "Can you explain how photosynthesis works?"}).raise_for_status()
+            for worker in workers:
+                worker.join(3)
+                self.assertFalse(worker.is_alive())
+            self.assertEqual(self.state["title"], "How Photosynthesis Works")
+            self.client.post("/api/chat", json={"text": "Give an example."}).raise_for_status()
+            naming.assert_called_once()
+            record = api.history.read(self.state["owner"], self.state["conversation_id"])
+            api.open_conversation(self.state, record)
+            api.save_conversation(self.state)
+            self.assertTrue(self.state["title_generated"])
+            self.assertEqual(self.state["title"], "How Photosynthesis Works")
+
+    def test_background_title_respects_rename_switch_delete_and_failure(self):
+        for action in ("rename", "switch", "delete", "failure", "clear"):
+            with self.subTest(action=action):
+                self.client.post("/api/conversations").raise_for_status()
+                with patch.object(api.ollama, "chat", return_value=iter(["A useful answer."])):
+                    self.client.post("/api/chat", json={"text": "Explain solar panels"}).raise_for_status()
+                old_id = self.state["conversation_id"]
+                started, release = threading.Event(), threading.Event()
+                def generate(*args, **kwargs):
+                    started.set()
+                    release.wait(3)
+                    if action == "failure":
+                        raise TimeoutError("Model unavailable")
+                    return "How Solar Panels Work"
+                with patch.object(api.ollama, "conversation_title", side_effect=generate):
+                    worker = start_title(self.state)
+                    try:
+                        self.assertTrue(started.wait(3))
+                        self.assertTrue(self.client.get("/api/state").json()["naming"])
+                        if action == "rename":
+                            self.client.put(f"/api/conversations/{old_id}", json={"title": "My custom name"}).raise_for_status()
+                        elif action == "switch":
+                            self.client.post("/api/conversations").raise_for_status()
+                        elif action == "delete":
+                            self.client.delete(f"/api/conversations/{old_id}").raise_for_status()
+                        elif action == "clear":
+                            self.client.delete("/api/chat").raise_for_status()
+                    finally:
+                        release.set()
+                        worker.join(3)
+                    self.assertFalse(worker.is_alive())
+                record = api.history.read(self.state["owner"], old_id)
+                if action == "delete":
+                    self.assertIsNone(record)
+                else:
+                    self.assertEqual(record["title"], {
+                        "rename": "My custom name", "switch": "How Solar Panels Work",
+                        "failure": "Explain solar panels", "clear": "New conversation"}[action])
+                self.assertFalse(self.client.get("/api/state").json()["naming"])
+                if action == "switch":
+                    self.assertEqual(self.state["title"], "New conversation")
 
     def test_individual_sources_add_retry_replace_failure_and_remove(self):
         with patch.object(api.indexer, "setup_embedding_model", side_effect=self.embedding), \

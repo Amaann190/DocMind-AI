@@ -11,17 +11,25 @@ assert os.getuid() != 0, "Container must run as a non-root user"
 assert os.statvfs(".").f_flag & os.ST_RDONLY, "Application filesystem must be read-only"
 subprocess.run(["git", "--version"], check=True, timeout=10)
 
-# Exercise the full UI, not just Streamlit's health endpoint.
-os.environ["DOCMIND_OLLAMA_ENDPOINT"] = "http://127.0.0.1:1"
-from streamlit.testing.v1 import AppTest
+# Exercise React asset delivery and API/session persistence without a model.
+import httpx
+import re
+from utils.runtime import request_state
 
-app = AppTest.from_file("main.py")
-# AppTest has no browser to answer the localStorage component handshake.
-app.session_state["browser_settings_restored"] = True
-app.run(timeout=60)
-assert not app.exception, app.exception
-assert len(app.chat_input) == 1, "Application stopped before rendering the chat UI"
-print("PASS application renders with an unavailable model server", flush=True)
+with httpx.Client(base_url="http://127.0.0.1:8765", headers={"X-DocMind-Client": "react"}) as client:
+    assert client.get("/api/health").json() == {"ok": True}
+    page = client.get("/")
+    page.raise_for_status()
+    assert '<div id="root"></div>' in page.text
+    assets = re.findall(r'(?:src|href)="(/assets/[^"]+)"', page.text)
+    assert assets
+    for asset in assets:
+        client.get(asset).raise_for_status()
+    session = client.post("/api/session")
+    session.raise_for_status()
+    assert session.json()["settings"]["endpoint"] == os.environ["DOCMIND_OLLAMA_ENDPOINT"]
+    client.delete("/api/session").raise_for_status()
+print("PASS React assets, API health and writable conversation storage", flush=True)
 
 from docx import Document as WordDocument
 from pptx import Presentation
@@ -56,7 +64,8 @@ try:
         print(f"PASS {file.suffix} extraction on read-only container", flush=True)
 
     embedding = MockEmbedding(embed_dim=8)
-    index = create_index(documents, embed_model=embedding, chunk_size=256, chunk_overlap=32)
+    with request_state(state):
+        index = create_index(documents, embed_model=embedding, chunk_size=256, chunk_overlap=32)
     cache = session_directory("cache", state)
     index.storage_context.persist(persist_dir=str(cache))
     from llama_index.core import StorageContext, load_index_from_storage

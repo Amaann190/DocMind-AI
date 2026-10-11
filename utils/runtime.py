@@ -1,4 +1,4 @@
-"""Reuse processing code from Streamlit or an isolated API request."""
+"""Request-local processing state shared by the API and offline evaluation."""
 from contextlib import contextmanager
 from contextvars import ContextVar
 
@@ -11,8 +11,7 @@ class Runtime:
         state = _state.get()
         if state is not None:
             return state
-        import streamlit
-        return streamlit.session_state
+        raise RuntimeError("Processing requires an explicit request_state context.")
 
 
 st = Runtime()

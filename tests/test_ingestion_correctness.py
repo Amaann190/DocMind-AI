@@ -3,7 +3,6 @@
 import json
 import tempfile
 import unittest
-from contextlib import ExitStack
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -13,7 +12,7 @@ from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.schema import Document, NodeRelationship, NodeWithScore, RelatedNodeInfo, TextNode
 
 from utils import llama_index as ingestion
-from utils import rag_pipeline as pipeline
+from utils.runtime import request_state
 
 
 def node(text, source="source-a", **metadata):
@@ -23,6 +22,9 @@ def node(text, source="source-a", **metadata):
 
 
 class ContentPreservationTests(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(request_state({}))
+
     def test_large_json_and_jsonl_keep_every_record_and_original(self):
         records = [{"row": number, "value": f"FACT-{number}"} for number in range(120)]
         for extension in ("json", "jsonl"):
@@ -133,34 +135,6 @@ class FileFailureTests(unittest.TestCase):
             self.assertEqual(len(errors), 1)
             with self.assertRaisesRegex(ValueError, "No files were selected"):
                 ingestion.load_documents(directory, input_files=[])
-
-    def test_pipeline_persists_partial_results_and_warns_on_rerun(self):
-        with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
-            root = Path(directory)
-            (root / "good.txt").write_text("KEEP-THIS-FACT")
-            (root / "empty.txt").write_text("")
-            state = {"selected_model": "chat", "ollama_endpoint": "http://localhost:11434",
-                     "system_prompt": "", "chunk_size": 64, "chunk_overlap": 0,
-                     "ollama_embedding_model": "embedding"}
-            ui = Mock(session_state=state)
-            stack.enter_context(patch.object(pipeline, "st", ui))
-            stack.enter_context(patch.object(pipeline.ollama, "verify_chat_model", return_value=True))
-            stack.enter_context(patch.object(pipeline.ollama, "create_llm"))
-            stack.enter_context(patch.object(ingestion, "setup_embedding_model"))
-            stack.enter_context(patch.object(pipeline.func, "remove_dir_retry"))
-            def create_engine(*args, **kwargs):
-                state["query_engine"] = object()
-            stack.enter_context(patch.object(ingestion, "create_query_engine", side_effect=create_engine))
-            self.assertIsNone(pipeline.rag_pipeline(data_dir=directory, status_state_key="github_ingestion_stages"))
-            self.assertIn("Documents Loaded (1 file(s) skipped)", state["github_ingestion_stages"])
-            self.assertEqual(state["github_ingestion_stages_errors"][0]["file"], "empty.txt")
-            for _ in range(2):
-                pipeline.render_ingestion_result("github_ingestion_stages")
-            self.assertEqual(ui.warning.call_count, 2)
-            self.assertIn("empty.txt", ui.text.call_args.args[0])
-            ui.write.assert_not_called()
-            ui.stop.assert_not_called()
-
 
 if __name__ == "__main__":
     unittest.main()

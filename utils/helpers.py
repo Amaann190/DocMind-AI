@@ -20,7 +20,7 @@ import utils.logs as logs
 from utils.session_workspace import session_directory
 
 GITHUB_REPO_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
-SAFE_UPLOAD_NAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$")
+UNSAFE_UPLOAD_NAME_PATTERN = re.compile(r'[<>:"/\\|?*]')
 ALLOWED_UPLOAD_EXTENSIONS = {
     ".csv",
     ".doc",
@@ -192,14 +192,15 @@ def safe_uploaded_filename(filename: str) -> str:
         raise ValueError("Uploaded file must have a filename.")
     if "/" in filename or "\\" in filename:
         raise ValueError("Uploaded filename cannot include path separators.")
-    if any(ord(char) < 32 for char in filename):
+    if not filename.isprintable():
         raise ValueError("Uploaded filename cannot include control characters.")
-    if not SAFE_UPLOAD_NAME_PATTERN.fullmatch(filename):
+    if (len(filename) > 128 or len(filename.encode("utf-8")) > 255
+            or filename.startswith((".", " ")) or UNSAFE_UPLOAD_NAME_PATTERN.search(filename)):
         raise ValueError("Uploaded filename contains unsupported characters.")
     if Path(filename).suffix.lower() not in ALLOWED_UPLOAD_EXTENSIONS:
         raise ValueError("Uploaded file type is not supported.")
     stem = filename.split(".")[0].rstrip().upper()
-    if filename.endswith((" ", ".")) or stem in {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10))}:
+    if filename.endswith((" ", ".")) or stem in {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in "123456789¹²³"), *(f"LPT{i}" for i in "123456789¹²³")}:
         raise ValueError("Uploaded filename is reserved by the operating system.")
     return filename
 
@@ -407,3 +408,26 @@ def clone_github_repo(repo: str):
         logs.log.error(f"Error cloning {repo} GitHub repo: {err}")
         remove_dir_retry(destination)
         return False
+
+
+MAX_INGESTED_DOCUMENTS = 300
+MAX_INGESTED_TEXT_CHARS = 4 * 1024 * 1024
+
+
+def _document_text(document):
+    if hasattr(document, "get_content"):
+        return document.get_content() or ""
+    if hasattr(document, "text"):
+        return document.text or ""
+    return str(document)
+
+
+def validate_ingested_documents(documents):
+    if len(documents) > MAX_INGESTED_DOCUMENTS:
+        raise ValueError(
+            f"Too many documents were loaded. Limit: {MAX_INGESTED_DOCUMENTS}."
+        )
+
+    total_chars = sum(len(_document_text(document)) for document in documents)
+    if total_chars > MAX_INGESTED_TEXT_CHARS:
+        raise ValueError("Loaded documents exceed the ingestion text limit.")

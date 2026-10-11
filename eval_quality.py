@@ -47,13 +47,19 @@ CASES = [
 
 
 def evaluate_answers(mock, endpoint, embedding_model, chat_model):
+    from utils.runtime import request_state
+    with request_state({}):
+        return _evaluate_answers(mock, endpoint, embedding_model, chat_model)
+
+
+def _evaluate_answers(mock, endpoint, embedding_model, chat_model):
     from utils.helpers import ALLOWED_UPLOAD_EXTENSIONS
 
     names = [case["name"] for case in CASES] + ["format" + ext for ext in sorted(ALLOWED_UPLOAD_EXTENSIONS)]
     if mock:
         return [{"test": name, "kind": "live_answer", "pass": None, "status": "skipped", "detail": "Live answer check requires Ollama; --mock does not measure answer quality"} for name in names]
 
-    import streamlit as st
+    from utils.runtime import st
     from utils.llama_index import setup_embedding_model, create_index, load_documents, build_hybrid_retriever
     from utils.ollama import context_chat, verify_chat_model
 

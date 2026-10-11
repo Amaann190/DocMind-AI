@@ -14,7 +14,9 @@ class ImportBoundaryTests(unittest.TestCase):
 
             def guarded_import(name, *args, **kwargs):
                 blocked = (
-                    name == "torch"
+                    name == "streamlit"
+                    or name.startswith("streamlit.")
+                    or name == "torch"
                     or name.startswith("torch.")
                     or name == "llama_index.embeddings.huggingface"
                     or name.startswith("llama_index.embeddings.huggingface.")
@@ -25,9 +27,9 @@ class ImportBoundaryTests(unittest.TestCase):
 
             builtins.__import__ = guarded_import
 
-            import utils.rag_pipeline
-            import components.tabs.github_repo
-            import components.tabs.local_files
+            import backend.app
+            import utils.document_readers
+            import eval_harness
             """
         )
 

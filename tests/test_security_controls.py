@@ -4,7 +4,7 @@ from pathlib import Path
 from unittest.mock import patch, Mock
 
 from utils import helpers
-from utils.rag_pipeline import validate_ingested_documents
+from utils.helpers import validate_ingested_documents
 
 
 class FakeUpload:
@@ -43,6 +43,19 @@ class UploadSafetyTests(unittest.TestCase):
             with self.subTest(name=name):
                 with self.assertRaises(ValueError):
                     helpers.safe_uploaded_filename(name)
+
+    def test_ordinary_unicode_names_are_safe_but_windows_paths_are_not(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for name in ("report (1).pdf", "café.pdf", "分析 [final].xlsx", "O'Brien.txt"):
+                with self.subTest(name=name):
+                    destination = helpers.upload_destination(directory, name)
+                    self.assertEqual(destination.name, name)
+                    self.assertEqual(destination.parent, Path(directory).resolve())
+            for name in ("../notes.txt", "folder\\notes.txt", "C:notes.txt", "file.txt:stream.txt",
+                         "CON.txt", "COM¹.txt", "LPT9.pdf", "bad?.pdf", "a\x00.txt", "a\x7f.txt",
+                         "a\u202e.txt", ".hidden.txt", " trailing.txt", "notes.txt ", "x" * 129 + ".txt"):
+                with self.subTest(name=name), self.assertRaises(ValueError):
+                    helpers.upload_destination(directory, name)
 
     def test_upload_destination_rejects_path_traversal(self):
         with tempfile.TemporaryDirectory() as tmpdir:
