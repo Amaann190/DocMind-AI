@@ -1,4 +1,4 @@
-"""Private temporary files owned by one Streamlit session."""
+"""Private temporary files owned by one API session."""
 
 import tempfile
 from pathlib import Path

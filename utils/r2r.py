@@ -10,15 +10,12 @@ time-boxed so an unreachable server fails fast instead of hanging the app.
 """
 
 import os
-import tempfile
 from urllib.parse import quote
 from uuid import uuid4
-from utils.session_workspace import session_directory
 
 import httpx
-import streamlit as st
+from utils.runtime import st
 
-import utils.helpers as func
 import utils.logs as logs
 
 DEFAULT_R2R_BASE_URL = "http://localhost:7272"
@@ -195,130 +192,3 @@ def clear_remote_documents(state):
     else:
         state["r2r_document_origin"] = None
     return not failed
-
-
-def _render_status(status_container, completed_stages, active_stage=None):
-    if status_container is None:
-        return
-    status_container.empty()
-    with status_container.container():
-        for stage in completed_stages:
-            st.caption(f"✔️ {stage}")
-        if active_stage is not None:
-            st.caption(f"⏳ {active_stage}")
-
-
-def _render_completed(status_container, completed_stages):
-    if status_container is None:
-        return
-    status_container.empty()
-    with status_container.container():
-        for stage in completed_stages:
-            st.caption(f"✔️ {stage}")
-        st.empty()
-        st.empty()
-
-
-def r2r_ingest_files(
-    uploaded_files: list,
-    status_container=None,
-    status_state_key: str = "r2r_ingestion_stages",
-):
-    """Upload uploaded files to the configured R2R server.
-
-    Files are saved to a temporary directory, uploaded to R2R, and the
-    directory is removed afterwards. The returned document ids are stored in
-    session state so chat can query them. Mirrors rag_pipeline's progress
-    rendering and stop-on-error behavior.
-    """
-    completed_stages = []
-    st.session_state["active_ingestion_source"] = "file_ingestion_stages"
-    st.session_state["query_engine"] = None
-    st.session_state["retriever"] = None
-    st.session_state["last_doc_sources"] = []
-    st.session_state["last_rag_no_result"] = False
-    st.session_state["last_rag_question"] = None
-    st.session_state["r2r_ingestion_failed"] = True
-
-    def record_completed_stages():
-        st.session_state[status_state_key] = list(completed_stages)
-
-    _render_status(status_container, completed_stages)
-
-    try:
-        if not clear_remote_documents(st.session_state):
-            raise R2RConnectionError("Could not clean up the previous R2R upload. Retry when its original server is reachable.")
-        client = get_client()
-        if not client.health():
-            raise R2RConnectionError(
-                f"R2R server is not reachable at {client.base_url}. "
-                "Start the R2R server or disable the R2R backend in Settings."
-            )
-        completed_stages.append("R2R Connection OK")
-        record_completed_stages()
-        _render_status(status_container, completed_stages)
-
-        func.validate_uploaded_files(uploaded_files)
-        save_dir = tempfile.mkdtemp(prefix="r2r_", dir=session_directory("data"))
-        uploaded_paths = []
-        try:
-            for uploaded_file in uploaded_files:
-                with st.spinner(f"Processing {uploaded_file.name}..."):
-                    func.save_uploaded_file(uploaded_file, save_dir)
-                    uploaded_paths.append(
-                        os.path.join(save_dir, uploaded_file.name)
-                    )
-            completed_stages.append("Files Uploaded")
-            record_completed_stages()
-            _render_status(status_container, completed_stages)
-
-            st.session_state["r2r_document_origin"] = {
-                "base_url": client.base_url, "api_key": st.session_state.get("r2r_api_key") or ""}
-            st.session_state["r2r_document_ids"] = []
-            document_ids = client.upload_documents(uploaded_paths, st.session_state["r2r_document_ids"])
-            if not document_ids:
-                raise R2RConnectionError(
-                    "R2R did not return any document ids after upload."
-                )
-            st.session_state["r2r_document_ids"] = document_ids
-            st.session_state["query_engine"] = None
-            st.session_state["retriever"] = None
-            st.session_state["r2r_ingestion_failed"] = False
-            st.session_state["rag_history_start"] = len(st.session_state.get("messages", []))
-            completed_stages.append("Documents Indexed by R2R")
-            record_completed_stages()
-            _render_completed(status_container, completed_stages)
-        finally:
-            if os.path.isdir(save_dir):
-                if not func.remove_dir_retry(save_dir):
-                    logs.log.warning(
-                        "Unable to delete R2R upload directory, "
-                        "you may want to clean-up manually."
-                    )
-    except Exception as err:
-        logs.log.error(f"R2R ingestion failed: {str(err)}")
-        st.exception(err)
-        clear_remote_documents(st.session_state)
-        return err
-
-
-def r2r_chat(prompt: str):
-    """Query the R2R backend with the ingested documents.
-
-    Yields the complete answer text (R2R's RAG endpoint is not streamed by
-    this integration). Falls back to a clear error message on failure.
-    """
-    try:
-        if not r2r_is_ready(st.session_state):
-            raise R2RConnectionError("No ready documents for the currently selected R2R server.")
-        client = get_client()
-        document_ids = st.session_state.get("r2r_document_ids") or []
-        answer = client.rag(prompt, document_ids=document_ids or None)
-        yield answer
-    except Exception as err:
-        logs.log.error(f"R2R chat error: {str(err)}")
-        yield (
-            f"⚠️ **R2R error:** {err}. "
-            "Check that the R2R server is running and reachable."
-        )
-        return

@@ -12,6 +12,20 @@ from utils.logs import setup_logger
 
 
 class RuntimeTests(unittest.TestCase):
+    def test_request_context_is_explicit_and_restored_after_nested_failure(self):
+        from utils.runtime import st, request_state
+        with self.assertRaises(RuntimeError):
+            _ = st.session_state
+        first = {"owner": "first"}
+        with request_state(first):
+            with self.assertRaises(ValueError):
+                with request_state({"owner": "second"}):
+                    self.assertEqual(st.session_state["owner"], "second")
+                    raise ValueError("failed request")
+            self.assertIs(st.session_state, first)
+        with self.assertRaises(RuntimeError):
+            _ = st.session_state
+
     def test_model_discovery_has_a_bounded_request_timeout(self):
         from utils.ollama import create_client
 
@@ -52,26 +66,13 @@ class RuntimeTests(unittest.TestCase):
         ):
             with self.subTest(value=value):
                 result = subprocess.run(
-                    [sys.executable, "-c", "from utils.browser_settings import "
-                     "normalize_ollama_endpoint; print(normalize_ollama_endpoint(None))"],
+                    [sys.executable, "-c", "from backend.app import Settings; "
+                     "print(Settings().endpoint)"],
                     cwd=Path(__file__).resolve().parents[1],
                     env={**os.environ, "DOCMIND_OLLAMA_ENDPOINT": value},
                     capture_output=True, text=True, timeout=30, check=True,
                 )
                 self.assertEqual(result.stdout.strip(), expected)
-
-    def test_app_renders_when_model_server_is_unavailable(self):
-        from streamlit.testing.v1 import AppTest
-
-        with patch("components.page_state.get_models", return_value=[]), patch(
-            "components.page_state.get_embedding_models", return_value=[]
-        ), patch("utils.ollama.get_models", return_value=[]), patch(
-            "utils.ollama.get_embedding_models", return_value=[]
-        ):
-            app = AppTest.from_file(
-                str(Path(__file__).resolve().parents[1] / "main.py")
-            ).run(timeout=30)
-        self.assertEqual(list(app.exception), [])
 
     @unittest.skipUnless(sys.platform == "win32", "Windows launcher")
     def test_launcher_uses_project_directory_and_does_not_take_occupied_port(self):
@@ -79,6 +80,8 @@ class RuntimeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="docmind-launch-test-") as directory:
             root = Path(directory)
             (root / "run.ps1").write_text(source.read_text(), encoding="utf-8")
+            (root / "frontend/dist").mkdir(parents=True)
+            (root / "frontend/dist/index.html").write_text("Built React UI")
             (root / "python.ps1").write_text(
                 "@{cwd=(Get-Location).Path; argv=$args} | ConvertTo-Json -Compress | "
                 "Set-Content -LiteralPath $env:LAUNCH_RESULT\nexit 0", encoding="utf-8"
@@ -93,7 +96,7 @@ class RuntimeTests(unittest.TestCase):
                 "[pscustomobject]@{Source=(Join-Path $env:LAUNCH_ROOT 'pipenv.ps1')} }\n"
                 "function Get-NetTCPConnection { param($LocalPort, $State, $ErrorAction) "
                 "if ($env:OCCUPIED -eq '1') { [pscustomobject]@{OwningProcess=42} } }\n"
-                "& (Join-Path $env:LAUNCH_ROOT 'run.ps1') -Port 8520\n",
+                "& (Join-Path $env:LAUNCH_ROOT 'run.ps1') -Port 8766\n",
                 encoding="utf-8",
             )
             result_file = root / "result.json"
@@ -108,7 +111,9 @@ class RuntimeTests(unittest.TestCase):
 
             launched = json.loads(result_file.read_text(encoding="utf-8-sig"))
             self.assertEqual(Path(launched["cwd"]), root)
-            self.assertIn("--server.port=8520", launched["argv"])
+            self.assertIn("uvicorn", launched["argv"])
+            self.assertIn("backend.app:app", launched["argv"])
+            self.assertIn("8766", list(map(str, launched["argv"])))
             result_file.unlink()
             result = subprocess.run(
                 ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(harness)],

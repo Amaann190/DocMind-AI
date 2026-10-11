@@ -14,9 +14,7 @@ from unittest.mock import Mock, patch
 from llama_index.core.embeddings import MockEmbedding
 from llama_index.core.schema import Document, NodeWithScore, TextNode
 
-from components.page_state import perform_project_reset
 from utils import helpers, llama_index as rag, ollama, session_workspace as workspace
-from utils import rag_pipeline as pipeline
 
 
 class RetrievalBoundaryTests(unittest.TestCase):
@@ -73,38 +71,6 @@ class RetrievalBoundaryTests(unittest.TestCase):
 
 
 class SessionIsolationTests(unittest.TestCase):
-    def test_pipeline_records_which_source_owns_the_active_index(self):
-        state = {}
-        try:
-            for source in ("file_ingestion_stages", "website_ingestion_stages", "github_ingestion_stages"):
-                with self.subTest(source=source), patch.object(pipeline, "st", SimpleNamespace(session_state=state)), \
-                        patch.object(workspace, "st", SimpleNamespace(session_state=state)), \
-                        patch.object(pipeline, "_rag_pipeline", return_value=None):
-                    pipeline.rag_pipeline(status_state_key=source)
-                    self.assertEqual(state["active_ingestion_source"], source)
-        finally:
-            workspace.clear_session_workspace(state)
-
-    def test_failed_import_cleans_its_files_and_invalidates_old_corpus(self):
-        state = {"query_engine": object(), "retriever": object(), "documents": ["old"]}
-        try:
-            parent = workspace.session_directory("data", state)
-            sibling = parent / "unrelated.txt"
-            sibling.write_text("KEEP")
-            def fail(*args):
-                (Path(args[-1]) / "upload.txt").write_text("PRIVATE")
-                raise RuntimeError("test import failure")
-            with patch.object(pipeline, "st", SimpleNamespace(session_state=state)), \
-                    patch.object(workspace, "st", SimpleNamespace(session_state=state)), \
-                    patch.object(pipeline, "_rag_pipeline", side_effect=fail):
-                with self.assertRaisesRegex(RuntimeError, "test import failure"):
-                    pipeline.rag_pipeline()
-            self.assertEqual(list(parent.iterdir()), [sibling])
-            self.assertIsNone(state["query_engine"])
-            self.assertIsNone(state["retriever"])
-        finally:
-            workspace.clear_session_workspace(state)
-
     def test_query_engine_uses_explicit_session_chat_model(self):
         from llama_index.core.llms import MockLLM
         llm = MockLLM(max_tokens=32)
@@ -165,7 +131,7 @@ class SessionIsolationTests(unittest.TestCase):
             second_path = workspace.session_directory("data", second) / "same.txt"
             first_path.write_text("FIRST")
             second_path.write_text("SECOND")
-            perform_project_reset(first)
+            workspace.clear_session_workspace(first)
             self.assertFalse(first_path.exists())
             self.assertEqual(second_path.read_text(), "SECOND")
         finally:

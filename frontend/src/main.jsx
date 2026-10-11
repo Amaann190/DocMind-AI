@@ -410,7 +410,7 @@ function App() {
     bottom.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [workspace?.messages?.length, streaming]);
   useEffect(() => {
-    if (!busy && !workspace?.busy) return;
+    if (streaming || (!busy && !workspace?.busy && !workspace?.naming)) return;
     const timer = setInterval(
       () =>
         api("/state")
@@ -423,7 +423,7 @@ function App() {
       1000,
     );
     return () => clearInterval(timer);
-  }, [busy, workspace?.busy]);
+  }, [busy, streaming, workspace?.busy, workspace?.naming]);
   async function action(path, options, success) {
     setBusy(true);
     setError("");
@@ -524,6 +524,8 @@ function App() {
   const disabled = busy || streaming || workspace?.busy;
   const sources = workspace?.sources || [],
     messages = workspace?.messages || [];
+  const readySourceCount = sources.filter((source) => source.status === "ready").length;
+  const hasReadySources = Boolean(workspace?.has_index && readySourceCount);
   const settings = workspace?.settings;
   const conversations = (chatResults ?? workspace?.conversations ?? []).filter(
     (chat) => chat.started,
@@ -821,7 +823,7 @@ function App() {
                   <strong>Some files couldn’t be read</strong>
                   {workspace.warnings.map((w, i) => (
                     <p key={i}>
-                      {w.file}: {w.error}
+                      {typeof w === "string" ? w : `${w.file}: ${w.error}`}
                     </p>
                   ))}
                 </div>
@@ -895,25 +897,25 @@ function App() {
                           <div>
                             <span className="eyebrow">START WITH A SOURCE</span>
                             <h3>
-                              {sources.length
+                              {hasReadySources
                                 ? "Your knowledge is ready."
                                 : "Good questions start here."}
                             </h3>
                             <p>
-                              {sources.length
-                                ? `${sources.length} source${sources.length === 1 ? "" : "s"} ready to explore. Ask your first question below.`
+                              {hasReadySources
+                                ? `${readySourceCount} source${readySourceCount === 1 ? "" : "s"} ready to explore. Ask your first question below.`
                                 : "Add a document, a website, or a repository. We’ll help you make sense of it."}
                             </p>
                             <button
                               className="text-link"
                               onClick={() =>
-                                sources.length
+                                hasReadySources
                                   ? input.current?.focus()
                                   : setModal("import")
                               }
                               disabled={disabled}
                             >
-                              {sources.length
+                              {hasReadySources
                                 ? "Ask a question"
                                 : "Add your first source"}
                               <ArrowRight size={16} />
@@ -922,7 +924,7 @@ function App() {
                         </div>
                         <div className="suggestion-heading">
                           <span>A LITTLE INSPIRATION</span>
-                          {!sources.length && (
+                          {!hasReadySources && (
                             <button disabled={disabled} onClick={sample}>
                               Try a sample document
                               <ArrowUpRight size={13} />
@@ -1086,7 +1088,7 @@ function App() {
                         ref={input}
                         aria-label="Ask DocMind"
                         placeholder={
-                          sources.length
+                          hasReadySources
                             ? "Ask anything about your sources…"
                             : "What would you like to understand?"
                         }
@@ -1158,7 +1160,7 @@ function App() {
                     <div className="composer-note">
                       <span>
                         <span className="tiny-dot" />
-                        {sources.length
+                        {hasReadySources
                           ? "Answers grounded in your sources"
                           : "Add sources for document-grounded answers"}
                       </span>

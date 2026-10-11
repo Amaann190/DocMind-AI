@@ -53,7 +53,7 @@ class EvaluationTests(unittest.TestCase):
         self.assertFalse(all(grade_answer(answer, [], refusal=True).values()))
 
     def test_hash_embeddings_are_stable_across_processes(self):
-        script = "import json,streamlit as st; from eval_harness import _setup_hash_embeddings; _setup_hash_embeddings(); print(json.dumps(st.session_state['embedding_model'].get_query_embedding('Refund policy 30 days')))"
+        script = "import json; from utils.runtime import st, request_state; from eval_harness import _setup_hash_embeddings;\nwith request_state({}):\n _setup_hash_embeddings(); print(json.dumps(st.session_state['embedding_model'].get_query_embedding('Refund policy 30 days')))"
         vectors = []
         for seed in ("1", "2"):
             result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True,

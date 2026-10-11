@@ -90,12 +90,12 @@ ALL_SUITES = ["ingestion", "retrieval", "generation", "performance", "robustness
 
 
 # ---------------------------------------------------------------------------
-# Helpers: streamlit state, embeddings
+# Helpers: request state, embeddings
 # ---------------------------------------------------------------------------
 
-def _setup_streamlit_state():
+def _setup_runtime_state():
     try:
-        import streamlit as st
+        from utils.runtime import st
         defaults = {
             "top_k": 3,
             "similarity_cutoff": 0.3,
@@ -139,7 +139,7 @@ def _try_real_embeddings(endpoint, model):
 
 
 def _setup_hash_embeddings():
-    import streamlit as st
+    from utils.runtime import st
     from llama_index.core.embeddings import BaseEmbedding
     from utils.llama_index import _bm25_tokens
 
@@ -220,7 +220,7 @@ def summarize_results(name, results, **extra):
 def suite_ingestion(mock: bool):
     """Ingestion pipeline: file types, exclusions, chunking, dedup, title, cache."""
     print("\n[Suite] Ingestion")
-    import streamlit as st
+    from utils.runtime import st
     if st.session_state.get("embedding_model") is None:
         if mock:
             _setup_hash_embeddings()
@@ -364,7 +364,7 @@ def suite_ingestion(mock: bool):
 
 def suite_retrieval(mock: bool, endpoint="http://localhost:11434", model="nomic-embed-text:latest"):
     print("\n[Suite] Retrieval (plain vs hybrid)")
-    _setup_streamlit_state()
+    _setup_runtime_state()
     if mock:
         _setup_hash_embeddings()
     else:
@@ -422,7 +422,7 @@ def suite_retrieval(mock: bool, endpoint="http://localhost:11434", model="nomic-
         shutil.rmtree(tmpdir, ignore_errors=True)
 
 
-def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic-embed-text:latest", chat_model="qwen2.5:0.5b"):
+def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic-embed-text:latest", chat_model="llama3:latest"):
     print("\n[Suite] Generation (RAG answer quality)")
     results = []
 
@@ -449,13 +449,13 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
     def t_no_hallucination():
         from unittest.mock import patch, MagicMock
         from utils import ollama as oll_mod
-        import streamlit as st
+        from utils.runtime import st
         # fake retriever that returns []
         fake_qe = MagicMock()
         fake_qe._retriever = MagicMock()
         fake_qe._retriever.retrieve.return_value = []
         # ensure st.session_state has needed keys
-        _setup_streamlit_state()
+        _setup_runtime_state()
         st.session_state["retriever"] = fake_qe._retriever
         st.session_state["query_engine"] = fake_qe
         # mock LLM to ensure not called
@@ -469,9 +469,16 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
 
     # 4 — tone presets produce distinct prompts
     def t_tone():
-        from components.chatbox import _style_to_prompt, ANSWER_STYLE_OPTIONS
-        prompts = {s: _style_to_prompt(s) for s in ANSWER_STYLE_OPTIONS}
-        ok = len(set(prompts.values())) == len(ANSWER_STYLE_OPTIONS)
+        from backend.app import Settings, configure, new_session
+        from typing import get_args
+        styles = get_args(Settings.model_fields["style"].annotation)
+        state = new_session()
+        prompts = {}
+        for style in styles:
+            state["config"] = Settings(style=style)
+            configure(state)
+            prompts[style] = state["system_prompt"]
+        ok = len(set(prompts.values())) == len(styles)
         return ok, f"presets={len(prompts)} distinct={ok}"
     check("tone_presets", t_tone)
 
@@ -480,8 +487,8 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
         from unittest.mock import patch, MagicMock
         from llama_index.core.schema import TextNode, NodeWithScore
         from utils import ollama as oll_mod
-        import streamlit as st
-        _setup_streamlit_state()
+        from utils.runtime import st
+        _setup_runtime_state()
         st.session_state["messages"] = [
             {"role": "user", "content": "What is refund policy?"},
             {"role": "assistant", "content": "30 days."},
@@ -523,7 +530,7 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
 
     # 1 — ingestion speed (index 5 docs)
     def t_ingest_speed():
-        _setup_streamlit_state()
+        _setup_runtime_state()
         if mock:
             _setup_hash_embeddings()
         else:
@@ -546,7 +553,7 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
     # 2 — cache hit is faster than cold build
     def t_cache_speed():
         from utils.llama_index import load_documents, create_index, index_cache_dir, load_index_from_cache, persist_index_to_cache
-        _setup_streamlit_state()
+        _setup_runtime_state()
         d = tempfile.mkdtemp()
         try:
             Path(d, "a.txt").write_text(DOCS["refund_policy.txt"], encoding="utf-8")
@@ -565,7 +572,7 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
 
     # 3 — retrieval latency hybrid vs plain (from retrieval suite) — lightweight check
     def t_retrieval_latency():
-        _setup_streamlit_state()
+        _setup_runtime_state()
         d = tempfile.mkdtemp()
         try:
             for n, c in list(DOCS.items())[:3]:
@@ -587,7 +594,7 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
     def t_eco():
         from utils.llama_index import _context_char_budget
         from utils.ollama import _num_predict, _embed_batch_size
-        import streamlit as st
+        from utils.runtime import st
         st.session_state["eco_mode"] = False
         normal_ctx = _context_char_budget(); normal_pred = _num_predict(); normal_batch = _embed_batch_size()
         st.session_state["eco_mode"] = True
@@ -718,27 +725,32 @@ def suite_architecture(mock: bool):
     check = partial(_check, results)
 
     def t_presets():
-        from components.tabs.settings import BACKEND_PRESETS
-        ok = "Ollama" in BACKEND_PRESETS and "OpenAI" in BACKEND_PRESETS and "LM Studio (Local AI)" in BACKEND_PRESETS
-        return ok, f"presets={list(BACKEND_PRESETS.keys())}"
+        from backend.app import Settings
+        from typing import get_args
+        presets = get_args(Settings.model_fields["provider"].annotation)
+        ok = {"Ollama", "OpenAI", "LM Studio (Local AI)"}.issubset(presets)
+        return ok, f"presets={presets}"
     check("backend_presets", t_presets)
 
     def t_export():
-        from components.tabs.settings import chat_history_docx
-        data = chat_history_docx((("user", "hello"), ("assistant", "hi there")))
+        from unittest.mock import patch
+        from backend.app import export
+        with patch("backend.app.get_session", return_value={"messages": [
+            {"role": "user", "content": "hello"}, {"role": "assistant", "content": "hi there"}]}):
+            data = export(None).body
         ok = len(data) > 1000 and data[:2] == b"PK"  # docx is zip
         return ok, f"docx {len(data)} bytes"
     check("export_docx", t_export)
 
-    def t_browser_settings():
-        from utils.browser_settings import PERSISTED_SETTINGS_HASH_STATE_KEY
-        ok = isinstance(PERSISTED_SETTINGS_HASH_STATE_KEY, str) and len(PERSISTED_SETTINGS_HASH_STATE_KEY) > 5
-        return ok, f"key={PERSISTED_SETTINGS_HASH_STATE_KEY}"
-    check("browser_settings_keys", t_browser_settings)
+    def t_api_settings():
+        from backend.app import Settings
+        public = Settings(api_key="private").model_dump(exclude={"api_key", "r2r_key"})
+        return "api_key" not in public and public["provider"] == "Ollama", "Public settings exclude credentials"
+    check("api_settings", t_api_settings)
 
     def t_ollama_helpers():
         from utils.ollama import _estimate_tokens, _trim_history
-        _setup_streamlit_state()
+        _setup_runtime_state()
         est = _estimate_tokens("hello world")
         ok1 = est == 2 or est == 3
         # trim history keeps most recent
@@ -787,14 +799,20 @@ def suite_architecture(mock: bool):
 # Orchestrator
 # ---------------------------------------------------------------------------
 
-def run_full_eval(endpoint="http://localhost:11434", model="nomic-embed-text:latest",
-                  use_mock=False, suites=None, chat_model="qwen2.5:0.5b"):
-    import streamlit as st
+def run_full_eval(*args, **kwargs):
+    from utils.runtime import request_state
+    with request_state({}):
+        return _run_full_eval(*args, **kwargs)
+
+
+def _run_full_eval(endpoint="http://localhost:11434", model="nomic-embed-text:latest",
+                  use_mock=False, suites=None, chat_model="llama3:latest"):
+    from utils.runtime import st
     from utils.session_workspace import clear_session_workspace
 
     saved_state = dict(st.session_state)
     st.session_state.clear()
-    _setup_streamlit_state()
+    _setup_runtime_state()
     st.session_state.update(ollama_endpoint=endpoint, ollama_embedding_model=model,
                             selected_model=chat_model)
     target = suites or ALL_SUITES
@@ -886,7 +904,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="DocMind full-project eval harness")
     parser.add_argument("--endpoint", default="http://localhost:11434", help="Ollama endpoint")
     parser.add_argument("--model", default="nomic-embed-text:latest", help="Embedding model")
-    parser.add_argument("--chat-model", default="qwen2.5:0.5b", help="Exact installed Ollama chat model")
+    parser.add_argument("--chat-model", default="llama3:latest", help="Exact installed Ollama chat model")
     parser.add_argument("--mock", action="store_true", help="Use hash embeddings + mocked LLM (no Ollama)")
     parser.add_argument("--quick", action="store_true", help="Alias for --mock")
     parser.add_argument("--suite", choices=ALL_SUITES, help="Run only one suite")

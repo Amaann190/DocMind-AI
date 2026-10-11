@@ -1,11 +1,12 @@
 """Local conversation storage. Never store credentials or original uploads here."""
 import json
+import os
 import sqlite3
 import time
 from contextlib import contextmanager
 from pathlib import Path
 
-DB_PATH = Path(__file__).resolve().parents[1] / "data" / "react-history.sqlite3"
+DB_PATH = Path(os.environ.get("DOCMIND_DATA_DIR") or Path(__file__).resolve().parents[1] / "data") / "react-history.sqlite3"
 
 
 @contextmanager

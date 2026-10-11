@@ -171,6 +171,8 @@ class DocumentFormatTests(unittest.TestCase):
                     self.assertIn(f"approval_code is {MARKER}", text)
                 if path.suffix in {".xls", ".xlsx"}:
                     self.assertIn("SECOND-SHEET-9284", text)
+                    self.assertEqual({doc.metadata["sheet_name"] for doc in documents}, {"Sheet", "Second sheet"})
+                    self.assertIn("Sheet: Second sheet", text)
 
     def test_repository_directory_uses_same_readers(self):
         documents = load_documents(str(self.folder))
@@ -185,6 +187,39 @@ class DocumentFormatTests(unittest.TestCase):
 
 
 class ReaderSafetyTests(unittest.TestCase):
+    def test_excel_preserves_formulas_cached_zero_and_sheet_identity(self):
+        from openpyxl import Workbook
+        from utils.document_readers import ExcelReader
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "formulas.xlsx"
+            workbook = Workbook()
+            workbook.active.title = "North region"
+            workbook.active.append(["Amount", "Computed"])
+            workbook.active.append([7, "=A2*6"])
+            workbook.active.append([0, "=A3*6"])
+            workbook.create_sheet("South region").append(["SOUTH-9284"])
+            workbook.create_sheet("Empty")
+            workbook.save(path)
+            workbook.close()
+            # openpyxl does not calculate formulas; emulate Excel's saved result.
+            with zipfile.ZipFile(path) as archive:
+                parts = {name: archive.read(name) for name in archive.namelist()}
+            parts["xl/worksheets/sheet1.xml"] = parts["xl/worksheets/sheet1.xml"].replace(
+                b"<f>A3*6</f><v></v>", b"<f>A3*6</f><v>0</v>")
+            with zipfile.ZipFile(path, "w") as archive:
+                for name, data in parts.items():
+                    archive.writestr(name, data)
+            docs = load_documents(directory, input_files=[str(path)])
+            self.assertEqual([doc.metadata["sheet_name"] for doc in docs], ["North region", "South region"])
+            self.assertIn("B2: Formula =A2*6 (result unavailable;", docs[0].text)
+            self.assertIn("B3: Formula =A3*6 (saved result: 0)", docs[0].text)
+            self.assertIn("Sheet: South region", docs[1].text)
+            blank = Workbook()
+            blank.save(path)
+            blank.close()
+            self.assertEqual(ExcelReader().load_data(path), [])
+
     def test_unicode_text_and_xml_entities(self):
         from defusedxml.common import EntitiesForbidden
         with tempfile.TemporaryDirectory() as directory:

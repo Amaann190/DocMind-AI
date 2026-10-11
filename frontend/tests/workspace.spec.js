@@ -1,5 +1,55 @@
 import { test, expect } from "@playwright/test";
 
+test("a background topic title refreshes without losing a draft", async ({ page }) => {
+  const response = await page.request.post("/api/session", { headers: { "X-DocMind-Client": "react" } });
+  const state = await response.json();
+  const initial = { ...state, naming: true, title: "Can you explain how photosynthesis works?",
+    conversations: [{ ...state.conversations[0], title: "Can you explain how photosynthesis works?", started: 1 }],
+    messages: [{ role: "user", content: "Can you explain how photosynthesis works?" },
+      { role: "assistant", content: "Plants convert sunlight into energy.", sources: [] }] };
+  await page.route("**/api/session", (route) => route.fulfill({ json: initial }));
+  await page.route("**/api/state", (route) => route.fulfill({ json: {
+    ...initial, naming: false, title: "How Photosynthesis Works",
+    conversations: [{ ...initial.conversations[0], title: "How Photosynthesis Works" }],
+  } }));
+  await page.goto("/");
+  const composer = page.getByRole("textbox", { name: "Ask DocMind" });
+  await composer.fill("Keep my next question");
+  await expect(page.locator(".recent-chat")).toHaveText("How Photosynthesis Works");
+  await expect(composer).toHaveValue("Keep my next question");
+  await expect(page.getByRole("button", { name: "Send message" })).toBeEnabled();
+});
+
+test("failed uploads show the reason and only indexed sources count as ready", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("textbox", { name: "Ask DocMind" })).toBeVisible();
+  const response = await page.request.post("/api/upload", {
+    headers: { "X-DocMind-Client": "react" },
+    multipart: { files: { name: "empty (1).txt", mimeType: "text/plain", buffer: Buffer.from("") } },
+  });
+  expect(response.ok()).toBeTruthy();
+  const failed = await response.json();
+  expect(failed.has_index).toBe(false);
+  expect(failed.warnings[0].file).toBe("empty (1).txt");
+  await page.reload();
+  await expect(page.locator(".warning-banner")).toContainText("empty (1).txt:");
+  await expect(page.locator(".warning-banner")).toContainText("No readable text");
+  await expect(page.locator(".start-card")).not.toContainText("Your knowledge is ready");
+  await expect(page.locator(".composer-note")).toContainText("Add sources for document-grounded answers");
+  await expect(page.locator(".source-list")).toContainText("Needs attention");
+
+  // A mixed workspace must count the usable source, not the failed upload.
+  const mixed = { ...failed, has_index: true, sources: [...failed.sources,
+    { id: "ready", name: "good.txt", status: "ready", kind: "file", characters: 12, preview: "Hello world." }] };
+  await page.route("**/api/session", (route) => route.fulfill({ json: mixed }));
+  await page.route("**/api/state", (route) => route.fulfill({ json: mixed }));
+  await page.reload();
+  await expect(page.locator(".start-card")).toContainText("1 source ready to explore");
+  await expect(page.locator(".source-list button")).toHaveCount(2);
+  await expect(page.locator(".composer-note")).toContainText("Answers grounded in your sources");
+  await page.request.delete("/api/session", { headers: { "X-DocMind-Client": "react" } });
+});
+
 test("panels close and reopen while workspace stays reachable in short windows", async ({
   page,
 }) => {

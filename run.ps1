@@ -1,5 +1,5 @@
 # Run from the project directory, even when invoked from another directory.
-param([ValidateRange(1, 65535)][int]$Port = 8501)
+param([ValidateRange(1, 65535)][int]$Port = 8765)
 $ErrorActionPreference = "Stop"
 $env:PYTHONUTF8 = "1"
 $env:PYTHONIOENCODING = "utf-8"
@@ -19,10 +19,11 @@ try {
         }
     }
     if (Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue) {
-        throw "Port $Port is already in use. Stop that app yourself or run .\run.ps1 -Port 8502."
+        throw "Port $Port is already in use. Stop that app yourself or run .\run.ps1 -Port 8766."
     }
     Write-Host "Starting DocMind at http://localhost:$Port. Configure the model server in Settings."
-    & $projectPython -m streamlit run main.py "--server.port=$Port" --server.address=127.0.0.1 --server.fileWatcherType=none
+    if (-not (Test-Path -LiteralPath 'frontend\dist\index.html')) { throw 'Build the UI first: cd frontend; npm ci; npm run build' }
+    & $projectPython -m uvicorn backend.app:app --host 127.0.0.1 --port $Port
     $appExitCode = $LASTEXITCODE
 } finally {
     Pop-Location

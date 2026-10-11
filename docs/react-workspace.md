@@ -1,8 +1,7 @@
-# DocMind Workspace: React edition
+# DocMind Workspace: React and FastAPI
 
-The React edition was developed in a separate `react-redesign` checkout and is now
-included in the repository's `main` release. The original local Streamlit checkout
-was preserved, and Streamlit remains available in this repository.
+React/Vite is the project's only web interface. FastAPI serves the production
+website and the processing API. The user's separate original checkout is preserved.
 
 ## Run
 
@@ -18,17 +17,16 @@ cd frontend
 npm ci
 npm run build
 cd ..
-./run-react.ps1
+./run.ps1
 ```
 
 Open **http://127.0.0.1:8765**. The launcher uses one server for the built React
-application and its API. It does not stop or replace Streamlit on port 8501.
-Use `./run-react.ps1 -Port 8766` to choose another port.
+application and its API.
+Use `./run.ps1 -Port 8766` to choose another port.
 
-The existing Docker image/Compose launcher still runs the retained Streamlit
-edition. Its CPU limit is configurable with `DOCMIND_CPUS` (default 4); the GitHub
-container smoke check sets it to 2 to fit the runner. Use the React launcher above
-for the new website. Pushing the repository does not host a public website.
+Docker/Compose builds this React interface and serves it through FastAPI on 8765.
+Chat history uses a persistent volume. See [setup](setup.md) for storage and overrides.
+Pushing the repository does not host a public website.
 
 On other platforms, after building the frontend:
 
@@ -46,8 +44,7 @@ and `nomic-embed-text:latest`. Provider presets do not install models or servers
 ## Design and features
 
 - A warm ivory canvas, dark olive navigation, orange accents and locally bundled
-  DM Sans/Manrope typography. No Streamlit widgets, reruns or browser component
-  are used by the React interface.
+  DM Sans/Manrope typography bundled locally with the React interface.
 - A moon/sun control in the header switches light and dark mode. The first visit
   follows the device theme; an explicit choice is saved locally and applied before
   rendering on later visits. Theme switching also works with browser storage blocked.
@@ -57,7 +54,7 @@ and `nomic-embed-text:latest`. Provider presets do not install models or servers
   HTTPS website import, public GitHub import, and an explicitly labeled sample.
 - Incremental streamed answers, copy, Word export, answer style and model controls.
 - Automatically saved conversations with rename, content/title search, reopen and delete.
-  Titles use the first 70 characters of the first question until manually renamed.
+  Titles summarize the opening topic after the first answer; manual names are preserved.
   Empty drafts are reused and stay out of saved history until the first message.
 - Individual source retry/reindex, replacement and removal from each source preview.
   Failed files stay visible for recovery; a failed replacement keeps the working source.
@@ -98,7 +95,7 @@ in-memory remote ownership tracking, so clean up R2R sources before stopping it.
 - `backend/history.py`: Python standard-library SQLite storage for conversation titles,
   messages and citation passages. No new database service or dependency is required.
 - `utils/runtime.py`: a small context-local state adapter. Shared reader/retrieval
-  code reads the current API session; legacy Streamlit calls retain their own state.
+  code requires an explicit API/evaluation request context; there is no global UI fallback.
 - `utils/document_readers.py`, `utils/helpers.py`, `utils/llama_index.py` and
   `utils/ollama.py`: reused extraction, validation, retrieval and generation logic.
 
@@ -125,49 +122,11 @@ endpoint you choose; websites, GitHub and remote providers require networking.
 
 ## Verification
 
-```powershell
-pipenv run python -m unittest discover -s tests
-pipenv run python -m py_compile backend/app.py utils/runtime.py main.py components/page_state.py components/tabs/settings.py utils/browser_settings.py utils/ollama.py
-cd frontend
-npm run build
-npx playwright install chromium
-npm run test:ui
-# Optional live test: requires the API running plus installed Ollama models.
-$env:DOCMIND_LIVE = '1'
-npm run test:ui
-```
+See [runtime verification](runtime-validation.md) for the current test commands.
+The backend regressions cover source lifecycle, history, cancellation, title generation,
+session isolation and ingestion safety. Playwright covers the rendered React workflows.
+Live model checks must be requested explicitly; mocked checks do not measure answer quality.
 
-The browser suite expects the application at port 8765. Set
-`PLAYWRIGHT_CHROME_PATH` to use a specific local Chrome executable instead of
-Playwright's browser.
-
-On 2026-10-10, **199 Python tests passed**, with successful compilation and a
-production frontend build. **All six browser tests passed**, including the optional
-live Ollama workflow and its individual source reindex, replacement and removal checks.
-The locked environment's dependency consistency was verified during initial setup.
-
-The dark-mode follow-up passed seven browser checks (the live-model test was not
-rerun for this visual change), including device-theme defaults, saved preference,
-keyboard switching, unavailable browser storage, dark dialogs and mobile layouts.
-
-Desktop/mobile navigation, persisted settings, import dialogs,
-streamed answer display and source previews were checked in a real browser. A live
-TXT upload through Ollama returned the correct $24,000 budget with a source reference;
-Word export and source removal passed. Saved-chat rename/search/reopen/delete, retained
-panel widths, pointer/keyboard resizing, stop/regenerate controls, and highlighted
-page-labelled citations were also exercised. The screenshot evidence is saved locally in
-`output/react-*.png` (not committed). API regressions cover real extraction/indexing
-with controlled models, isolation, invalid paths/origins, settings validation,
-concurrent requests and remote cleanup failure. New API checks cover history after a
-server-state restart, cross-session history access, replacement rollback, failed-file
-recovery, remote individual deletion, cancellation and regeneration. See
-`feature-api.log`, `features-regression.log` and frontend test results for local runs.
-
-The existing format/retrieval tests remain applicable. No new claims are made about
-live R2R/LM Studio/TabbyAPI servers, Docker deployment or hosted CI. Their independent
-verification is unchanged by a UI migration. OCR and arbitrary-document accuracy
-remain outside the verified scope.
-
-Implementation references: [React with Vite](https://react.dev/learn/build-a-react-app-from-scratch),
-[FastAPI file uploads](https://fastapi.tiangolo.com/tutorial/request-files/) and
-[streaming responses](https://fastapi.tiangolo.com/advanced/stream-data/).
+Chat names summarize the opening exchange using the selected chat model, with a short
+timeout and shortened-message fallback. Naming runs in the background and preserves
+manual names. R2R chats use the fallback instead of another configured chat provider.

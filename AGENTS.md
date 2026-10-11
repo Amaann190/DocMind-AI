@@ -1,93 +1,50 @@
 # AGENTS.md
 
-Guidance for AI coding agents working in this repository.
+## Project
+DocMind is a React/Vite frontend with a Python FastAPI backend for document RAG.
+Use the React worktree for changes; preserve the user's separate original checkout.
 
-## React and retained Streamlit editions
+- `frontend/src/main.jsx`: website and browser settings.
+- `backend/app.py`: API, sessions, imports, chat and source lifecycle.
+- `backend/history.py`: SQLite transcripts and titles.
+- `utils/`: shared ingestion, model clients and retrieval.
+- `tests/` and `frontend/tests/`: backend and browser regressions.
 
-The repository includes `frontend/` (React/Vite) and `backend/app.py` (FastAPI). Use
-`run-react.ps1` for the new UI on port 8765. Preserve the original local checkout.
-The user authorized publishing the React edition to `main`. See `docs/react-workspace.md` for setup and UI
-verification. Keep API request state isolated through `utils/runtime.py`; never
-replace global Streamlit state with an API session. The legacy notes below still
-apply to retained Streamlit functionality and shared ingestion safety.
-
-## Project Overview
-
-DocMind is a Streamlit application for offline retrieval augmented generation with Ollama, LlamaIndex, local files, GitHub repositories, and websites.
-
-Primary entry points:
-
-- `main.py`: Streamlit app bootstrap.
-- `components/`: Streamlit UI pieces.
-- `utils/`: ingestion, Ollama, browser settings, and RAG pipeline helpers.
-- `tests/`: local unit tests.
-
-## Setup
-
-Use the project environment rather than the system Python:
+## Setup and verification
+Use Python 3.13 and Node 22, the project virtual environment and locked dependencies.
 
 ```bash
-pip install pipenv
-pipenv install
-pipenv run streamlit run main.py
+pipenv sync --dev
+cd frontend
+npm ci
+npm run build
+cd ..
+pipenv run python -m uvicorn backend.app:app --host 127.0.0.1 --port 8765
 ```
 
-The app expects Python 3.12-3.13 and an Ollama instance. The default Ollama endpoint is `http://localhost:11434`.
-
-## Verification
-
-Run focused tests while iterating, then the full suite before handing off:
+Windows: `./run.ps1` launches the built app. `run-react.ps1` is an alias.
+Run focused tests while iterating, then the retained full suite:
 
 ```bash
 pipenv run python -m unittest discover -s tests
-pipenv run python -m py_compile main.py components/page_state.py components/tabs/settings.py utils/browser_settings.py utils/ollama.py
+pipenv run python -m compileall -q backend utils
+pipenv run ruff check . --select E9,F63,F7,F82
+pipenv run python eval_harness.py --mock --out output/react-evaluation
 ```
 
-For a Streamlit smoke test:
+Build the frontend after UI changes and run Playwright against the running API.
+Health endpoint: `/api/health`. Stop temporary verification servers afterward.
+Docker builds the React frontend and serves it through FastAPI on 8765; verify
+`scripts/check_container.py` inside the read-only Compose service after deployment changes.
 
-```bash
-pipenv run streamlit run main.py --server.headless=true --server.port=8520 --server.address=127.0.0.1
-curl -s http://127.0.0.1:8520/_stcore/health
-```
-
-Stop any smoke-test Streamlit process after checking it.
-
-## Development Notes
-
-- Prefer `rg` for search.
-- Use `apply_patch` for manual edits.
-- Do not revert unrelated local changes. This repo may have ongoing work in many files.
-- Keep UI changes small and consistent with existing Streamlit patterns.
-- Add or update tests for behavior changes, especially validation, persistence, ingestion safety, and model-selection state.
-
-## Browser Settings
-
-Settings persistence uses browser `localStorage` through the local Streamlit component in `utils/browser_storage_component/`.
-
-Important details:
-
-- Persisted settings are defined in `utils/browser_settings.py`.
-- Do not reintroduce query-parameter persistence for settings.
-- Model lists are endpoint-aware; if `ollama_endpoint` changes or is restored from localStorage, chat and embedding model lists should reload for that endpoint.
-- Empty `ollama_endpoint` values should not be restored or saved; the default should remain `http://localhost:11434`.
-
-## GitHub Repository Input
-
-GitHub repo ingestion accepts both:
-
-- `owner/repo`
-- `https://github.com/owner/repo`
-
-Normalize inputs with `utils.helpers.normalize_github_repo()` before validation or cloning. Reject non-GitHub URLs and URLs with extra path segments.
-
-## Security-Sensitive Areas
-
-Be careful when editing:
-
-- File uploads and path handling in `utils.helpers`.
-- Website ingestion and URL validation.
-- GitHub cloning and subprocess calls.
-- Ollama endpoint handling.
-- Any code that writes to disk or fetches remote content.
-
-Tests in `tests/test_security_controls.py` cover several of these guardrails.
+## Rules
+- Prefer rg and apply_patch. Preserve unrelated work.
+- Keep API state inside `request_state` contexts; never add a global session fallback.
+- Run one backend worker; document state is in memory.
+- Browser localStorage holds preferences, not model credentials.
+- Model lists must refresh when the endpoint/provider changes.
+- Empty endpoint values must not replace the default.
+- Normalize GitHub input with `utils.helpers.normalize_github_repo`.
+- Preserve upload/path/archive limits, HTTPS/private-network protection and scoped cleanup.
+- Never execute uploaded notebooks, macros or spreadsheet formulas.
+- Add tests for validation, persistence, ingestion safety and session isolation changes.

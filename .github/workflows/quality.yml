@@ -55,10 +55,9 @@ jobs:
       - name: Compile checked modules
         run: >
           pipenv run python -m py_compile
-          main.py
-          components/page_state.py
-          components/tabs/settings.py
-          utils/browser_settings.py
+          backend/app.py
+          backend/history.py
+          utils/runtime.py
           utils/ollama.py
 
   lint:
@@ -96,4 +95,4 @@ jobs:
         run: docker compose -p docmind-test logs
       - name: Stop test container
         if: always()
-        run: docker compose -p docmind-test down
+        run: docker compose -p docmind-test down -v

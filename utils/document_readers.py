@@ -171,8 +171,55 @@ class DocumentTextReader(BaseReader):
         return [Document(text=text, metadata=metadata)]
 
 
+class ExcelReader(BaseReader):
+    """Keep worksheet identity and formula text without executing workbook code."""
+
+    def load_data(self, file, extra_info=None, **kwargs):
+        from openpyxl import load_workbook
+        from openpyxl.utils import get_column_letter
+
+        documents = []
+
+        def add_sheet(name, rows):
+            lines = []
+            for row_number, row in enumerate(rows, 1):
+                cells = [f"{get_column_letter(column)}{row_number}: {value}"
+                         for column, value in enumerate(row, 1)
+                         if value is not None and str(value).strip()]
+                if cells:
+                    lines.append(" | ".join(cells))
+            if lines:
+                metadata = {**(extra_info or {}), "sheet_name": name}
+                metadata.setdefault("file_name", Path(file).name)
+                documents.append(Document(text=f"Sheet: {name}\n" + "\n".join(lines), metadata=metadata))
+
+        if Path(file).suffix.lower() == ".xls":
+            import pandas as pd
+
+            for name, frame in pd.read_excel(file, sheet_name=None, header=None, engine="xlrd").items():
+                add_sheet(name, frame.fillna("").itertuples(index=False, name=None))
+        else:
+            with closing(load_workbook(file, read_only=True, data_only=False, keep_links=False)) as formulas, \
+                    closing(load_workbook(file, read_only=True, data_only=True, keep_links=False)) as values:
+                for sheet in formulas:
+                    def rows():
+                        for formula_row, value_row in zip(sheet.iter_rows(), values[sheet.title].iter_rows()):
+                            row = []
+                            for cell, cached in zip(formula_row, value_row):
+                                if cell.data_type == "f":
+                                    formula = getattr(cell.value, "text", cell.value)
+                                    result = (f"saved result: {cached.value}" if cached.value is not None
+                                              else "result unavailable; recalculate and save in Excel or LibreOffice")
+                                    row.append(f"Formula {formula} ({result})")
+                                else:
+                                    row.append(cell.value)
+                            yield row
+                    add_sheet(sheet.title, rows())
+        return documents
+
+
 def document_file_extractors():
-    from llama_index.readers.file import DocxReader, EpubReader, PandasExcelReader, PDFReader, PptxReader
+    from llama_index.readers.file import DocxReader, EpubReader, PDFReader, PptxReader
 
     text_reader = DocumentTextReader()
     readers = {extension: text_reader for extension in ALLOWED_UPLOAD_EXTENSIONS}
@@ -181,8 +228,7 @@ def document_file_extractors():
         ".docx": DocxReader(),
         ".epub": EpubReader(),
         ".pptx": PptxReader(raise_on_error=True),
-        # Preserve the first row even in a headerless or single-cell workbook.
-        ".xlsx": PandasExcelReader(pandas_config={"header": None, "engine": "openpyxl"}),
-        ".xls": PandasExcelReader(pandas_config={"header": None, "engine": "xlrd"}),
+        ".xlsx": ExcelReader(),
+        ".xls": ExcelReader(),
     })
     return readers

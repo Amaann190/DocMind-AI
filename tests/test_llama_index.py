@@ -1,4 +1,5 @@
 import unittest
+from utils.runtime import request_state
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -56,6 +57,9 @@ class _FakeOllamaClient:
 
 
 class EmbeddingModelValidationTests(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(request_state({}))
+
     def test_verify_embedding_model_accepts_installed_embedding_model(self):
         with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
             self.assertTrue(
@@ -249,6 +253,9 @@ class _FakeVectorRetriever:
 
 
 class HybridRetrieverCredibilityTests(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(request_state({}))
+
     """Weak vector scores must be backed by a BM25 keyword hit."""
 
     def _retriever(self, vector_scores):
