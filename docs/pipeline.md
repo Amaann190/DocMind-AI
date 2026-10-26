@@ -13,6 +13,15 @@ DocMind has a React/Vite frontend, a FastAPI backend and shared Python processin
    the selected chat model. Answers stream to React with citation data.
 7. SQLite stores transcript text, title and citation passages.
 
+Local document chat expands referential follow-ups with up to three recent user
+questions before searching. Long earlier answers are shortened to preserve their
+questions within the context budget. Source changes and turns explicitly sent
+without documents are excluded; earlier model answers are never retrieval evidence.
+Website ingestion retains absolute links and the main page content. Index chunks
+carry their section headings, and an explicitly requested section takes precedence
+over neighboring categories. Existing website sources need to be imported again
+after this ingestion change.
+
 `utils/runtime.py` supplies explicit context-local state through `request_state`.
 There is no global UI/session fallback. Every API operation and evaluator supplies
 its own state. Locks isolate mutations inside a workspace.
