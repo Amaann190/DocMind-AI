@@ -78,7 +78,7 @@ CONTEXT_CHAR_BUDGET = 4800
 VECTOR_EVIDENCE_FLOOR = 0.5
 
 # Bump when retrieval/ingestion logic changes so stale caches rebuild once.
-INDEX_CACHE_VERSION = 11
+INDEX_CACHE_VERSION = 12
 
 # Lazy Porter stemmer (pure Python, no model data): normalizes word endings
 # ("running" -> "run") so BM25 keyword matching understands inflected forms
@@ -124,7 +124,11 @@ def _document_title(node, max_chars: int = 60) -> str:
     as a lightweight title prefix on every chunk so chunks carry their
     document's identity into BM25 and embedding search.
     """
-    file_name = (node.metadata or {}).get("file_name") or ""
+    metadata = node.metadata or {}
+    section = metadata.get("section") or metadata.get("title")
+    if section:
+        return str(section)[-200:]
+    file_name = metadata.get("file_name") or ""
     base = os.path.splitext(file_name)[0].replace("_", " ").replace("-", " ")
     title = " ".join(base.split())[:max_chars].strip()
     if title:
@@ -427,7 +431,7 @@ class HybridRetriever:
         lower = query.lower()
         if "summar" in lower or "overview" in lower:
             return True
-        if "document" in lower and len(rewritten.split()) <= 3:
+        if any(word in lower for word in ("document", "website", "page")) and len(rewritten.split()) <= 4:
             return True
         return False
 
@@ -517,9 +521,20 @@ class HybridRetriever:
             for node_id, rrf in rrf_scores.items()
             if _is_credible(node_id)
         }
+        # An explicitly named website section is stronger evidence than a
+        # semantically similar neighboring category (e.g. another kind of player).
+        section_matches = set()
+        for node_id in filtered:
+            section = self.docstore.get_node(node_id).metadata.get("section", "")
+            terms = set(_bm25_tokens(section.rsplit(" / ", 1)[-1]))
+            if terms and terms <= set(tokens):
+                section_matches.add(node_id)
+        if section_matches:
+            filtered = {node_id: score for node_id, score in filtered.items() if node_id in section_matches}
         # Only a generic request for an overview may use document openings
         # without a topic match. A summary of a named topic follows normal retrieval.
-        overview_words = {"summar", "summari", "summariz", "overview", "document", "file", "upload", "key", "point", "main", "my"}
+        overview_words = {"summar", "summari", "summariz", "overview", "document", "file", "upload", "key", "point", "main", "my",
+                          "websit", "page", "connect", "thi", "suppos", "purpos"}
         if self._is_doc_level_query(query, rewritten) and set(rewritten.split()) <= overview_words:
             openings = {}
             for node_id in self.corpus:
@@ -930,11 +945,30 @@ def create_index(documents, progress_callback=None, *, embed_model=None, chunk_s
             chunk_size=chunk_size if chunk_size is not None else config.get("chunk_size", 256),
             chunk_overlap=chunk_overlap if chunk_overlap is not None else config.get("chunk_overlap", 32),
         )
-        nodes = run_transformations(
-            documents,
-            [splitter],
-            show_progress=True,
-        )
+        # Keep website sections separate before token-sized splitting. Otherwise
+        # a category heading can be detached from every example/link below it.
+        from llama_index.core.node_parser import MarkdownNodeParser
+        website_splitter = SentenceSplitter(chunk_size=splitter.chunk_size,
+            chunk_overlap=splitter.chunk_overlap, paragraph_separator="\n")
+        nodes = []
+        for document in documents:
+            if not document.metadata.get("source", "").startswith(("http://", "https://")):
+                nodes.extend(run_transformations([document], [splitter], show_progress=True))
+                continue
+            sections = []
+            for section in MarkdownNodeParser().get_nodes_from_documents([document]):
+                parent = section.metadata.pop("header_path", "").strip("/")
+                heading = re.match(r"^#{1,6}\s+(.+)", section.text)
+                if heading and not section.text[heading.end():].strip():
+                    continue  # The heading is carried by its child sections.
+                label = " / ".join(part for part in (parent, heading[1] if heading else "") if part)
+                if label:
+                    section.metadata["section"] = label[-200:]
+                for key in ("section", "title"):
+                    section.excluded_embed_metadata_keys.append(key)
+                    section.excluded_llm_metadata_keys.append(key)
+                sections.append(section)
+            nodes.extend(run_transformations(sections, [website_splitter], show_progress=True))
 
         # Keep code fences intact before any filtering — a ``` block split
         # across two chunks leaves an unclosed fence that confuses embeddings.

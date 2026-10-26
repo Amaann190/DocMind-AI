@@ -172,8 +172,23 @@ def load_website_documents(urls: list[str]) -> list[Document]:
                     chunks.append(chunk)
                 charset = requests.utils.get_encoding_from_headers(response.headers) or "utf-8"
                 html = b"".join(chunks).decode(charset, errors="replace")
-                text = html2text.html2text(html) if "text/html" in content_type else html
-                documents.append(Document(text=text, metadata={"source": current_url}))
+                metadata = {"source": current_url}
+                text = html
+                if "text/html" in content_type:
+                    from bs4 import BeautifulSoup
+
+                    soup = BeautifulSoup(html, "html.parser")
+                    title = soup.find("h1") or soup.title
+                    if title:
+                        metadata["title"] = title.get_text(" ", strip=True)[:200]
+                    body = soup.find("main") or soup.find(attrs={"role": "main"}) or soup.body or soup
+                    for element in body.select("nav, aside, script, style, noscript, svg"):
+                        element.decompose()
+                    converter = html2text.HTML2Text(baseurl=current_url)
+                    converter.body_width = 0
+                    converter.ignore_images = True
+                    text = converter.handle(str(body))
+                documents.append(Document(text=text, metadata=metadata))
                 break
             finally:
                 if response is not None:
