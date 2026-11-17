@@ -53,6 +53,29 @@ class ReactApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200, response.text)
         return response.json()
 
+    def test_chunked_upload_without_content_length_is_size_limited(self):
+        boundary = "docmindboundary"
+        def body():
+            yield f"--{boundary}\r\nContent-Disposition: form-data; name=\"files\"; filename=\"big.txt\"\r\n" \
+                  "Content-Type: text/plain\r\n\r\n".encode()
+            for _ in range(8):
+                yield b"x" * 1024
+            yield f"\r\n--{boundary}--\r\n".encode()
+        with patch.object(api.helpers, "MAX_TOTAL_UPLOAD_BYTES", 1024), patch.object(api, "max_request_bytes", return_value=4096):
+            response = self.client.post("/api/upload", content=body(),
+                                        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+        self.assertEqual(response.status_code, 413, response.text)
+        self.assertFalse(self.state["sources"])
+
+    def test_conversation_search_ignores_json_field_names(self):
+        self.client.post("/api/conversations").raise_for_status()
+        api.history.save(self.state["owner"], "abc", "Budget review", {"messages": [
+            {"role": "user", "content": "What is the launch date?"}]})
+        self.assertEqual([c["id"] for c in self.client.get("/api/conversations", params={"q": "launch"}).json()], ["abc"])
+        self.assertEqual([c["id"] for c in self.client.get("/api/conversations", params={"q": "budget"}).json()], ["abc"])
+        self.assertEqual(self.client.get("/api/conversations", params={"q": "role"}).json(), [])
+        self.assertEqual(self.client.get("/api/conversations", params={"q": "content"}).json(), [])
+
     def test_read_upload_chat_source_preview_clear_and_reupload(self):
         result = self.ingest_sample()
         self.assertTrue(result["has_index"])

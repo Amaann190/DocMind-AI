@@ -155,6 +155,52 @@ def _rag_history_budget() -> int:
     return 300 if _is_eco_mode() else 500
 
 
+_SOURCE_TAG = re.compile(r"<\s*/?\s*(?:source|documents)\b[^>]*>", re.IGNORECASE)
+
+
+# Sentences in retrieved text that address the model rather than state facts.
+# Prompt wording alone does not stop small local models from obeying them
+# (qwen2.5:0.5b and llama3 both answered "PWNED" in the injection check), so
+# such sentences are withheld from the model. The UI still shows the original
+# passage. Heuristic by design: it targets the common injection phrasings.
+_INSTRUCTION_PATTERNS = [
+    re.compile(r"\b(ignore|disregard|forget|override|bypass)\b[^.!?\n]{0,40}"
+               r"\b(previous|prior|above|earlier|preceding|all|any|your|the)\b[^.!?\n]{0,25}"
+               r"\b(instructions?|prompts?|rules?|directions?|guidelines?|context)\b", re.IGNORECASE),
+    # Imperative "answer/say X instead": at sentence start or after and/then/just/now.
+    re.compile(r"(?:^\s*|\b(?:and|then|just|now|please)\s+)(answer|respond|reply|say|output|print|write)\b"
+               r"[^.!?\n]{0,40}\binstead\b", re.IGNORECASE),
+    re.compile(r"\byou are now\b|\bnew (system )?instructions?\b|\bsystem prompt\b|\bdeveloper mode\b", re.IGNORECASE),
+]
+_SENTENCE = re.compile(r"[^.!?\n]+[.!?]*\n?|\n")
+REDACTED_INSTRUCTION = "[instruction-like text from the document withheld]"
+
+
+def _withhold_instructions(text):
+    """Replace instruction-like sentences in retrieved text with a marker."""
+    parts = []
+    for sentence in _SENTENCE.findall(text):
+        if any(pattern.search(sentence) for pattern in _INSTRUCTION_PATTERNS):
+            parts.append(REDACTED_INSTRUCTION + (" " if not sentence.endswith("\n") else "\n"))
+        else:
+            parts.append(sentence)
+    return "".join(parts)
+
+
+def _quoted_source(number, name, text):
+    """Wrap one retrieved passage so the model can tell evidence from instructions.
+
+    Wrapper tags inside the document are escaped, so a document cannot close
+    its own quote early and continue as if it were part of the prompt, and
+    instruction-like sentences are withheld (see _withhold_instructions).
+    """
+    def escape(match):
+        return match.group(0).replace("<", "&lt;").replace(">", "&gt;")
+    safe_name = _SOURCE_TAG.sub(escape, str(name)).replace('"', "'")
+    body = _SOURCE_TAG.sub(escape, _withhold_instructions(text))
+    return f'<source n="{number}" name="{safe_name}">\nSource [{number}] ({safe_name}):\n{body}\n</source>'
+
+
 def _build_rag_messages(
     prompt: str, context: str, history: list, system_prompt: str
 ) -> list:
@@ -675,9 +721,7 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
             file_name = metadata.get(
                 "file_name", metadata.get("source", "document")
             )
-            numbered_context.append(
-                f"Source [{index}] ({file_name}):\n{node_score.node.get_content()}"
-            )
+            numbered_context.append(_quoted_source(index, file_name, node_score.node.get_content()))
             sources.append((file_name, node_score.score))
         st.session_state["last_doc_sources"] = sources
         st.session_state["last_doc_passages"] = [
