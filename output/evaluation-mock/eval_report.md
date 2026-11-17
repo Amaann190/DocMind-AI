@@ -1,7 +1,7 @@
 # DocMind evaluation report
 
-Generated 2026-11-17 18:42 · Mode: **mock**
-Chat model: None · Embeddings: hash-mock
+Generated 2026-11-17 19:24 · Mode: **mock**
+Chat model: not used · Embeddings: hash-mock
 
 **47 passed · 0 failed · 34 skipped**
 Live-answer checks separately: **0 passed · 0 failed · 34 skipped**
@@ -24,9 +24,9 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 
 | Configuration | Answerable hit rate | Correct rejection | Mean retrieval ms |
 |---|---:|---:|---:|
-| vector_only | 82% | 50% | 0.4 |
+| vector_only | 73% | 67% | 0.5 |
 | bm25_only | 100% | 100% | 0.2 |
-| hybrid_no_floor | 100% | 50% | 0.7 |
+| hybrid_no_floor | 100% | 67% | 0.7 |
 | full | 100% | 100% | 0.7 |
 
 ## ingestion
@@ -52,16 +52,16 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 - **PASSED — What is the capital of France?**: vector_only: miss · bm25_only: hit · hybrid_no_floor: miss · full: hit
 - **PASSED — quantum physics equations**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
 - **PASSED — refunded purchases**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
-- **PASSED — tell me about the annual report**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
+- **PASSED — tell me about the annual report**: vector_only: miss · bm25_only: hit · hybrid_no_floor: hit · full: hit
 - **PASSED — what about purchases?**: vector_only: miss · bm25_only: hit · hybrid_no_floor: hit · full: hit
 - **PASSED — Who painted the Mona Lisa?**: vector_only: miss · bm25_only: hit · hybrid_no_floor: miss · full: hit
 - **PASSED — How do I repot an orchid?**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
 - **PASSED — Explain the plot of Hamlet**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
-- **PASSED — melting point of tungsten**: vector_only: miss · bm25_only: hit · hybrid_no_floor: miss · full: hit
+- **PASSED — melting point of tungsten**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
 
 ## generation
 
-- **PASSED — qa_template_guards**: has_guards=True len=1037
+- **PASSED — qa_template_guards**: has_guards=True len=1035
 - **PASSED — query_helpers**: hyphen=True hinglish=True synonym=True
 - **PASSED — no_hallucination_fallback**: fallback=hit
 - **PASSED — tone_presets**: presets=6 distinct=True
@@ -129,7 +129,7 @@ empty.txt: No readable text found. The file may be emp
 - **PASSED — r2r_health**: health mocked
 - **PASSED — no_torch_at_import**: Fresh-process import checks: .
 ----------------------------------------------------------------------
-Ran 1 test in 5.914s
+Ran 1 test in 5.694s
 
 OK
 
