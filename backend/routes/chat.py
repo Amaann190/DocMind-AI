@@ -1,12 +1,14 @@
 """Streaming chat, stop and clear endpoints."""
 import asyncio
 import json
+import sqlite3
 import threading
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+import utils.logs as logs
 from backend import workspace
 from backend.workspace import (
     configure,
@@ -90,7 +92,8 @@ async def chat(question: Question, request: Request):
                 session["messages"].append(message)
                 completed = not message["stopped"] and bool(content.strip())
                 emit({"type": "done", "message": message})
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001 - any provider failure ends the stream with a message
+            logs.log.exception("Chat answer failed")
             message = {"role": "assistant", "content": content + "\n\nResponse interrupted: " + str(error), "sources": []}
             session["messages"].append(message)
             emit({"type": "error", "message": message})
@@ -101,7 +104,8 @@ async def chat(question: Question, request: Request):
                 save_conversation(session)
                 if completed:
                     workspace.start_title(session)
-            except Exception:
+            except (OSError, sqlite3.Error) as error:
+                logs.log.error(f"Saving the conversation failed: {error}")
                 emit({"type": "warning", "text": "The answer is available, but could not be saved to disk. Export it before closing."})
             finally:
                 session["status"] = "Ready"

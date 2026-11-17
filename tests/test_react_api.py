@@ -1,9 +1,9 @@
 """HTTP regressions for the separate React backend; no live model is required."""
 import importlib
 import json
-import unittest
 import tempfile
 import threading
+import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -11,6 +11,7 @@ from unittest.mock import Mock, patch
 from fastapi.testclient import TestClient
 from llama_index.core.embeddings import MockEmbedding
 from llama_index.core.llms import MockLLM
+
 from utils import runtime
 from utils.session_workspace import clear_session_workspace
 

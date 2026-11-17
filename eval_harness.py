@@ -23,16 +23,16 @@ Outputs:
 """
 
 import argparse
-import hashlib
-from functools import partial
-from unittest import SkipTest
 import csv
+import hashlib
 import json
 import os
 import shutil
 import tempfile
 import time
+from functools import partial
 from pathlib import Path
+from unittest import SkipTest
 
 # ---------------------------------------------------------------------------
 # Corpus — 5 core docs + fixtures for file-type / ingestion suite
@@ -125,13 +125,9 @@ def _setup_runtime_state():
             "last_rag_no_result": False,
         }
         for k, v in defaults.items():
-            if k not in st.session_state:
-                try:
-                    st.session_state[k] = v
-                except Exception:
-                    pass
-    except Exception:
-        pass
+            st.session_state.setdefault(k, v)
+    except RuntimeError:  # no request state yet; suites set up their own
+        return
 
 
 def _try_real_embeddings(endpoint, model):
@@ -147,9 +143,10 @@ def _try_real_embeddings(endpoint, model):
 
 
 def _setup_hash_embeddings():
-    from utils.runtime import st
     from llama_index.core.embeddings import BaseEmbedding
+
     from utils.llama_index import _bm25_tokens
+    from utils.runtime import st
 
     class HashEmbedding(BaseEmbedding):
         model_name: str = "hash-mock"
@@ -171,7 +168,7 @@ def _setup_hash_embeddings():
 
 
 def _create_index_from_docs(tmpdir: str):
-    from utils.llama_index import load_documents, create_index
+    from utils.llama_index import create_index, load_documents
     for name, content in DOCS.items():
         Path(tmpdir, name).write_text(content, encoding="utf-8")
     docs = load_documents(tmpdir)
@@ -239,7 +236,7 @@ def suite_ingestion(mock: bool):
 
     # 1 — load_documents filters excluded patterns
     def t_excluded():
-        from utils.llama_index import load_documents, EXCLUDED_FILE_PATTERNS
+        from utils.llama_index import EXCLUDED_FILE_PATTERNS, load_documents
         d = tempfile.mkdtemp()
         try:
             Path(d, "keep.txt").write_text("hello world content for testing keep file", encoding="utf-8")
@@ -255,8 +252,9 @@ def suite_ingestion(mock: bool):
 
     # 2 — title-aware
     def t_title():
-        from utils.llama_index import _document_title, _prepend_document_title
         from llama_index.core.schema import TextNode
+
+        from utils.llama_index import _document_title, _prepend_document_title
         n = TextNode(text="body content here", metadata={"file_name": "annual_report.md"})
         title = _document_title(n)
         _prepend_document_title([n])
@@ -266,8 +264,9 @@ def suite_ingestion(mock: bool):
 
     # 3 — dedup
     def t_dedup():
-        from utils.llama_index import _dedupe_exact_nodes
         from llama_index.core.schema import Document
+
+        from utils.llama_index import _dedupe_exact_nodes
         chunks = [
             Document(text="Welcome to our annual report. The company grew a lot this year."),
             Document(text="Welcome to our annual report. The company grew a lot this year!"),
@@ -279,7 +278,7 @@ def suite_ingestion(mock: bool):
 
     # 4 — chunking + index creation (file-type coverage: txt, md, csv, docx)
     def t_index_multiformat():
-        from utils.llama_index import load_documents, create_index
+        from utils.llama_index import create_index, load_documents
         d = tempfile.mkdtemp()
         try:
             Path(d, "a.txt").write_text(DOCS["refund_policy.txt"], encoding="utf-8")
@@ -306,7 +305,14 @@ def suite_ingestion(mock: bool):
 
     # 5 — cache: same docs produce same cache key and hit on second build
     def t_cache():
-        from utils.llama_index import index_cache_key, load_documents, create_index, index_cache_dir, load_index_from_cache, persist_index_to_cache
+        from utils.llama_index import (
+            create_index,
+            index_cache_dir,
+            index_cache_key,
+            load_documents,
+            load_index_from_cache,
+            persist_index_to_cache,
+        )
         d = tempfile.mkdtemp()
         try:
             for name, content in list(DOCS.items())[:2]:
@@ -335,7 +341,7 @@ def suite_ingestion(mock: bool):
 
     # 6 — short facts survive indexing
     def t_min_chars():
-        from utils.llama_index import MIN_CHUNK_CHARS, load_documents, create_index
+        from utils.llama_index import MIN_CHUNK_CHARS, create_index, load_documents
         d = tempfile.mkdtemp()
         try:
             Path(d, "tiny.txt").write_text("hi", encoding="utf-8")
@@ -380,7 +386,7 @@ def suite_retrieval(mock: bool, endpoint="http://localhost:11434", model="nomic-
 
     tmpdir = tempfile.mkdtemp(prefix="docmind_eval_")
     try:
-        from utils.llama_index import build_hybrid_retriever, HybridRetriever
+        from utils.llama_index import HybridRetriever, build_hybrid_retriever
         index = _create_index_from_docs(tmpdir)
 
         class PlainWrapper:
@@ -442,7 +448,7 @@ def suite_retrieval(mock: bool, endpoint="http://localhost:11434", model="nomic-
         summary.update(plain_hit_rate=summary["vector_only_hit_rate"], hybrid_hit_rate=summary["full_hit_rate"],
                        plain_rejection=summary["vector_only_rejection"], hybrid_rejection=summary["full_rejection"],
                        plain_avg_ms=summary["vector_only_avg_ms"], hybrid_avg_ms=summary["full_avg_ms"])
-        for feat in sorted(set(r["feature"] for r in results)):
+        for feat in sorted({r["feature"] for r in results}):
             rows = [r for r in results if r["feature"] == feat]
             summary[f"hybrid_{feat}_rate"] = round(rate(rows, "full_hit"), 3)
 
@@ -470,7 +476,7 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
 
     # 2 — _rewrite_query / BM25 helpers (covers stemming, Hinglish, hyphen)
     def t_query_helpers():
-        from utils.llama_index import _bm25_tokens, _rewrite_query, _bm25_expanded_tokens
+        from utils.llama_index import _bm25_expanded_tokens, _bm25_tokens, _rewrite_query
         ok1 = _bm25_tokens("30-day guarantee's") == ["30", "day", "guarante"]
         ok2 = "batao" not in _rewrite_query("batao refund policy kya hai")
         ok3 = "return" in _bm25_expanded_tokens(["refund", "polici"])
@@ -479,7 +485,8 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
 
     # 3 — context_chat no-hallucination fallback (mock retriever returns [])
     def t_no_hallucination():
-        from unittest.mock import patch, MagicMock
+        from unittest.mock import MagicMock, patch
+
         from utils import ollama as oll_mod
         from utils.runtime import st
         # fake retriever that returns []
@@ -501,9 +508,10 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
 
     # 4 — tone presets produce distinct prompts
     def t_tone():
+        from typing import get_args
+
         from backend.settings import Settings
         from backend.workspace import configure, new_session
-        from typing import get_args
         styles = get_args(Settings.model_fields["style"].annotation)
         state = new_session()
         prompts = {}
@@ -517,8 +525,10 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
 
     # 5 — multi-turn: context_chat includes history
     def t_multiturn():
-        from unittest.mock import patch, MagicMock
-        from llama_index.core.schema import TextNode, NodeWithScore
+        from unittest.mock import MagicMock, patch
+
+        from llama_index.core.schema import NodeWithScore, TextNode
+
         from utils import ollama as oll_mod
         from utils.runtime import st
         _setup_runtime_state()
@@ -572,7 +582,7 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
         try:
             for n, c in DOCS.items():
                 Path(d, n).write_text(c, encoding="utf-8")
-            from utils.llama_index import load_documents, create_index
+            from utils.llama_index import create_index, load_documents
             t0 = time.perf_counter()
             docs = load_documents(d)
             idx = create_index(docs)
@@ -585,17 +595,27 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
 
     # 2 — cache hit is faster than cold build
     def t_cache_speed():
-        from utils.llama_index import load_documents, create_index, index_cache_dir, load_index_from_cache, persist_index_to_cache
+        from utils.llama_index import (
+            create_index,
+            index_cache_dir,
+            load_documents,
+            load_index_from_cache,
+            persist_index_to_cache,
+        )
         _setup_runtime_state()
         d = tempfile.mkdtemp()
         try:
             Path(d, "a.txt").write_text(DOCS["refund_policy.txt"], encoding="utf-8")
             docs = load_documents(d)
-            t0 = time.perf_counter(); idx = create_index(docs); cold = time.perf_counter() - t0
+            t0 = time.perf_counter()
+            idx = create_index(docs)
+            cold = time.perf_counter() - t0
             cdir = index_cache_dir(docs)
             if cdir:
                 persist_index_to_cache(idx, cdir)
-                t0 = time.perf_counter(); loaded = load_index_from_cache(cdir); hit = time.perf_counter() - t0
+                t0 = time.perf_counter()
+                loaded = load_index_from_cache(cdir)
+                hit = time.perf_counter() - t0
                 ok = loaded is not None  # cache hit itself is the win; tiny docs make timing noisy
                 return ok, f"cold {cold:.1f}s vs cache {hit:.2f}s"
             return False, f"cold {cold:.1f}s; cache directory missing"
@@ -610,13 +630,17 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
         try:
             for n, c in list(DOCS.items())[:3]:
                 Path(d, n).write_text(c, encoding="utf-8")
-            from utils.llama_index import load_documents, create_index, build_hybrid_retriever
+            from utils.llama_index import build_hybrid_retriever, create_index, load_documents
             docs = load_documents(d)
             idx = create_index(docs)
             vr = idx.as_retriever(similarity_top_k=3)
             hy = build_hybrid_retriever(vr, idx, top_k=3, similarity_cutoff=0.3)
-            t0 = time.perf_counter(); hy.retrieve("refund policy"); h_ms = (time.perf_counter() - t0) * 1000
-            t0 = time.perf_counter(); vr.retrieve("refund policy"); v_ms = (time.perf_counter() - t0) * 1000
+            t0 = time.perf_counter()
+            hy.retrieve("refund policy")
+            h_ms = (time.perf_counter() - t0) * 1000
+            t0 = time.perf_counter()
+            vr.retrieve("refund policy")
+            v_ms = (time.perf_counter() - t0) * 1000
             ok = h_ms < 500 and v_ms < 500  # both should be <0.5s (no LLM)
             return ok, f"vector {v_ms:.0f}ms hybrid {h_ms:.0f}ms"
         finally:
@@ -626,12 +650,16 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
     # 4 — eco mode trims context/batches
     def t_eco():
         from utils.llama_index import _context_char_budget
-        from utils.ollama import _num_predict, _embed_batch_size
+        from utils.ollama import _embed_batch_size, _num_predict
         from utils.runtime import st
         st.session_state["eco_mode"] = False
-        normal_ctx = _context_char_budget(); normal_pred = _num_predict(); normal_batch = _embed_batch_size()
+        normal_ctx = _context_char_budget()
+        normal_pred = _num_predict()
+        normal_batch = _embed_batch_size()
         st.session_state["eco_mode"] = True
-        eco_ctx = _context_char_budget(); eco_pred = _num_predict(); eco_batch = _embed_batch_size()
+        eco_ctx = _context_char_budget()
+        eco_pred = _num_predict()
+        eco_batch = _embed_batch_size()
         st.session_state["eco_mode"] = False
         ok = eco_ctx < normal_ctx and eco_pred < normal_pred and eco_batch < normal_batch
         return ok, f"ctx {normal_ctx}->{eco_ctx} pred {normal_pred}->{eco_pred} batch {normal_batch}->{eco_batch}"
@@ -639,8 +667,9 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
 
     # 5 — batch OOM resilience (from existing test harness concept)
     def t_batch_oom():
-        from utils.llama_index import OllamaEmbedding
         from types import SimpleNamespace
+
+        from utils.llama_index import OllamaEmbedding
         class FakeOOM:
             def __init__(self, *a, **kw): self.calls=[]
             def embed(self, model, input):
@@ -685,8 +714,9 @@ def suite_robustness(mock: bool):
     check("github_validation", t_github_validation)
 
     def t_url_validation():
-        from utils.helpers import validate_website_urls
         from unittest.mock import patch
+
+        from utils.helpers import validate_website_urls
         try:
             # URL validation is a deterministic control check, not a live fetch.
             with patch("utils.helpers.socket.getaddrinfo", return_value=[(2, 1, 6, "", ("93.184.216.34", 443))]):
@@ -708,7 +738,7 @@ def suite_robustness(mock: bool):
     check("url_validation", t_url_validation)
 
     def t_empty_docs():
-        from utils.llama_index import load_documents, create_index
+        from utils.llama_index import create_index, load_documents
         d = tempfile.mkdtemp()
         try:
             Path(d, "empty.txt").write_text("", encoding="utf-8")
@@ -758,8 +788,9 @@ def suite_architecture(mock: bool):
     check = partial(_check, results)
 
     def t_presets():
-        from backend.settings import Settings
         from typing import get_args
+
+        from backend.settings import Settings
         presets = get_args(Settings.model_fields["provider"].annotation)
         ok = {"Ollama", "OpenAI", "LM Studio (Local AI)"}.issubset(presets)
         return ok, f"presets={presets}"
@@ -767,6 +798,7 @@ def suite_architecture(mock: bool):
 
     def t_export():
         from unittest.mock import patch
+
         from backend.routes.conversations import export
         with patch("backend.routes.conversations.get_session", return_value={"messages": [
             {"role": "user", "content": "hello"}, {"role": "assistant", "content": "hi there"}]}):
@@ -796,6 +828,7 @@ def suite_architecture(mock: bool):
 
     def t_embedding_verify_mock():
         from unittest.mock import patch
+
         from utils.llama_index import verify_embedding_model
         class FakeClient:
             def __init__(self, *a, **kw): pass
@@ -808,6 +841,7 @@ def suite_architecture(mock: bool):
 
     def t_r2r_mock():
         from unittest.mock import patch
+
         from utils import r2r as r2r_mod
         with patch.object(r2r_mod, "get_client") as gc:
             gc.return_value.health.return_value = True
@@ -820,7 +854,7 @@ def suite_architecture(mock: bool):
         import sys
         result = subprocess.run(
             [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_import_boundaries.py"],
-            cwd=Path(__file__).resolve().parent, capture_output=True, text=True, timeout=60,
+            cwd=Path(__file__).resolve().parent, capture_output=True, text=True, timeout=60, check=False,
         )
         return result.returncode == 0, "Fresh-process import checks: " + result.stderr[-200:]
     check("no_torch_at_import", t_import_boundaries)

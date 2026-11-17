@@ -4,6 +4,8 @@ import io
 import json
 import os
 
+import utils.logs as logs
+
 
 def _node_dedup_key(node):
     """Only identical text from the same source and location is redundant."""
@@ -78,7 +80,7 @@ def _verbalize_tabular_docs(documents):
         if not text.strip():
             continue
         # CSV / TSV
-        if lower.endswith(".csv") or lower.endswith(".tsv"):
+        if lower.endswith((".csv", ".tsv")):
             try:
                 delimiter = "\t" if lower.endswith(".tsv") else ","
                 reader = csv.DictReader(io.StringIO(text), delimiter=delimiter)
@@ -106,15 +108,16 @@ def _verbalize_tabular_docs(documents):
                     new_text = header + "\n".join(verbalized) + f"\n\nOriginal table:\n{text}"
                     try:
                         doc.set_content(new_text)
-                    except Exception:
+                    except (AttributeError, TypeError, ValueError):
                         try:
                             doc.text = new_text
-                        except Exception:
+                        except (AttributeError, TypeError, ValueError):
                             object.__setattr__(doc, "text", new_text)
-            except Exception:
+            except (csv.Error, ValueError) as err:
+                logs.log.debug(f"Keeping original table text for {fname}: {err}")
                 continue
         # JSON / JSONL
-        elif lower.endswith(".json") or lower.endswith(".jsonl"):
+        elif lower.endswith((".json", ".jsonl")):
             try:
                 data = (
                     [json.loads(line) for line in text.splitlines() if line.strip()]
@@ -143,12 +146,13 @@ def _verbalize_tabular_docs(documents):
                     new_text = header + "\n".join(verbalized) + f"\n\nOriginal JSON:\n{text}"
                     try:
                         doc.set_content(new_text)
-                    except Exception:
+                    except (AttributeError, TypeError, ValueError):
                         try:
                             doc.text = new_text
-                        except Exception:
+                        except (AttributeError, TypeError, ValueError):
                             object.__setattr__(doc, "text", new_text)
-            except Exception:
+            except ValueError as err:  # includes json.JSONDecodeError
+                logs.log.debug(f"Keeping original JSON text for {fname}: {err}")
                 continue
     return documents
 

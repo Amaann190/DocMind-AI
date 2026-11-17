@@ -1,9 +1,9 @@
 """Small, inspectable live-answer benchmark; scores are checks, not proof of accuracy."""
 import importlib.util
-from pathlib import Path
 import re
 import tempfile
 import time
+from pathlib import Path
 
 
 def grade_answer(answer, sources, *, required=(), forbidden=(), expected_sources=(), refusal=False):
@@ -59,9 +59,9 @@ def _evaluate_answers(mock, endpoint, embedding_model, chat_model):
     if mock:
         return [{"test": name, "kind": "live_answer", "pass": None, "status": "skipped", "detail": "Live answer check requires Ollama; --mock does not measure answer quality"} for name in names]
 
-    from utils.runtime import st
-    from utils.llama_index import setup_embedding_model, create_index, load_documents, build_hybrid_retriever
+    from utils.llama_index import build_hybrid_retriever, create_index, load_documents, setup_embedding_model
     from utils.ollama import context_chat, verify_chat_model
+    from utils.runtime import st
 
     if not verify_chat_model(chat_model, endpoint):
         raise RuntimeError(f"Requested chat model {chat_model!r} is unavailable at {endpoint}")

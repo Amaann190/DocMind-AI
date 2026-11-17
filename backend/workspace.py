@@ -2,15 +2,18 @@
 
 Run one API worker: document indexes live in this process."""
 import secrets
+import sqlite3
 import threading
 import time
 from contextlib import contextmanager
 
 from fastapi import HTTPException
 
+import utils.logs as logs
 from backend import history
 from backend.settings import Settings
 from utils import helpers, ollama
+from utils.errors import MODEL_SERVER_ERRORS
 from utils.runtime import request_state
 
 sessions = {}
@@ -71,8 +74,9 @@ def start_title(session):
                 with request_state({"eco_mode": cfg.eco}):
                     title = ollama.conversation_title(question, answer, model=cfg.chat_model,
                         base_url=cfg.endpoint, api_key=cfg.api_key, backend=cfg.provider)
-        except Exception:
-            pass  # Naming is optional; keep the saved fallback if the provider is unavailable.
+        except MODEL_SERVER_ERRORS as error:
+            # Naming is optional; keep the saved fallback if the provider is unavailable.
+            logs.log.info(f"Conversation naming skipped: {error}")
         try:
             with session["lock"]:
                 record = history.read(owner, conversation_id)
@@ -83,8 +87,9 @@ def start_title(session):
                     history.save(owner, conversation_id, title, record["payload"])
                     if session["conversation_id"] == conversation_id:
                         session.update(title=title, title_generated=True)
-        except Exception:
-            pass  # A title failure must never interrupt an answer or resurrect a deleted chat.
+        except (OSError, sqlite3.Error, KeyError, ValueError) as error:
+            # A title failure must never interrupt an answer or resurrect a deleted chat.
+            logs.log.warning(f"Saving the generated title failed: {error}")
         finally:
             with session["lock"]:
                 session["naming_titles"].discard(conversation_id)

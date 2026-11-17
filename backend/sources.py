@@ -191,7 +191,7 @@ def ingest_uploads(session, uploads):
             try:
                 put_source(session, source_id, item)
                 warnings.extend(session["warnings"])
-            except Exception as error:
+            except Exception as error:  # noqa: BLE001 - a failed file is recorded and the rest continue
                 session["source_inputs"][source_id] = item
                 session["sources"].append({"id": source_id, "name": item["name"], "kind": "file", "status": "error",
                     "characters": 0, "preview": "", "error": str(error)})

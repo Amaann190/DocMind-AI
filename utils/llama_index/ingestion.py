@@ -31,7 +31,7 @@ EXCLUDED_FILE_PATTERNS = [
 ]
 
 
-def load_documents(data_dir: str, input_files: list = None, errors: list = None):
+def load_documents(data_dir: str, input_files: list | None = None, errors: list | None = None):
     """Load readable files and append per-file failures to the optional errors list.
 
     Directory discovery uses one candidate list; a corrupt file cannot cause a
@@ -86,7 +86,7 @@ def load_documents(data_dir: str, input_files: list = None, errors: list = None)
             for doc in docs:
                 doc.metadata["source_path"] = os.path.relpath(path, data_dir)
             documents.extend(docs)
-        except Exception as err:
+        except Exception as err:  # noqa: BLE001 - one unreadable file must not stop the others
             reason = str(err.__cause__ or err)
             try:
                 name = os.path.relpath(path, data_dir)
@@ -201,12 +201,12 @@ def create_index(documents, progress_callback=None, *, embed_model=None, chunk_s
     except Exception as err:
         logs.log.error(f"Index creation failed: {err}")
         if _is_oom_error(err):
-            raise Exception(
+            raise RuntimeError(
                 "Not enough GPU memory to embed these documents. "
                 "Try a smaller chunk size, fewer documents, or a smaller "
                 "embedding model."
             ) from err
-        raise Exception(f"Index creation failed: {err}")
+        raise RuntimeError(f"Index creation failed: {err}") from err
 
 
 ###################################

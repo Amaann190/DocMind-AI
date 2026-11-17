@@ -1,17 +1,18 @@
-import ollama
-import time
 import re
+import time
 
+import httpx
+import ollama
 import requests
-from utils.runtime import st
-
-import utils.logs as logs
-
+from llama_index.core.llms import ChatMessage, LLMMetadata, MessageRole
+from llama_index.core.query_engine.retriever_query_engine import RetrieverQueryEngine
 from llama_index.llms.ollama import Ollama
 from llama_index.llms.openai import OpenAI
-from llama_index.core.llms import ChatMessage, MessageRole, LLMMetadata
-from llama_index.core.query_engine.retriever_query_engine import RetrieverQueryEngine
+
+import utils.logs as logs
+from utils.errors import MODEL_SERVER_ERRORS
 from utils.llama_index import TEXT_QA_TEMPLATE
+from utils.runtime import st
 
 # Model context budget (tokens) reserved for chat history, leaving room for
 # the current prompt and the model's reply. Keep it below num_ctx (2048) so
@@ -134,7 +135,7 @@ def _is_eco_mode() -> bool:
     """Return whether Eco Mode is enabled (light load / weak hardware)."""
     try:
         return bool(st.session_state.get("eco_mode"))
-    except Exception:
+    except (RuntimeError, AttributeError):  # no request state
         return False
 
 
@@ -280,7 +281,7 @@ def create_client(host: str):
         client = ollama.Client(host=host, timeout=5.0)
         logs.log.info("Ollama chat client created successfully")
         return client
-    except Exception as err:
+    except (ValueError, TypeError, httpx.InvalidURL) as err:
         logs.log.error(f"Failed to create Ollama client: {err}")
         return False
 
@@ -335,7 +336,7 @@ def get_openai_models(base_url: str, api_key: str = "") -> list:
         )
         response.raise_for_status()
         data = response.json()
-    except Exception as err:
+    except (requests.RequestException, ValueError) as err:
         logs.log.error(f"Failed to fetch OpenAI-compatible models: {err}")
         return []
     models = []
@@ -365,7 +366,7 @@ def get_models():
             logs.log.warning("Ollama did not return any chat-capable models")
 
         return models
-    except Exception as err:
+    except MODEL_SERVER_ERRORS as err:
         logs.log.error(f"Failed to retrieve Ollama model list: {err}")
         st.session_state["ollama_models"] = []
         return []
@@ -395,7 +396,7 @@ def get_embedding_models():
             logs.log.warning("Ollama did not return any embedding-capable models")
 
         return embedding_models
-    except Exception as err:
+    except MODEL_SERVER_ERRORS as err:
         logs.log.error(f"Failed to retrieve Ollama embedding model list: {err}")
         st.session_state["ollama_embedding_models"] = []
         return []
@@ -422,16 +423,16 @@ def verify_chat_model(model: str, base_url: str) -> bool:
         details = client.show(model)
         capabilities = getattr(details, "capabilities", None) or details.get("capabilities", [])
         return "completion" in capabilities
-    except Exception:
+    except MODEL_SERVER_ERRORS:
         return False
 
 
 def create_ollama_llm(
     model: str,
     base_url: str,
-    system_prompt: str = None,
+    system_prompt: str | None = None,
     request_timeout: int = 300,
-    temperature: float = None,
+    temperature: float | None = None,
     eco_mode: bool | None = None,
 ) -> Ollama:
     """
@@ -498,7 +499,7 @@ def create_openai_llm(
     model: str,
     base_url: str,
     api_key: str = "",
-    temperature: float = None,
+    temperature: float | None = None,
     eco_mode: bool | None = None,
 ) -> OpenAI:
     """Create an LLM backed by any OpenAI-compatible endpoint.
@@ -533,9 +534,9 @@ def create_llm(
     model: str,
     base_url: str,
     api_key: str = "",
-    system_prompt: str = None,
-    temperature: float = None,
-    backend: str = None,
+    system_prompt: str | None = None,
+    temperature: float | None = None,
+    backend: str | None = None,
 ):
     """Create an LLM for the active backend (Ollama or OpenAI-compatible).
 
@@ -637,7 +638,7 @@ def chat(prompt: str):
         finally:
             if hasattr(stream, "close"):
                 stream.close()
-    except Exception as err:
+    except Exception as err:  # noqa: BLE001 - provider/SDK errors vary; report any failure to the user
         logs.log.error(f"Ollama chat stream error: {err}")
         if _active_backend() == "OpenAI":
             yield (
@@ -724,7 +725,7 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
              "source_id": node.node.metadata.get("docmind_source_id"),
              "page": next((node.node.metadata[key] for key in ("page_label", "page_number", "page")
                            if node.node.metadata.get(key) is not None), None)}
-            for i, ((name, _score), node) in enumerate(zip(sources, nodes), 1)
+            for i, ((name, _score), node) in enumerate(zip(sources, nodes, strict=True), 1)
         ]
 
         context = "\n\n".join(numbered_context)
@@ -756,7 +757,7 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
         if any(value < 1 or value > len(sources) for value in citations):
             yield "\n\n⚠️ This answer contains an invalid source reference. Verify it against the source documents."
         logs.log.info(f"Doc query answered in {time.time() - t0:.1f}s")
-    except Exception as err:
+    except Exception as err:  # noqa: BLE001 - provider/SDK errors vary; report any failure to the user
         logs.log.error(f"Ollama chat stream error: {err}")
         if _active_backend() == "OpenAI":
             yield (

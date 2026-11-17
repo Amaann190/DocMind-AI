@@ -8,7 +8,6 @@ from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from llama_index.core.embeddings import MockEmbedding
-from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.schema import Document, NodeRelationship, NodeWithScore, RelatedNodeInfo, TextNode
 
 from utils import llama_index as ingestion

@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import sys
 
@@ -17,10 +18,8 @@ def setup_logger(log_file: str | None = None, level: int | str = logging.INFO):
     # code page cannot encode them, so replace unencodable characters instead
     # of raising a logging error on every such upload.
     if hasattr(sys.stdout, "reconfigure"):
-        try:
+        with contextlib.suppress(ValueError, OSError):
             sys.stdout.reconfigure(errors="replace")
-        except (ValueError, OSError):
-            pass
     console = logging.StreamHandler(sys.stdout)
     console.setFormatter(formatter)
     logger.addHandler(console)

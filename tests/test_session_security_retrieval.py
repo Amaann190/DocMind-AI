@@ -14,7 +14,9 @@ from unittest.mock import Mock, patch
 from llama_index.core.embeddings import MockEmbedding
 from llama_index.core.schema import Document, NodeWithScore, TextNode
 
-from utils import helpers, llama_index as rag, ollama, runtime, session_workspace as workspace
+from utils import helpers, ollama, runtime
+from utils import llama_index as rag
+from utils import session_workspace as workspace
 
 
 class RetrievalBoundaryTests(unittest.TestCase):
@@ -109,7 +111,7 @@ class SessionIsolationTests(unittest.TestCase):
             restored = rag.load_index_from_cache(directory)
             self.assertIsNotNone(restored)
             self.assertEqual(restored._embed_model.embed_dim, dimension)
-            return directory, list(index.vector_store.data.embedding_dict.values())[0]
+            return directory, next(iter(index.vector_store.data.embedding_dict.values()))
         try:
             with patch.object(runtime, "st", ui), patch.object(ollama, "st", ui), patch.object(workspace, "st", ui), \
                     patch.object(rag.embeddings, "verify_embedding_model", return_value=True), patch.object(rag.embeddings, "OllamaEmbedding", side_effect=embedding):
@@ -177,7 +179,8 @@ class IngestionSecurityTests(unittest.TestCase):
         for name in ("CON.txt", "NUL.pdf", "COM1.docx", "LPT9.txt"):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 helpers.safe_uploaded_filename(name)
-        upload = lambda name: SimpleNamespace(name=name, size=0, getbuffer=lambda: b"1234")
+        def upload(name):
+            return SimpleNamespace(name=name, size=0, getbuffer=lambda: b"1234")
         with self.assertRaisesRegex(ValueError, "distinct names"):
             helpers.validate_uploaded_files([upload("a.txt"), upload("A.TXT")])
         with patch.object(helpers, "MAX_UPLOAD_FILE_BYTES", 2), self.assertRaisesRegex(ValueError, "per-file"):

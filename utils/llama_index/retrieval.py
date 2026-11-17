@@ -62,9 +62,7 @@ class HybridRetriever:
         lower = query.lower()
         if "summar" in lower or "overview" in lower:
             return True
-        if any(word in lower for word in ("document", "website", "page")) and len(rewritten.split()) <= 4:
-            return True
-        return False
+        return any(word in lower for word in ("document", "website", "page")) and len(rewritten.split()) <= 4
 
     def _apply_live_settings(self):
         """Refresh Top K / similarity cutoff from session state.
@@ -121,11 +119,11 @@ class HybridRetriever:
             bm25_scores = self._bm25.get_scores(expanded_tokens)
             bm25_hit_ids = {
                 node_id
-                for node_id, terms in zip(self.corpus, self._tokens)
+                for node_id, terms in zip(self.corpus, self._tokens, strict=True)
                 if set(expanded_tokens).intersection(terms)
             }
             bm25_ids = [node_id for node_id, _ in sorted(
-                ((node_id, score) for node_id, score in zip(self.corpus, bm25_scores)
+                ((node_id, score) for node_id, score in zip(self.corpus, bm25_scores, strict=True)
                  if node_id in bm25_hit_ids), key=lambda item: item[1], reverse=True,
             )]
             for rank, node_id in enumerate(bm25_ids):
@@ -142,13 +140,7 @@ class HybridRetriever:
             vector = vector_scores.get(node_id, 0.0)
             if vector < self.similarity_cutoff:
                 return False
-            if (
-                self.evidence_floor is not None
-                and self.similarity_cutoff > 0
-                and vector < self.evidence_floor
-            ):
-                return False
-            return True
+            return not (self.evidence_floor is not None and self.similarity_cutoff > 0 and vector < self.evidence_floor)
 
         filtered = {
             node_id: rrf
@@ -192,7 +184,7 @@ class HybridRetriever:
                         if phrase.lower().strip() and phrase.lower().strip() in content:
                             filtered[node_id] = filtered[node_id] + 0.5
                             break
-                except Exception:
+                except (KeyError, ValueError, AttributeError):  # node missing from docstore
                     continue
 
         # Keep the top chunks within a token budget that fits the model's
@@ -203,7 +195,7 @@ class HybridRetriever:
         used_chars = 0
         context_budget = _context_char_budget()
 
-        for node_id, rrf_score in ranked:
+        for node_id, _rrf_score in ranked:
             node = self.docstore.get_node(node_id)
             content = node.get_content()
             key = _node_dedup_key(node)
@@ -241,6 +233,6 @@ def build_hybrid_retriever(vector_retriever, index, top_k, similarity_cutoff=Non
             similarity_cutoff=similarity_cutoff,
             **options,
         )
-    except Exception as err:
+    except Exception as err:  # noqa: BLE001 - any BM25 build failure falls back to vector retrieval
         logs.log.warning(f"Hybrid retriever unavailable, falling back to vector: {err}")
         return vector_retriever

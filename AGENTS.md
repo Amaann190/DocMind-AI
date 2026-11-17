@@ -31,7 +31,7 @@ Run focused tests while iterating, then the retained full suite:
 ```bash
 pipenv run python -m unittest discover -s tests
 pipenv run python -m compileall -q backend utils
-pipenv run ruff check . --select E9,F63,F7,F82
+pipenv run ruff check .
 pipenv run python eval_harness.py --mock --out output/react-evaluation
 ```
 

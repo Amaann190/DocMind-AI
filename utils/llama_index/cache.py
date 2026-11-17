@@ -5,7 +5,6 @@ import os
 import re
 import shutil
 from pathlib import Path
-from typing import Optional
 
 import utils.logs as logs
 from llama_index.core import (
@@ -33,11 +32,11 @@ def index_cache_key(documents) -> str:
     return hasher.hexdigest()[:20]
 
 
-def index_cache_dir(documents) -> Optional[str]:
+def index_cache_dir(documents) -> str | None:
     """Return the cache directory for these documents, or None on failure."""
     try:
         return str(session_directory("cache") / index_cache_key(documents))
-    except Exception:
+    except (OSError, RuntimeError, ValueError):  # no workspace or unwritable temp dir
         return None
 
 
@@ -52,7 +51,7 @@ def load_index_from_cache(cache_dir: str):
         index = load_index_from_storage(storage_context, embed_model=runtime.st.session_state["embedding_model"])
         logs.log.info(f"Index loaded from cache: {cache_dir}")
         return index
-    except Exception as err:
+    except Exception as err:  # noqa: BLE001 - any unreadable cache is rebuilt from source
         logs.log.warning(f"Failed to load cached index, rebuilding: {err}")
         return None
 
@@ -67,7 +66,7 @@ def persist_index_to_cache(index, cache_dir: str):
         logs.log.info(f"Index persisted to cache: {cache_dir}")
         _prune_index_cache()
         return True
-    except Exception as err:
+    except (OSError, ValueError) as err:
         logs.log.warning(f"Failed to persist index cache: {err}")
         return False
 
@@ -87,8 +86,8 @@ def _prune_index_cache(keep: int = INDEX_CACHE_KEEP):
         )
         for _, path in entries[:-keep]:
             shutil.rmtree(path, ignore_errors=True)
-    except Exception:
-        pass
+    except OSError as err:
+        logs.log.debug(f"Index cache pruning skipped: {err}")
 
 
 ###################################

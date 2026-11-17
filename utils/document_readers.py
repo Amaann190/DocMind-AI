@@ -202,10 +202,12 @@ class ExcelReader(BaseReader):
             with closing(load_workbook(file, read_only=True, data_only=False, keep_links=False)) as formulas, \
                     closing(load_workbook(file, read_only=True, data_only=True, keep_links=False)) as values:
                 for sheet in formulas:
-                    def rows():
-                        for formula_row, value_row in zip(sheet.iter_rows(), values[sheet.title].iter_rows()):
+                    def rows(sheet=sheet):
+                        # Formula and cached-value workbooks have identical shapes.
+                        pairs = zip(sheet.iter_rows(), values[sheet.title].iter_rows(), strict=False)
+                        for formula_row, value_row in pairs:
                             row = []
-                            for cell, cached in zip(formula_row, value_row):
+                            for cell, cached in zip(formula_row, value_row, strict=False):
                                 if cell.data_type == "f":
                                     formula = getattr(cell.value, "text", cell.value)
                                     result = (f"saved result: {cached.value}" if cached.value is not None
@@ -222,7 +224,7 @@ def document_file_extractors():
     from llama_index.readers.file import DocxReader, EpubReader, PDFReader, PptxReader
 
     text_reader = DocumentTextReader()
-    readers = {extension: text_reader for extension in ALLOWED_UPLOAD_EXTENSIONS}
+    readers = dict.fromkeys(ALLOWED_UPLOAD_EXTENSIONS, text_reader)
     readers.update({
         ".pdf": PDFReader(),
         ".docx": DocxReader(),

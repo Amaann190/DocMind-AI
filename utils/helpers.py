@@ -1,19 +1,19 @@
-import os
 import ipaddress
+import os
 import re
 import shutil
 import socket
-import time
-import tempfile
-import zipfile
-import requests
-import urllib3
-import certifi
 import subprocess
+import tempfile
+import time
+import zipfile
 from pathlib import Path
 from urllib.parse import urljoin, urlparse, urlunparse
 
+import certifi
 import html2text
+import requests
+import urllib3
 from llama_index.core import Document
 
 import utils.logs as logs
@@ -355,7 +355,7 @@ def validate_github_repo(repo: str):
             get_resp = requests.get(f"https://github.com/{repo}", timeout=10, headers=headers)
             return get_resp.status_code == 200
         return False
-    except Exception as err:
+    except requests.RequestException as err:
         logs.log.warning(f"Unable to validate GitHub repository {repo}: {err}")
         return False
 
@@ -396,10 +396,7 @@ def clone_github_repo(repo: str):
         git_bin = shutil.which("git")
         if not git_bin:
             local_git = os.path.expandvars(r"%LOCALAPPDATA%\Programs\Git\cmd\git.exe")
-            if os.path.exists(local_git):
-                git_bin = local_git
-            else:
-                git_bin = "git"
+            git_bin = local_git if os.path.exists(local_git) else "git"
 
         result = subprocess.run(
             [git_bin, "-c", "core.hooksPath=", "-c", "protocol.file.allow=never",
@@ -419,7 +416,7 @@ def clone_github_repo(repo: str):
 
         logs.log.info(f"Cloned {repo} repo")
         return destination
-    except Exception as err:
+    except (OSError, subprocess.SubprocessError, ValueError) as err:
         logs.log.error(f"Error cloning {repo} GitHub repo: {err}")
         remove_dir_retry(destination)
         return False
