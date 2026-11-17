@@ -53,6 +53,10 @@ _QUERY_SYNONYMS = {
 }
 _STEMMED_SYNONYMS = None
 
+# Multi-word phrases (stemmed) and the stemmed terms they mean. A phrase only
+# counts when all of its words are present: "back" alone is not "refund".
+PHRASE_SYNONYMS = {("money", "back"): ("refund", "return")}
+
 
 def _stemmed_synonyms():
     """Stem the curated synonym table once, exactly like corpus tokens."""
@@ -77,9 +81,10 @@ def _bm25_expanded_tokens(tokens):
         return tokens
     expanded = list(tokens)
     synonyms = _stemmed_synonyms()
-    # Treat "money back" as a phrase, not either ambiguous word in isolation.
-    if "money" in tokens and "back" in tokens:
-        expanded.extend(word for word in ("refund", "return") if word not in expanded)
+    # Phrases such as "money back" expand as a whole, never word by word.
+    for phrase, meaning in PHRASE_SYNONYMS.items():
+        if all(word in tokens for word in phrase):
+            expanded.extend(word for word in meaning if word not in expanded)
     for token in tokens:
         for synonym in sorted(synonyms.get(token, ())):
             if synonym not in expanded:
@@ -111,6 +116,45 @@ _QUERY_FILLER_WORDS = {
     "karne", "mein", "ho", "hoga",
 }
 _FILLER_STEMS = None
+
+# Standard English function words. They are never keyword evidence: without
+# this, "how", "in" or "who" in an unrelated question matched almost every
+# document and defeated the evidence floor.
+_STOPWORDS = {
+    "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as", "at",
+    "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can", "could",
+    "did", "do", "does", "doing", "down", "during", "each", "few", "for", "from", "further", "had", "has",
+    "have", "having", "he", "her", "here", "hers", "herself", "him", "himself", "his", "how", "i", "if",
+    "in", "into", "is", "it", "its", "itself", "just", "me", "more", "most", "my", "myself", "no", "nor",
+    "not", "now", "of", "off", "on", "once", "only", "or", "other", "our", "ours", "ourselves", "out",
+    "over", "own", "same", "she", "should", "so", "some", "such", "than", "that", "the", "their", "theirs",
+    "them", "themselves", "then", "there", "these", "they", "this", "those", "through", "to", "too",
+    "under", "until", "up", "very", "was", "we", "were", "what", "when", "where", "which", "while", "who",
+    "whom", "why", "will", "with", "would", "you", "your", "yours", "yourself", "yourselves",
+    "many", "much", "get", "got",
+    # Request words say what the user wants done, not what the answer is about.
+    "give", "show", "share", "find", "explain", "describe", "provide", "need", "okay", "ok", "tell", "let",
+}
+_STOPWORD_STEMS = None
+
+
+def _stopword_stems():
+    """Stopwords and fillers in the stemmed form they take after ``_bm25_tokens``."""
+    global _STOPWORD_STEMS
+    if _STOPWORD_STEMS is None:
+        stem = _stemmer().stem
+        _STOPWORD_STEMS = frozenset(stem(word) for word in _STOPWORDS) | _filler_stems()
+    return _STOPWORD_STEMS
+
+
+def _content_tokens(tokens):
+    """Query tokens that can count as keyword evidence (stopwords removed, order kept, no duplicates)."""
+    stop = _stopword_stems()
+    seen = []
+    for token in tokens:
+        if token not in stop and token not in seen:
+            seen.append(token)
+    return seen
 
 
 def _filler_stems():

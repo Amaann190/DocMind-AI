@@ -1,6 +1,6 @@
 # DocMind evaluation report
 
-Generated 2026-11-17 18:43 · Mode: **live**
+Generated 2026-11-17 20:12 · Mode: **live**
 Chat model: not used · Embeddings: nomic-embed-text:latest
 
 **17 passed · 0 failed · 0 skipped**
@@ -17,10 +17,10 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 
 | Configuration | Answerable hit rate | Correct rejection | Mean retrieval ms |
 |---|---:|---:|---:|
-| vector_only | 100% | 0% | 14.3 |
-| bm25_only | 100% | 100% | 0.3 |
-| hybrid_no_floor | 100% | 0% | 15.0 |
-| full | 100% | 100% | 15.3 |
+| vector_only | 100% | 0% | 18.8 |
+| bm25_only | 100% | 100% | 0.6 |
+| hybrid_no_floor | 100% | 0% | 19.4 |
+| full | 100% | 100% | 20.1 |
 
 ## retrieval
 
