@@ -11,6 +11,7 @@ from llama_index.llms.openai import OpenAI
 
 import utils.logs as logs
 from utils.errors import MODEL_SERVER_ERRORS
+from utils.injection import withhold_instructions
 from utils.llama_index import TEXT_QA_TEMPLATE
 from utils.runtime import st
 
@@ -156,45 +157,15 @@ def _rag_history_budget() -> int:
     return 300 if _is_eco_mode() else 500
 
 
-# Sentences in retrieved text that address the model rather than state facts.
-# Prompt wording alone does not reliably stop local models from obeying them
-# (qwen2.5:0.5b answers "PWNED" in the injection check, as llama3 did before
-# the boundary reminder), so such sentences are withheld from the model. The
-# UI still shows the original passage. Heuristic by design: it targets the
-# common injection phrasings.
-_INSTRUCTION_PATTERNS = [
-    re.compile(r"\b(ignore|disregard|forget|override|bypass)\b[^.!?\n]{0,40}"
-               r"\b(previous|prior|above|earlier|preceding|all|any|your|the)\b[^.!?\n]{0,25}"
-               r"\b(instructions?|prompts?|rules?|directions?|guidelines?|context)\b", re.IGNORECASE),
-    # Imperative "answer/say X instead": at sentence start or after and/then/just/now.
-    re.compile(r"(?:^\s*|\b(?:and|then|just|now|please)\s+)(answer|respond|reply|say|output|print|write)\b"
-               r"[^.!?\n]{0,40}\binstead\b", re.IGNORECASE),
-    re.compile(r"\byou are now\b|\bnew (system )?instructions?\b|\bsystem prompt\b|\bdeveloper mode\b", re.IGNORECASE),
-]
-_SENTENCE = re.compile(r"[^.!?\n]+[.!?]*\n?|\n")
-REDACTED_INSTRUCTION = "[instruction-like text from the document withheld]"
-
-
-def _withhold_instructions(text):
-    """Replace instruction-like sentences in retrieved text with a marker."""
-    parts = []
-    for sentence in _SENTENCE.findall(text):
-        if any(pattern.search(sentence) for pattern in _INSTRUCTION_PATTERNS):
-            parts.append(REDACTED_INSTRUCTION + (" " if not sentence.endswith("\n") else "\n"))
-        else:
-            parts.append(sentence)
-    return "".join(parts)
-
-
 def _quoted_source(number, name, text):
     """Format one retrieved passage as numbered evidence for the prompt.
 
     Keeps the plain "Source [n] (name):" label: the answer cites "[n]" and the
     UI turns those into citation chips. Wrapping passages in XML-style tags made
     llama3 cite the tag instead of "[n]". Instruction-like sentences are
-    withheld (see _withhold_instructions).
+    withheld (see utils.injection).
     """
-    return f"Source [{number}] ({name}):\n{_withhold_instructions(text)}"
+    return f"Source [{number}] ({name}):\n{withhold_instructions(text)}"
 
 
 def _build_rag_messages(
