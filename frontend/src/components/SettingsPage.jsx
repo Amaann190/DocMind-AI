@@ -205,6 +205,22 @@ export function SettingsPage({ settings, disabled, save, reset }) {
               onChange={(e) => update("eco", e.target.checked)}
             />
           </label>
+          <label className="toggle-row">
+            <div>
+              <strong>Keep sources after restart</strong>
+              <p>
+                Saves your sources' text and uploaded files on this computer so they
+                return when DocMind restarts. Turning this off deletes the saved copy.
+              </p>
+            </div>
+            <input
+              type="checkbox"
+              aria-label="Keep sources after restart"
+              checked={Boolean(draft.keep_sources)}
+              disabled={draft.r2r}
+              onChange={(e) => update("keep_sources", e.target.checked)}
+            />
+          </label>
           <details>
             <summary>
               Retrieval & advanced controls

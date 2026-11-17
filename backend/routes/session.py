@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, Request, Response
 
 from backend import history
 from backend.settings import Settings
-from backend.sources import clear_corpus
+from backend.sources import clear_corpus, restore_sources
 from backend.workspace import (
     COOKIE,
     configure,
@@ -54,6 +54,7 @@ def init(request: Request, response: Response):
             sessions[token]["owner"] = owner
             if saved:
                 open_conversation(sessions[token], history.read(owner, saved[0]["id"]))
+                restore_sources(sessions[token])
             else:
                 save_conversation(sessions[token])
         session = sessions[token]

@@ -17,6 +17,12 @@ provide user authentication for public hosting.
 
 SQLite stores transcript text, titles and citation passages. Raw uploads and model
 credentials are not stored there. Browser preferences exclude credentials.
+
+Sources are temporary unless the user enables **Keep sources after restart**. Then
+the extracted text, source list and original uploaded files are written, unencrypted,
+to `sources/<workspace>.json` in the data directory (`backend/source_store.py`).
+Credentials are never written. Turning the setting off, removing all sources or
+resetting the workspace deletes the file; a failed deletion is reported to the user.
 Documents go to the configured model/server; using Ollama does not imply that
 an arbitrary configured endpoint is on this computer.
 

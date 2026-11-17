@@ -10,7 +10,7 @@ from contextlib import contextmanager
 from fastapi import HTTPException
 
 import utils.logs as logs
-from backend import history
+from backend import history, source_store
 from backend.settings import Settings
 from utils import helpers, ollama
 from utils.errors import MODEL_SERVER_ERRORS
@@ -117,10 +117,21 @@ def operation(session):
             configure(session)
             yield
             save_conversation(session)
+            sync_sources(session)
     finally:
         session["progress"] = None
         session["status"] = "Ready"
         session["lock"].release()
+
+
+def sync_sources(session):
+    """Persist or delete opt-in saved sources; a disk failure must not undo the operation."""
+    try:
+        source_store.sync(session)
+    except OSError as error:
+        logs.log.error(f"Saving sources for restart failed: {error}")
+        session["warnings"] = [*session.get("warnings", []),
+                               "Sources could not be saved for the next restart. Check free disk space."]
 
 
 def configure(session):
