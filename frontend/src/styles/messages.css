@@ -1,0 +1,112 @@
+/* Chat messages, citations and thinking indicator. */
+.message {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.message-avatar {
+  width: 29px;
+  height: 29px;
+  border-radius: 8px;
+  background: #ead8c9;
+  color: #84614a;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.assistant .message-avatar {
+  background: #edeee4;
+}
+.message-name {
+  font-size: 11px;
+  font-weight: 650;
+  margin: 6px 0 12px;
+}
+.message-name > span {
+  font-size: 7px;
+  letter-spacing: 1px;
+  margin-left: 11px;
+  color: #a4a998;
+  font-weight: 400;
+}
+.message-body {
+  min-width: 0;
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #555a4b;
+  overflow-wrap: anywhere;
+}
+.message-body p {
+  margin: 0 0 13px;
+}
+.message-body h1,
+.message-body h2,
+.message-body h3 {
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.message-body pre {
+  overflow: auto;
+  white-space: pre;
+  background: #ebece3;
+  border-radius: 7px;
+  padding: 15px;
+  font-size: 11px;
+}
+.message-body code {
+  background: #ebece3;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+.message-body .icon-button {
+  padding-left: 0;
+}
+.citation-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 15px 0 9px;
+}
+.citation-list button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  background: #eeeee5;
+  border: 1px solid #e2e5d7;
+  color: #7e8d6e;
+  border-radius: 5px;
+  padding: 5px 7px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.citation-list button > span {
+  font-size: 8px;
+  background: #dce3cf;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+.thinking {
+  display: flex;
+  gap: 5px;
+  padding: 8px 0;
+}
+.thinking span {
+  width: 5px;
+  height: 5px;
+  background: #b1b8a1;
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+.thinking span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.thinking span:nth-child(3) {
+  animation-delay: 0.3s;
+}
