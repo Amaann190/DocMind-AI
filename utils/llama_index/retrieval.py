@@ -1,4 +1,5 @@
 """Hybrid BM25 + dense retrieval with Reciprocal Rank Fusion and an evidence floor."""
+import math
 import re
 
 from rank_bm25 import BM25Plus
@@ -8,12 +9,16 @@ from llama_index.core.schema import NodeWithScore
 from utils import runtime
 from utils.llama_index.chunking import _node_dedup_key
 from utils.llama_index.query import (
+    PHRASE_SYNONYMS,
     _bm25_expanded_tokens,
     _bm25_tokens,
+    _content_tokens,
     _overview_stems,
     _rewrite_query,
+    _stemmed_synonyms,
 )
 from utils.llama_index.settings import (
+    KEYWORD_MIN_SHOULD_MATCH,
     MIN_VECTOR_CANDIDATES,
     VECTOR_CANDIDATE_MULTIPLIER,
     VECTOR_EVIDENCE_FLOOR,
@@ -44,7 +49,32 @@ class HybridRetriever:
         self.use_vector = use_vector
         self.use_bm25 = use_bm25
         self._tokens = [self._tokenize(node_id) for node_id in corpus]
+        self._token_sets = [set(tokens) for tokens in self._tokens]
         self._bm25 = BM25Plus(self._tokens) if any(self._tokens) else None
+
+    def _keyword_evidence(self, questions):
+        """Chunks that match enough of a question's content terms to count as evidence.
+
+        ``questions`` holds the content terms of each question (a follow-up is
+        resolved with earlier questions, and each is judged on its own). A term
+        matches when it, one of its curated synonyms, or a phrase it belongs to
+        occurs in the chunk. "Minimum should match": at least
+        KEYWORD_MIN_SHOULD_MATCH of a question's terms (and at least one) must
+        match, so one incidental word shared with an unrelated question is not
+        evidence.
+        """
+        synonyms = _stemmed_synonyms()
+        hits = set()
+        for node_id, terms in zip(self.corpus, self._token_sets, strict=True):
+            for content in questions:
+                matched = {term for term in content if term in terms or synonyms.get(term, set()) & terms}
+                for phrase, meaning in PHRASE_SYNONYMS.items():
+                    if all(word in content for word in phrase) and terms.intersection(meaning):
+                        matched.update(phrase)
+                if len(matched) >= max(1, math.ceil(len(content) * KEYWORD_MIN_SHOULD_MATCH)):
+                    hits.add(node_id)
+                    break
+        return hits
 
     def _tokenize(self, node_id):
         node = self.docstore.get_node(node_id)
@@ -113,15 +143,13 @@ class HybridRetriever:
         # curated synonyms; the vector search above still used the clean query.
         # ``rewritten`` is already stemmed once; do not stem it again.
         tokens = rewritten.split()
-        expanded_tokens = _bm25_expanded_tokens(tokens)
+        content = _content_tokens(tokens)
+        expanded_tokens = _bm25_expanded_tokens(content)
         bm25_hit_ids = set()
-        if self.use_bm25 and expanded_tokens and self._bm25 is not None:
+        if self.use_bm25 and content and self._bm25 is not None:
             bm25_scores = self._bm25.get_scores(expanded_tokens)
-            bm25_hit_ids = {
-                node_id
-                for node_id, terms in zip(self.corpus, self._tokens, strict=True)
-                if set(expanded_tokens).intersection(terms)
-            }
+            questions = [_content_tokens(_rewrite_query(line).split()) for line in query.splitlines()]
+            bm25_hit_ids = self._keyword_evidence([q for q in questions if q] or [content])
             bm25_ids = [node_id for node_id, _ in sorted(
                 ((node_id, score) for node_id, score in zip(self.corpus, bm25_scores, strict=True)
                  if node_id in bm25_hit_ids), key=lambda item: item[1], reverse=True,

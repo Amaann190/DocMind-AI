@@ -14,9 +14,10 @@ have to leave your device.
 - **Hybrid retrieval.** BM25 keyword search and dense vector search are fused with
   Reciprocal Rank Fusion (k = 60), so exact terms (names, numbers, codes) and paraphrases
   are both found.
-- **Evidence-floor abstention.** A weak vector match is kept only if BM25 also finds a
-  keyword hit. When nothing credible remains, DocMind answers "I could not find this
-  information in the documents" instead of guessing.
+- **Evidence-floor abstention.** A weak vector match is kept only if it also contains at
+  least half of the question's content words (stopwords ignored). When nothing credible
+  remains, DocMind answers "I could not find this information in the documents" instead
+  of guessing.
 - **Query normalization.** Porter stemming, hyphen splitting (`30-day` → `30 day`),
   number words (`thirty` → `30`), English and Hinglish filler removal (`batao`, `kya`, `hai`),
   and curated synonyms for short keyword queries.
@@ -124,6 +125,7 @@ pipenv run python -m unittest discover -s tests          # backend tests
 pipenv run ruff check .            # static checks
 pipenv run python eval_harness.py --mock --out output/evaluation-mock
 pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
+pipenv run python eval_harness.py --suite benchmark --out output/evaluation-benchmark
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live
 ```
 
@@ -132,18 +134,19 @@ Browser tests (Playwright) run against a started server: `npx playwright test`.
 
 The harness reports passed, failed and skipped checks separately. Mock mode uses hash
 embeddings and never measures answer quality; live mode requires the named models.
-The retrieval suite compares four configurations on the same index:
+The labelled benchmark (`--suite benchmark`: 20 documents, 70 answerable and 32 off-topic
+queries) compares four retrieval configurations on the same index, with `nomic-embed-text`:
 
-| Configuration (nomic-embed-text, 11 answerable / 6 unanswerable queries) | Hit rate | Correct rejection |
-|---|---:|---:|
-| Vector only | 11/11 | 0/6 |
-| BM25 only | 11/11 | 6/6 |
-| Hybrid RRF, no evidence floor | 11/11 | 0/6 |
-| **Full DocMind (hybrid + evidence floor)** | **11/11** | **6/6** |
+| Configuration | Recall@1 | Recall@5 | MRR@5 | Correct rejection |
+|---|---:|---:|---:|---:|
+| Vector only | 90% | 99% | 0.940 | 0% |
+| BM25 only | 80% | 80% | 0.800 | 97% |
+| Hybrid RRF, no evidence floor | 96% | 100% | 0.976 | 0% |
+| **Full DocMind (hybrid + evidence floor)** | **96%** | **100%** | **0.976** | **75%** |
 
-The fixture corpus is small, so these numbers show the abstention behavior, not general
-retrieval accuracy. Live answer results by chat model are in
-[docs/answer-quality.md](docs/answer-quality.md).
+The corpus is synthetic, so these numbers compare configurations rather than predict
+accuracy on your documents. Method, per-type results and live answer results by chat
+model are in [docs/answer-quality.md](docs/answer-quality.md).
 
 ## Security and privacy
 

@@ -53,6 +53,11 @@ VECTOR_EVIDENCE_FLOOR = 0.5
 # re-rank what each channel returns; with a pool equal to Top K the dense
 # channel would contribute almost nothing beyond its own top hits.
 VECTOR_CANDIDATE_MULTIPLIER = 4
+
+# Share of a query's content terms (stopwords removed) a chunk must contain for
+# BM25 to count it as keyword evidence ("minimum should match"). One shared
+# word with an unrelated question is not evidence.
+KEYWORD_MIN_SHOULD_MATCH = 0.5
 MIN_VECTOR_CANDIDATES = 10
 
 # Bump when retrieval/ingestion logic changes so stale caches rebuild once.

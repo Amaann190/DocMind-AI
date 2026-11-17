@@ -102,8 +102,46 @@ See the [ablation report](../output/evaluation-retrieval-ablation/eval_report.md
 The fixture corpus is five short documents, so every configuration finds the
 answerable sources; the measurable difference is rejection. Dense similarity alone
 never returns an empty result on these probes, and the evidence floor is what
-restores correct rejection after fusion. A larger, harder query set is needed to
-show where hybrid fusion beats BM25 alone.
+restores correct rejection after fusion. The small set cannot show where hybrid
+fusion beats BM25 alone; the labelled benchmark below does.
+
+## Labelled retrieval benchmark
+
+`evaluation/benchmark/` holds 20 documents (policies, manuals, reports, runbooks,
+recipes, science notes) with deliberate overlaps, 70 answerable queries labelled by
+type, 32 off-topic queries written naturally (not filtered for keyword overlap) and
+12 near-miss queries whose related document does not contain the answer. Run it with
+`eval_harness.py --suite benchmark`. On 2026-11-17 with `nomic-embed-text:latest`:
+
+| Configuration | Recall@1 | Recall@3 | Recall@5 | MRR@5 | Correct rejection (32) |
+|---|---:|---:|---:|---:|---:|
+| Vector only | 90% | 99% | 99% | 0.940 | 0% |
+| BM25 only | 80% | 80% | 80% | 0.800 | 97% |
+| Hybrid RRF, no evidence floor | 96% | 100% | 100% | 0.976 | 0% |
+| **Full DocMind** | **96%** | **100%** | **100%** | **0.976** | **75%** |
+
+Recall@5 by query type: BM25 alone finds 61% of paraphrases and 33% of Hinglish
+queries, vector search alone 91% of identifier queries (codes such as `E-219`), and
+the hybrid pipelines 100% of every type. Fusion therefore beats each channel alone on
+ranking. The evidence floor is what makes rejection possible at all: without it,
+every off-topic query returns passages. See the
+[benchmark report](../output/evaluation-benchmark/eval_report.md).
+
+The first run of this benchmark exposed a weakness the five-document probes hid:
+the full pipeline rejected only 5 of 32 natural off-topic questions (16%), because
+any shared word counted as keyword evidence, including "how", "in" and "who".
+Keyword evidence now ignores stopwords and request words, and a chunk with a weak
+vector score needs at least half of a question's content terms (or their synonyms)
+before BM25 vouches for it ("minimum should match"; each question in a resolved
+follow-up is judged separately). That raised correct rejection from 16% to 75% and
+Recall@1 from 90% to 96%, with Recall@5 unchanged at 100%. The 8 off-topic questions
+still retrieved are semantic neighbours scored above the 0.5 floor by the embedding
+model (for example "Which language was created by Guido van Rossum?" retrieves the
+Python style guide); abstaining on those is left to the answer step. Near-miss
+questions retrieve their related document by design.
+
+These figures come from one synthetic corpus and one embedding model; they show
+relative behaviour of the configurations, not accuracy on other collections.
 
 For this installation, use `llama3:latest` for document questions based on these
 observed results. If a previous session saved `qwen2.5:0.5b`, select `llama3:latest`
@@ -123,6 +161,7 @@ pipenv run python eval_harness.py --mock --out output/evaluation-mock
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live-boundary
 pipenv run python eval_harness.py --suite generation --chat-model qwen2.5:0.5b --out output/evaluation-qwen-final
 pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
+pipenv run python eval_harness.py --suite benchmark --out output/evaluation-benchmark
 ```
 
 Legacy DOC, PPT and XLS fixture generation and extraction require LibreOffice.
