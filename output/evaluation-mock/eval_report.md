@@ -1,6 +1,6 @@
 # DocMind evaluation report
 
-Generated 2026-11-17 19:56 · Mode: **mock**
+Generated 2026-11-17 20:30 · Mode: **mock**
 Chat model: not used · Embeddings: hash-mock
 
 **47 passed · 0 failed · 34 skipped**
@@ -24,10 +24,10 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 
 | Configuration | Answerable hit rate | Correct rejection | Mean retrieval ms |
 |---|---:|---:|---:|
-| vector_only | 82% | 67% | 0.4 |
-| bm25_only | 100% | 100% | 0.2 |
-| hybrid_no_floor | 100% | 67% | 0.7 |
-| full | 100% | 100% | 0.7 |
+| vector_only | 82% | 67% | 0.5 |
+| bm25_only | 100% | 100% | 0.3 |
+| hybrid_no_floor | 100% | 67% | 0.9 |
+| full | 100% | 100% | 0.9 |
 
 ## ingestion
 
@@ -104,8 +104,8 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 ## performance
 
 - **PASSED — ingest_5_docs**: 0.0s for 5 docs
-- **PASSED — cache_hit_faster**: cold 0.0s vs cache 0.04s
-- **PASSED — retrieval_latency**: vector 0ms hybrid 1ms
+- **PASSED — cache_hit_faster**: cold 0.0s vs cache 0.05s
+- **PASSED — retrieval_latency**: vector 1ms hybrid 2ms
 - **PASSED — eco_mode_trims**: ctx 4800->3200 pred 512->256 batch 16->4
 - **PASSED — batch_oom_resilience**: shrunk to 4 after OOM
 
@@ -129,7 +129,7 @@ empty.txt: No readable text found. The file may be emp
 - **PASSED — r2r_health**: health mocked
 - **PASSED — no_torch_at_import**: Fresh-process import checks: .
 ----------------------------------------------------------------------
-Ran 1 test in 5.926s
+Ran 1 test in 7.686s
 
 OK
 
