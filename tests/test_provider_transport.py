@@ -1,9 +1,11 @@
 import json
+import unittest
 from pathlib import Path
 from types import SimpleNamespace
-import unittest
 from unittest.mock import Mock, patch
+
 import httpx
+
 from utils import ollama, r2r
 
 

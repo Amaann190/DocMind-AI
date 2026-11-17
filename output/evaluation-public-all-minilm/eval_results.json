@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "generated": "2026-11-17 22:27",
+    "overall": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "executed": 2,
+      "total": 2,
+      "overall_score": 1.0,
+      "suites": [
+        "public"
+      ],
+      "mode": "live",
+      "embedding_model": "all-minilm:latest",
+      "chat_model": null,
+      "endpoint": "http://localhost:11434",
+      "answer_checks": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "suites": {
+    "public": {
+      "suite": "public",
+      "results": [
+        {
+          "test": "dataset",
+          "pass": true,
+          "detail": "5183 abstracts, 300 test claims"
+        },
+        {
+          "test": "public_benchmark_executed",
+          "pass": true,
+          "detail": "300 claims x 4 configurations; metrics are in the summary"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "total": 2,
+      "executed": 2,
+      "score": 1.0,
+      "summary": {
+        "embedding": "all-minilm:latest",
+        "corpus": 5183,
+        "queries": 300,
+        "index_seconds": 143.4,
+        "configurations": {
+          "vector_only": {
+            "recall@1": 0.49,
+            "recall@5": 0.727,
+            "recall@10": 0.793,
+            "mrr@10": 0.595,
+            "ndcg@10": 0.637,
+            "no_result": 0.0
+          },
+          "bm25_only": {
+            "recall@1": 0.493,
+            "recall@5": 0.593,
+            "recall@10": 0.607,
+            "mrr@10": 0.535,
+            "ndcg@10": 0.543,
+            "no_result": 0.117
+          },
+          "hybrid_no_floor": {
+            "recall@1": 0.563,
+            "recall@5": 0.797,
+            "recall@10": 0.82,
+            "mrr@10": 0.659,
+            "ndcg@10": 0.691,
+            "no_result": 0.0
+          },
+          "full": {
+            "recall@1": 0.54,
+            "recall@5": 0.733,
+            "recall@10": 0.757,
+            "mrr@10": 0.622,
+            "ndcg@10": 0.645,
+            "no_result": 0.037
+          }
+        }
+      }
+    }
+  }
+}

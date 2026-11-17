@@ -9,6 +9,9 @@ data/
 .index_cache/
 *.log
 .ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 node_modules/
 frontend/dist/
 frontend/test-results/

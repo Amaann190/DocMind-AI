@@ -1,9 +1,9 @@
 """HTTP regressions for the separate React backend; no live model is required."""
 import importlib
 import json
-import unittest
 import tempfile
 import threading
+import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -11,6 +11,8 @@ from unittest.mock import Mock, patch
 from fastapi.testclient import TestClient
 from llama_index.core.embeddings import MockEmbedding
 from llama_index.core.llms import MockLLM
+
+from utils import runtime
 from utils.session_workspace import clear_session_workspace
 
 api = importlib.import_module("backend.app")
@@ -20,7 +22,7 @@ start_title = api.start_title
 
 class ReactApiTests(unittest.TestCase):
     def setUp(self):
-        self.title_worker = patch.object(api, "start_title")
+        self.title_worker = patch("backend.workspace.start_title")
         self.title_worker.start()
         self.addCleanup(self.title_worker.stop)
         self.storage = tempfile.TemporaryDirectory()
@@ -42,8 +44,8 @@ class ReactApiTests(unittest.TestCase):
 
     def embedding(self, *args):
         model = MockEmbedding(embed_dim=8)
-        api.indexer.st.session_state["embedding_model"] = model
-        api.indexer.st.session_state["embedding_config"] = {"model": "mock", "chunk_size": 256, "chunk_overlap": 32}
+        runtime.st.session_state["embedding_model"] = model
+        runtime.st.session_state["embedding_config"] = {"model": "mock", "chunk_size": 256, "chunk_overlap": 32}
         return model
 
     def ingest_sample(self):
@@ -52,6 +54,29 @@ class ReactApiTests(unittest.TestCase):
             response = self.client.post("/api/import", json={"kind": "sample"})
         self.assertEqual(response.status_code, 200, response.text)
         return response.json()
+
+    def test_chunked_upload_without_content_length_is_size_limited(self):
+        boundary = "docmindboundary"
+        def body():
+            yield f"--{boundary}\r\nContent-Disposition: form-data; name=\"files\"; filename=\"big.txt\"\r\n" \
+                  "Content-Type: text/plain\r\n\r\n".encode()
+            for _ in range(8):
+                yield b"x" * 1024
+            yield f"\r\n--{boundary}--\r\n".encode()
+        with patch.object(api.helpers, "MAX_TOTAL_UPLOAD_BYTES", 1024), patch("backend.security.max_request_bytes", return_value=4096):
+            response = self.client.post("/api/upload", content=body(),
+                                        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+        self.assertEqual(response.status_code, 413, response.text)
+        self.assertFalse(self.state["sources"])
+
+    def test_conversation_search_ignores_json_field_names(self):
+        self.client.post("/api/conversations").raise_for_status()
+        api.history.save(self.state["owner"], "abc", "Budget review", {"messages": [
+            {"role": "user", "content": "What is the launch date?"}]})
+        self.assertEqual([c["id"] for c in self.client.get("/api/conversations", params={"q": "launch"}).json()], ["abc"])
+        self.assertEqual([c["id"] for c in self.client.get("/api/conversations", params={"q": "budget"}).json()], ["abc"])
+        self.assertEqual(self.client.get("/api/conversations", params={"q": "role"}).json(), [])
+        self.assertEqual(self.client.get("/api/conversations", params={"q": "content"}).json(), [])
 
     def test_read_upload_chat_source_preview_clear_and_reupload(self):
         result = self.ingest_sample()
@@ -189,7 +214,7 @@ class ReactApiTests(unittest.TestCase):
             worker = start_title(session)
             if worker:
                 workers.append(worker)
-        with patch.object(api, "start_title", side_effect=launch), \
+        with patch("backend.workspace.start_title", side_effect=launch), \
                 patch.object(api.ollama, "conversation_title", return_value="How Photosynthesis Works") as naming, \
                 patch.object(api.ollama, "chat", side_effect=lambda *_: iter(["Plants use sunlight to make food."])):
             self.client.post("/api/chat", json={"text": "Can you explain how photosynthesis works?"}).raise_for_status()

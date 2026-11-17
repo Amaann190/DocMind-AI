@@ -1,20 +1,22 @@
-import os
+import io
 import ipaddress
+import os
 import re
 import shutil
 import socket
-import time
-import tempfile
-import zipfile
-import requests
-import urllib3
-import certifi
 import subprocess
+import tempfile
+import time
+import zipfile
 from pathlib import Path
 from urllib.parse import urljoin, urlparse, urlunparse
 
+import certifi
 import html2text
+import requests
+import urllib3
 from llama_index.core import Document
+from requests.structures import CaseInsensitiveDict
 
 import utils.logs as logs
 from utils.session_workspace import session_directory
@@ -107,11 +109,11 @@ def _public_https_target(url: str):
     if not resolved_addresses:
         raise ValueError("URL hostname has no network addresses.")
     for address in resolved_addresses:
-        ip_address = address[4][0]
+        ip_address = str(address[4][0])
         if _is_blocked_ip(ip_address):
             raise ValueError("URL resolves to a blocked network address.")
 
-    return parsed, resolved_addresses[0][4][0]
+    return parsed, str(resolved_addresses[0][4][0])
 
 
 def _validate_public_http_url(url: str) -> str:
@@ -170,7 +172,8 @@ def load_website_documents(urls: list[str]) -> list[Document]:
                     if total_bytes > MAX_WEBSITE_RESPONSE_BYTES:
                         raise ValueError("Website response is too large to process.")
                     chunks.append(chunk)
-                charset = requests.utils.get_encoding_from_headers(response.headers) or "utf-8"
+                charset = requests.utils.get_encoding_from_headers(
+                    CaseInsensitiveDict(dict(response.headers))) or "utf-8"
                 html = b"".join(chunks).decode(charset, errors="replace")
                 metadata = {"source": current_url}
                 text = html
@@ -181,7 +184,7 @@ def load_website_documents(urls: list[str]) -> list[Document]:
                     title = soup.find("h1") or soup.title
                     if title:
                         metadata["title"] = title.get_text(" ", strip=True)[:200]
-                    body = soup.find("main") or soup.find(attrs={"role": "main"}) or soup.body or soup
+                    body = soup.find("main") or soup.select_one('[role="main"]') or soup.body or soup
                     for element in body.select("nav, aside, script, style, noscript, svg"):
                         element.decompose()
                     converter = html2text.HTML2Text(baseurl=current_url)
@@ -266,7 +269,7 @@ def validate_document_archive(path):
             raise ValueError("Document archive exceeds the extraction size limit.")
 
 
-def save_uploaded_file(uploaded_file: bytes, save_dir: str):
+def save_uploaded_file(uploaded_file: io.BytesIO, save_dir: str):
     """
     Saves the uploaded file to the specified directory.
 
@@ -355,7 +358,7 @@ def validate_github_repo(repo: str):
             get_resp = requests.get(f"https://github.com/{repo}", timeout=10, headers=headers)
             return get_resp.status_code == 200
         return False
-    except Exception as err:
+    except requests.RequestException as err:
         logs.log.warning(f"Unable to validate GitHub repository {repo}: {err}")
         return False
 
@@ -396,10 +399,7 @@ def clone_github_repo(repo: str):
         git_bin = shutil.which("git")
         if not git_bin:
             local_git = os.path.expandvars(r"%LOCALAPPDATA%\Programs\Git\cmd\git.exe")
-            if os.path.exists(local_git):
-                git_bin = local_git
-            else:
-                git_bin = "git"
+            git_bin = local_git if os.path.exists(local_git) else "git"
 
         result = subprocess.run(
             [git_bin, "-c", "core.hooksPath=", "-c", "protocol.file.allow=never",
@@ -419,7 +419,7 @@ def clone_github_repo(repo: str):
 
         logs.log.info(f"Cloned {repo} repo")
         return destination
-    except Exception as err:
+    except (OSError, subprocess.SubprocessError, ValueError) as err:
         logs.log.error(f"Error cloning {repo} GitHub repo: {err}")
         remove_dir_retry(destination)
         return False

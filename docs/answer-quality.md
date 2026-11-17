@@ -48,8 +48,8 @@ including **34 of 34 live answers** and **25 of 25 format questions**. The previ
 document-instruction failure passed with the final reminder. This one attack's
 passing result is not a security guarantee.
 
-The repository-root [report](../eval_report.md) and [JSON](../eval_results.json)
-record that full live run. Offline verification passed **42 checks** and explicitly
+The [report](../output/evaluation-live-boundary/eval_report.md) and
+[JSON](../output/evaluation-live-boundary/eval_results.json) record that full live run. Offline verification passed **42 checks** and explicitly
 skipped **34 live answers**. The final regression suite passed **170 tests**;
 compilation and Ruff's configured error checks passed at that evaluation checkpoint.
 The temporary smoke-test server was stopped afterward.
@@ -69,6 +69,118 @@ instruction case and failed the follow-up. Its zero complete format passes does
 [smaller-model answers](../output/evaluation-qwen-final/eval_report.md) and
 [grading details](../output/evaluation-qwen-final/eval_results.json).
 
+Since 2026-11-17, sentences in retrieved text that address the model ("ignore all
+previous instructions", "answer X instead", "you are now ...") are withheld from the
+prompt before generation (`utils/ollama.py`, `_withhold_instructions`); the source
+preview still shows the original passage. With that change `qwen2.5:0.5b` no longer
+outputs `PWNED` for the injection case, but it now answers "I could not find this
+information" instead of the code, so it still fails that check. This is a heuristic
+filter for common phrasings, not a guarantee against prompt injection.
+
+On 2026-11-17, after the retrieval fixes, the stopword and minimum-should-match evidence rule and this filter, a full live run with
+`llama3:latest` and `nomic-embed-text:latest` passed **81 of 81 checks**, including
+**34 of 34 live answers** (injection case: `ANCHOR-5317 (from Source [1])`).
+See the [report](../output/evaluation-live-2026-11/eval_report.md) and
+[JSON](../output/evaluation-live-2026-11/eval_results.json). An intermediate version
+that wrapped passages in `<source>` tags made llama3 cite the tag instead of `[n]`
+(24 citation failures), so passages keep the plain `Source [n] (file):` label.
+
+## Retrieval ablation
+
+The retrieval suite compares four configurations on the same index: dense vectors
+only, BM25 only, hybrid fusion without the evidence floor, and the full pipeline.
+On 2026-11-17 with `nomic-embed-text:latest` (11 answerable, 6 unanswerable queries):
+
+| Configuration | Answerable hit rate | Correct rejection |
+|---|---:|---:|
+| Vector only | 11/11 | 0/6 |
+| BM25 only | 11/11 | 6/6 |
+| Hybrid RRF, no evidence floor | 11/11 | 0/6 |
+| Full DocMind (hybrid + floor) | 11/11 | 6/6 |
+
+See the [ablation report](../output/evaluation-retrieval-ablation/eval_report.md).
+The fixture corpus is five short documents, so every configuration finds the
+answerable sources; the measurable difference is rejection. Dense similarity alone
+never returns an empty result on these probes, and the evidence floor is what
+restores correct rejection after fusion. The small set cannot show where hybrid
+fusion beats BM25 alone; the labelled benchmark below does.
+
+## Labelled retrieval benchmark
+
+`evaluation/benchmark/` holds 20 documents (policies, manuals, reports, runbooks,
+recipes, science notes) with deliberate overlaps, 70 answerable queries labelled by
+type, 32 off-topic queries written naturally (not filtered for keyword overlap) and
+12 near-miss queries whose related document does not contain the answer. Run it with
+`eval_harness.py --suite benchmark`. On 2026-11-17 with `nomic-embed-text:latest`:
+
+| Configuration | Recall@1 | Recall@3 | Recall@5 | MRR@5 | Correct rejection (32) |
+|---|---:|---:|---:|---:|---:|
+| Vector only | 90% | 99% | 99% | 0.940 | 0% |
+| BM25 only | 80% | 80% | 80% | 0.800 | 97% |
+| Hybrid RRF, no evidence floor | 93% | 100% | 100% | 0.964 | 0% |
+| **Full DocMind** | **93%** | **100%** | **100%** | **0.964** | **75%** |
+
+Recall@5 by query type: BM25 alone finds 61% of paraphrases and 33% of Hinglish
+queries, vector search alone 91% of identifier queries (codes such as `E-219`), and
+the hybrid pipelines 100% of every type. Fusion therefore beats each channel alone on
+ranking. The evidence floor is what makes rejection possible at all: without it,
+every off-topic query returns passages. See the
+[benchmark report](../output/evaluation-benchmark/eval_report.md).
+
+The first run of this benchmark exposed a weakness the five-document probes hid:
+the full pipeline rejected only 5 of 32 natural off-topic questions (16%), because
+any shared word counted as keyword evidence, including "how", "in" and "who".
+Keyword evidence now ignores stopwords and request words, and a chunk with a weak
+vector score needs at least half of a question's content terms (or their synonyms)
+before BM25 vouches for it ("minimum should match"; each question in a resolved
+follow-up is judged separately). That raised correct rejection from 16% to 75%, with
+Recall@5 unchanged at 100%. The 8 off-topic questions
+still retrieved are semantic neighbours scored above the 0.5 floor by the embedding
+model (for example "Which language was created by Guido van Rossum?" retrieves the
+Python style guide); abstaining on those is left to the answer step. Near-miss
+questions retrieve their related document by design.
+
+These figures come from one synthetic corpus and one embedding model; they show
+relative behaviour of the configurations, not accuracy on other collections.
+
+## Public benchmark: BEIR SciFact
+
+SciFact (Wadden et al., 2020; part of BEIR, Thakur et al., 2021) pairs 300 test claims
+with the scientific abstracts that support or refute them, in a corpus of 5,183
+abstracts. It has no unanswerable queries, so it measures ranking, not rejection.
+`eval_harness.py --suite public --model <embedding model>` downloads it on demand
+(SHA-256 pinned; CC BY-NC 2.0, so the data is not committed). On 2026-11-17:
+
+| Configuration | nDCG@10, nomic-embed-text | nDCG@10, all-minilm | Recall@10, nomic / minilm |
+|---|---:|---:|---:|
+| Vector only | 0.707 | 0.637 | 83% / 79% |
+| BM25 only (evidence-gated) | 0.543 | 0.543 | 61% / 61% |
+| Hybrid RRF, no evidence floor | **0.718** | **0.691** | 86% / 82% |
+| Full DocMind | **0.718** | 0.645 | 86% / 76% |
+
+Reports: [nomic-embed-text](../output/evaluation-public-nomic-embed-text/eval_report.md),
+[all-minilm](../output/evaluation-public-all-minilm/eval_report.md). Documents are
+chunked (256 tokens) and ranked by their best chunk, so scores are not directly
+comparable with whole-document results published for these models.
+
+On data the project did not write, fusion beats vector search alone with both
+embedding models (+0.011 nDCG@10 with `nomic-embed-text`, +0.054 with `all-minilm`).
+The evidence floor costs nothing with `nomic-embed-text`, but with `all-minilm`, whose
+similarity scores run lower, the fixed 0.5 floor discards relevant abstracts (4% of
+claims return nothing; nDCG@10 drops from 0.691 to 0.645). The floor is calibrated for
+`nomic-embed-text`; other embedding models need their own value.
+
+Two corrections came out of this benchmark:
+- The hybrid retriever ranked BM25 candidates only from the strict "minimum should
+  match" evidence set. BM25 now ranks every chunk sharing a content term, and the
+  strict set only decides abstention. On SciFact with `nomic-embed-text` this raised
+  hybrid nDCG@10 from 0.687 to 0.718; on the labelled benchmark Recall@1 moved from
+  96% to 93% with rejection unchanged.
+- The benchmark suites did not pin Top K: the hybrid configurations read the session
+  default of 3 while vector-only returned K results, so earlier hybrid Recall@5/@10
+  figures were computed on 3 results. The suites now set Top K explicitly; all
+  numbers on this page come from runs after that fix.
+
 For this installation, use `llama3:latest` for document questions based on these
 observed results. If a previous session saved `qwen2.5:0.5b`, select `llama3:latest`
 in Settings; the application deliberately preserves valid saved choices. This
@@ -86,6 +198,10 @@ pipenv run python -m unittest discover -s tests
 pipenv run python eval_harness.py --mock --out output/evaluation-mock
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live-boundary
 pipenv run python eval_harness.py --suite generation --chat-model qwen2.5:0.5b --out output/evaluation-qwen-final
+pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
+pipenv run python eval_harness.py --suite benchmark --out output/evaluation-benchmark
+pipenv run python eval_harness.py --suite public --model nomic-embed-text:latest --out output/evaluation-public-nomic-embed-text
+pipenv run python eval_harness.py --suite public --model all-minilm:latest --out output/evaluation-public-all-minilm
 ```
 
 Legacy DOC, PPT and XLS fixture generation and extraction require LibreOffice.

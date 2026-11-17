@@ -1,17 +1,20 @@
-import ollama
-import time
 import re
+import time
+from typing import cast
 
+import httpx
+import ollama
 import requests
-from utils.runtime import st
-
-import utils.logs as logs
-
+from llama_index.core.llms import ChatMessage, LLMMetadata, MessageRole
+from llama_index.core.query_engine.retriever_query_engine import RetrieverQueryEngine
 from llama_index.llms.ollama import Ollama
 from llama_index.llms.openai import OpenAI
-from llama_index.core.llms import ChatMessage, MessageRole, LLMMetadata
-from llama_index.core.query_engine.retriever_query_engine import RetrieverQueryEngine
+
+import utils.logs as logs
+from utils.errors import MODEL_SERVER_ERRORS
+from utils.injection import withhold_instructions
 from utils.llama_index import TEXT_QA_TEMPLATE
+from utils.runtime import st
 
 # Model context budget (tokens) reserved for chat history, leaving room for
 # the current prompt and the model's reply. Keep it below num_ctx (2048) so
@@ -20,6 +23,8 @@ CHAT_HISTORY_TOKEN_BUDGET = 1200
 
 DEFAULT_TEMPERATURE = 0.4
 DEFAULT_OPENAI_BASE_URL = "http://localhost:1234/v1"
+DEFAULT_OLLAMA_ENDPOINT = "http://localhost:11434"
+DEFAULT_OLLAMA_EMBEDDING_MODEL = "nomic-embed-text:latest"
 
 
 def is_openai_backend(backend):
@@ -35,10 +40,8 @@ def _active_backend() -> str:
 def _active_chat_model() -> str:
     """Return the chat model for the active backend."""
     if _active_backend() == "OpenAI":
-        return st.session_state.get("openai_model") or st.session_state.get(
-            "selected_model"
-        )
-    return st.session_state.get("selected_model")
+        return st.session_state.get("openai_model") or st.session_state.get("selected_model") or ""
+    return st.session_state.get("selected_model") or ""
 
 
 def _active_embedding_model() -> str:
@@ -47,21 +50,21 @@ def _active_embedding_model() -> str:
         return st.session_state.get(
             "openai_embedding_model"
         ) or "text-embedding-3-small"
-    return st.session_state.get("ollama_embedding_model")
+    return st.session_state.get("ollama_embedding_model") or DEFAULT_OLLAMA_EMBEDDING_MODEL
 
 
 def _active_base_url() -> str:
     """Return the server base URL for the active backend."""
     if _active_backend() == "OpenAI":
         return st.session_state.get("openai_base_url") or DEFAULT_OPENAI_BASE_URL
-    return st.session_state.get("ollama_endpoint")
+    return st.session_state.get("ollama_endpoint") or DEFAULT_OLLAMA_ENDPOINT
 
 
 def _active_embedding_base_url() -> str:
     """Return the embedding server base URL for the active backend."""
     if _active_backend() == "OpenAI":
         return st.session_state.get("openai_base_url") or DEFAULT_OPENAI_BASE_URL
-    return st.session_state.get("ollama_endpoint")
+    return st.session_state.get("ollama_endpoint") or DEFAULT_OLLAMA_ENDPOINT
 
 
 def _active_api_key() -> str:
@@ -84,21 +87,22 @@ def _trim_history(messages, budget_tokens: int = CHAT_HISTORY_TOKEN_BUDGET):
     used = 0
     for message in reversed(messages):
         remaining = budget_tokens - used
-        estimated = _estimate_tokens(message.content) + 8
+        text = message.content or ""
+        estimated = _estimate_tokens(text) + 8
         if message.role == MessageRole.ASSISTANT and estimated > remaining // 2:
             # Reserve room for the user turn that gives this answer its subject.
             allowance = remaining // 2 - 8
             if allowance < 1:
                 continue
-            low, high = 0, len(message.content)
+            low, high = 0, len(text)
             while low < high:
                 middle = (low + high + 1) // 2
-                if _estimate_tokens(message.content[:middle] + "…") <= allowance:
+                if _estimate_tokens(text[:middle] + "…") <= allowance:
                     low = middle
                 else:
                     high = middle - 1
-            message = ChatMessage(role=message.role, content=message.content[:low] + "…")
-            estimated = _estimate_tokens(message.content) + 8
+            message = ChatMessage(role=message.role, content=text[:low] + "…")
+            estimated = _estimate_tokens(message.content or "") + 8
         if used + estimated > budget_tokens:
             break
         recent.append(message)
@@ -134,7 +138,7 @@ def _is_eco_mode() -> bool:
     """Return whether Eco Mode is enabled (light load / weak hardware)."""
     try:
         return bool(st.session_state.get("eco_mode"))
-    except Exception:
+    except (RuntimeError, AttributeError):  # no request state
         return False
 
 
@@ -155,8 +159,19 @@ def _rag_history_budget() -> int:
     return 300 if _is_eco_mode() else 500
 
 
+def _quoted_source(number, name, text):
+    """Format one retrieved passage as numbered evidence for the prompt.
+
+    Keeps the plain "Source [n] (name):" label: the answer cites "[n]" and the
+    UI turns those into citation chips. Wrapping passages in XML-style tags made
+    llama3 cite the tag instead of "[n]". Instruction-like sentences are
+    withheld (see utils.injection).
+    """
+    return f"Source [{number}] ({name}):\n{withhold_instructions(text)}"
+
+
 def _build_rag_messages(
-    prompt: str, context: str, history: list, system_prompt: str
+    prompt: str, context: str, history: list, system_prompt: str | None
 ) -> list:
     """Build the chat messages for a grounded RAG answer.
 
@@ -239,9 +254,9 @@ def create_client(host: str):
         client = ollama.Client(host=host, timeout=5.0)
         logs.log.info("Ollama chat client created successfully")
         return client
-    except Exception as err:
+    except (ValueError, TypeError, httpx.InvalidURL) as err:
         logs.log.error(f"Failed to create Ollama client: {err}")
-        return False
+        raise ValueError(f"Invalid Ollama endpoint: {host}") from err
 
 
 ###################################
@@ -294,7 +309,7 @@ def get_openai_models(base_url: str, api_key: str = "") -> list:
         )
         response.raise_for_status()
         data = response.json()
-    except Exception as err:
+    except (requests.RequestException, ValueError) as err:
         logs.log.error(f"Failed to fetch OpenAI-compatible models: {err}")
         return []
     models = []
@@ -324,7 +339,7 @@ def get_models():
             logs.log.warning("Ollama did not return any chat-capable models")
 
         return models
-    except Exception as err:
+    except MODEL_SERVER_ERRORS as err:
         logs.log.error(f"Failed to retrieve Ollama model list: {err}")
         st.session_state["ollama_models"] = []
         return []
@@ -354,7 +369,7 @@ def get_embedding_models():
             logs.log.warning("Ollama did not return any embedding-capable models")
 
         return embedding_models
-    except Exception as err:
+    except MODEL_SERVER_ERRORS as err:
         logs.log.error(f"Failed to retrieve Ollama embedding model list: {err}")
         st.session_state["ollama_embedding_models"] = []
         return []
@@ -381,16 +396,16 @@ def verify_chat_model(model: str, base_url: str) -> bool:
         details = client.show(model)
         capabilities = getattr(details, "capabilities", None) or details.get("capabilities", [])
         return "completion" in capabilities
-    except Exception:
+    except MODEL_SERVER_ERRORS:
         return False
 
 
 def create_ollama_llm(
     model: str,
     base_url: str,
-    system_prompt: str = None,
+    system_prompt: str | None = None,
     request_timeout: int = 300,
-    temperature: float = None,
+    temperature: float | None = None,
     eco_mode: bool | None = None,
 ) -> Ollama:
     """
@@ -457,7 +472,7 @@ def create_openai_llm(
     model: str,
     base_url: str,
     api_key: str = "",
-    temperature: float = None,
+    temperature: float | None = None,
     eco_mode: bool | None = None,
 ) -> OpenAI:
     """Create an LLM backed by any OpenAI-compatible endpoint.
@@ -492,9 +507,9 @@ def create_llm(
     model: str,
     base_url: str,
     api_key: str = "",
-    system_prompt: str = None,
-    temperature: float = None,
-    backend: str = None,
+    system_prompt: str | None = None,
+    temperature: float | None = None,
+    backend: str | None = None,
 ):
     """Create an LLM for the active backend (Ollama or OpenAI-compatible).
 
@@ -519,12 +534,15 @@ def create_llm(
 def conversation_title(question, answer, *, model, base_url, api_key="", backend="Ollama"):
     """Summarize one exchange using the selected provider; never alter chat history."""
     llm = create_llm(model, base_url, api_key, temperature=0, backend=backend)
+    # create_llm returns the OpenAI-compatible client for OpenAI-style backends, Ollama otherwise.
     if is_openai_backend(backend):
-        llm.timeout = 15.0
-        llm.max_tokens = 40
+        openai_llm = cast(OpenAI, llm)
+        openai_llm.timeout = 15.0
+        openai_llm.max_tokens = 40
     else:
-        llm.request_timeout = 15.0
-        llm.additional_kwargs = {**llm.additional_kwargs, "num_predict": 40}
+        ollama_llm = cast(Ollama, llm)
+        ollama_llm.request_timeout = 15.0
+        ollama_llm.additional_kwargs = {**ollama_llm.additional_kwargs, "num_predict": 40}
     result = llm.chat([
         ChatMessage(role=MessageRole.SYSTEM, content=(
             "Name this conversation by its main topic or goal. Return only a specific, recognizable "
@@ -596,7 +614,7 @@ def chat(prompt: str):
         finally:
             if hasattr(stream, "close"):
                 stream.close()
-    except Exception as err:
+    except Exception as err:  # noqa: BLE001 - provider/SDK errors vary; report any failure to the user
         logs.log.error(f"Ollama chat stream error: {err}")
         if _active_backend() == "OpenAI":
             yield (
@@ -616,7 +634,7 @@ def chat(prompt: str):
 ###################################
 
 
-def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
+def context_chat(prompt: str, query_engine: RetrieverQueryEngine | None):
     """
     Initiates a chat with context using the active LLM backend.
 
@@ -675,9 +693,7 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
             file_name = metadata.get(
                 "file_name", metadata.get("source", "document")
             )
-            numbered_context.append(
-                f"Source [{index}] ({file_name}):\n{node_score.node.get_content()}"
-            )
+            numbered_context.append(_quoted_source(index, file_name, node_score.node.get_content()))
             sources.append((file_name, node_score.score))
         st.session_state["last_doc_sources"] = sources
         st.session_state["last_doc_passages"] = [
@@ -685,7 +701,7 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
              "source_id": node.node.metadata.get("docmind_source_id"),
              "page": next((node.node.metadata[key] for key in ("page_label", "page_number", "page")
                            if node.node.metadata.get(key) is not None), None)}
-            for i, ((name, _score), node) in enumerate(zip(sources, nodes), 1)
+            for i, ((name, _score), node) in enumerate(zip(sources, nodes, strict=True), 1)
         ]
 
         context = "\n\n".join(numbered_context)
@@ -717,7 +733,7 @@ def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
         if any(value < 1 or value > len(sources) for value in citations):
             yield "\n\n⚠️ This answer contains an invalid source reference. Verify it against the source documents."
         logs.log.info(f"Doc query answered in {time.time() - t0:.1f}s")
-    except Exception as err:
+    except Exception as err:  # noqa: BLE001 - provider/SDK errors vary; report any failure to the user
         logs.log.error(f"Ollama chat stream error: {err}")
         if _active_backend() == "OpenAI":
             yield (

@@ -14,9 +14,9 @@ from urllib.parse import quote
 from uuid import uuid4
 
 import httpx
-from utils.runtime import st
 
 import utils.logs as logs
+from utils.runtime import st
 
 DEFAULT_R2R_BASE_URL = "http://localhost:7272"
 R2R_REQUEST_TIMEOUT = 120.0
@@ -103,7 +103,7 @@ class R2RClient:
                 )
         return failed
 
-    def rag(self, query: str, document_ids: list = None) -> str:
+    def rag(self, query: str, document_ids: list | None = None) -> str:
         """Run a RAG query against R2R and return the generated answer text."""
         if not document_ids:
             raise R2RConnectionError("No session documents are available for this query.")
