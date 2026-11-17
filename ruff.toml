@@ -22,7 +22,9 @@ select = [
 # Tests use small, local blind excepts to drive worker threads and subprocesses.
 # Tests build throwaway loggers outside the logging registry on purpose.
 "tests/**" = ["BLE001", "S110", "B023", "SIM117", "LOG001"]
-"eval_*.py" = ["BLE001"]  # the harness records any failure as a failed check
+# The evaluation harness records any failure as a failed check.
+"eval_*.py" = ["BLE001"]
+"evaluation/**" = ["BLE001"]
 # The container check talks to the running API before importing heavy libraries.
 "scripts/check_container.py" = ["E402"]
 
