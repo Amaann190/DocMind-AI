@@ -78,7 +78,7 @@ class EvaluationTests(unittest.TestCase):
         store.get_node.return_value = node
         vector = Mock()
         vector.retrieve.return_value = []
-        with patch.object(rag, "st", SimpleNamespace(session_state={})):
+        with patch("utils.runtime.st", SimpleNamespace(session_state={})):
             retriever = rag.HybridRetriever(vector, store, [node.node_id], 3)
             self.assertTrue(retriever.retrieve("money back rules"))
             self.assertEqual(retriever.retrieve("back pain"), [])

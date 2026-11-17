@@ -501,7 +501,8 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
 
     # 4 — tone presets produce distinct prompts
     def t_tone():
-        from backend.app import Settings, configure, new_session
+        from backend.settings import Settings
+        from backend.workspace import configure, new_session
         from typing import get_args
         styles = get_args(Settings.model_fields["style"].annotation)
         state = new_session()
@@ -757,7 +758,7 @@ def suite_architecture(mock: bool):
     check = partial(_check, results)
 
     def t_presets():
-        from backend.app import Settings
+        from backend.settings import Settings
         from typing import get_args
         presets = get_args(Settings.model_fields["provider"].annotation)
         ok = {"Ollama", "OpenAI", "LM Studio (Local AI)"}.issubset(presets)
@@ -766,8 +767,8 @@ def suite_architecture(mock: bool):
 
     def t_export():
         from unittest.mock import patch
-        from backend.app import export
-        with patch("backend.app.get_session", return_value={"messages": [
+        from backend.routes.conversations import export
+        with patch("backend.routes.conversations.get_session", return_value={"messages": [
             {"role": "user", "content": "hello"}, {"role": "assistant", "content": "hi there"}]}):
             data = export(None).body
         ok = len(data) > 1000 and data[:2] == b"PK"  # docx is zip
@@ -775,7 +776,7 @@ def suite_architecture(mock: bool):
     check("export_docx", t_export)
 
     def t_api_settings():
-        from backend.app import Settings
+        from backend.settings import Settings
         public = Settings(api_key="private").model_dump(exclude={"api_key", "r2r_key"})
         return "api_key" not in public and public["provider"] == "Ollama", "Public settings exclude credentials"
     check("api_settings", t_api_settings)
@@ -800,7 +801,7 @@ def suite_architecture(mock: bool):
             def __init__(self, *a, **kw): pass
             def list(self): return {"models": [{"model": "nomic-embed-text:latest"}]}
             def show(self, m): return {"capabilities": ["embedding"]}
-        with patch("utils.llama_index.ollama.Client", FakeClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", FakeClient):
             ok = verify_embedding_model("nomic-embed-text:latest", "http://localhost:11434")
         return ok, "mock verify"
     check("embedding_verify", t_embedding_verify_mock)
