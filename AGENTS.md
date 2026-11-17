@@ -25,7 +25,7 @@ cd ..
 pipenv run python -m uvicorn backend.app:app --host 127.0.0.1 --port 8765
 ```
 
-Windows: `./run.ps1` launches the built app. `run-react.ps1` is an alias.
+Windows: `./run.ps1` launches the built app.
 Run focused tests while iterating, then the retained full suite:
 
 ```bash

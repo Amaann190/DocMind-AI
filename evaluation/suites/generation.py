@@ -104,7 +104,7 @@ def suite_generation(mock: bool, endpoint="http://localhost:11434", model="nomic
             return ok, f"messages_in_prompt={len(msgs)}"
     check("multi_turn_history", t_multiturn)
 
-    from eval_quality import evaluate_answers
+    from evaluation.quality import evaluate_answers
     results.extend(evaluate_answers(mock, endpoint, model, chat_model))
 
     return summarize_results("generation", results)
