@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ArrowRight, X } from "lucide-react";
+import { X } from "lucide-react";
 
 export function Brand({ small = false }) {
   return (

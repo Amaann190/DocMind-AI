@@ -1,27 +1,10 @@
 import React from "react";
 import { Plus, MessageSquare, Library, Settings2, ChevronDown, Trash2, PanelLeftClose, ShieldCheck, Search, Pencil } from "lucide-react";
 import { Brand, IconButton, ResizeHandle } from "./ui.jsx";
+import { useWorkspace } from "../state/WorkspaceContext.jsx";
 
-export function Sidebar({
-  action,
-  chatSearch,
-  conversations,
-  disabled,
-  input,
-  nav,
-  navigationVisible,
-  page,
-  panelWidths,
-  setChatSearch,
-  setDeletingChat,
-  setEditingChat,
-  setPanelWidths,
-  setQuestion,
-  settings,
-  sources,
-  toggleNavigation,
-  workspace,
-}) {
+export function Sidebar() {
+  const { action, chatSearch, conversations, disabled, nav, navigationVisible, page, panelWidths, setChatSearch, setDeletingChat, setEditingChat, setPanelWidths, setQuestion, settings, sources, toggleNavigation, workspace } = useWorkspace();
   return (
     <aside
       id="navigation-panel"
