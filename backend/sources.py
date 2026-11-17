@@ -2,11 +2,15 @@
 import io
 import secrets
 import tempfile
+import threading
 from pathlib import Path
 
 from fastapi import HTTPException
 
-from backend.workspace import operation, snapshot
+import utils.logs as logs
+from backend import history, source_store
+from backend.settings import Settings
+from backend.workspace import configure, open_conversation, operation, snapshot, sync_sources
 from utils import helpers, ollama
 from utils import llama_index as indexer
 from utils.r2r import R2RClient, clear_remote_documents
@@ -198,3 +202,61 @@ def ingest_uploads(session, uploads):
                 warnings.append({"file": item["name"], "error": str(error)})
         session["warnings"] = warnings
     return snapshot(session)
+
+
+def restore_sources(session):
+    """Rebuild opt-in saved sources in the background after a backend restart.
+
+    Returns the restoring thread, or None when nothing is saved. The workspace
+    lock is held until the index is rebuilt, so the UI shows progress and
+    other operations wait.
+    """
+    bundle = source_store.load(session["owner"])
+    if not bundle:
+        return None
+    try:
+        config = Settings(**{**bundle["settings"], "keep_sources": True})
+    except ValueError as error:
+        logs.log.warning(f"Discarding saved sources with invalid settings: {error}")
+        try:
+            source_store.delete(session["owner"])
+        except OSError as delete_error:
+            logs.log.error(f"Could not delete invalid saved sources: {delete_error}")
+        return None
+    saved = [{**source, "preview": ""} for source in bundle["sources"]]
+    session.update(config=config, sources=[{**s, "status": "restoring"} for s in saved],
+                   status="Restoring your sources")
+    session["lock"].acquire()
+
+    def rebuild():
+        try:
+            with request_state(session):
+                configure(session)
+                session["source_inputs"] = source_store.inputs(bundle)
+                documents = source_store.documents(bundle)
+                try:
+                    if documents:
+                        index_documents(session, documents, "file")
+                    else:
+                        session["sources"] = []
+                except Exception as error:  # noqa: BLE001 - e.g. the embedding server is not running yet
+                    logs.log.warning(f"Restoring sources failed: {error}")
+                    session["documents"] = documents
+                    session["sources"] = [{**s, "status": "error", "error": (
+                        f"Could not rebuild the index after restart: {error} Retry when the model server is available.")}
+                        for s in saved]
+                else:
+                    ready = {s["id"] for s in session["sources"]}
+                    session["sources"].extend(s for s in saved if s["id"] not in ready)
+                session["corpus_id"] = bundle["corpus_id"]
+                record = history.read(session["owner"], session["conversation_id"])
+                if record:
+                    open_conversation(session, record)
+                sync_sources(session)
+        finally:
+            session.update(status="Ready", progress=None)
+            session["lock"].release()
+
+    thread = threading.Thread(target=rebuild, daemon=True)
+    thread.start()
+    return thread

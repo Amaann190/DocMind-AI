@@ -4,7 +4,8 @@
 - Email attachment extraction is not implemented.
 - Spreadsheet formulas are not calculated by DocMind.
 - Live answer accuracy depends on model, prompt and document content.
-- Active source collections are not restored after a backend restart.
+- Sources are restored after a backend restart only when the user opts in; the saved copy is not encrypted.
+- Workspaces and indexes live in one process, so the API must run with a single worker.
 - Remote R2R ownership is tracked in the active process; clean up remote sources before shutdown.
 - Public hosting would require authentication and a different persistent session architecture.
 

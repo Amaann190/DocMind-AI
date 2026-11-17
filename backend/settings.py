@@ -19,6 +19,8 @@ class Settings(BaseModel):
     overlap: int = Field(default=32, ge=0, le=4096)
     similarity: float = Field(default=.3, ge=0, le=1)
     eco: bool = False
+    # Opt-in: save sources on disk so they survive a backend restart (backend/source_store.py).
+    keep_sources: bool = False
     r2r: bool = False
     r2r_url: str = "http://localhost:7272"
     r2r_key: str = ""

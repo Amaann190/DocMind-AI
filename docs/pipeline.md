@@ -30,7 +30,9 @@ Source replacement/removal rebuilds the bounded local index before committing it
 a failed replacement retains the prior index. Source changes exclude older document
 context from subsequent answers. Ingestion progress is exposed in API state.
 
-Source bytes and indexes are temporary. Conversations persist in
+Source bytes and indexes are temporary unless **Keep sources after restart** is on;
+then sources are saved per workspace and rebuilt in the background on reconnect.
+Conversations persist in
 `data/react-history.sqlite3`, or the directory specified by `DOCMIND_DATA_DIR`.
 Saved chats share current sources. Serve the application with a single API worker.
 

@@ -28,7 +28,8 @@ have to leave your device.
 - **Prompt-injection hardening.** Retrieved text is quoted as data. Sentences that try to
   instruct the model ("ignore previous instructions…") are withheld from the prompt.
 - **Saved conversations.** Chats are stored locally in SQLite, with search, rename and
-  Word (.docx) export.
+  Word (.docx) export. Sources can optionally be kept across
+  restarts (opt-in).
 - **Runs on modest hardware.** Index caching, adaptive embedding batches and an Eco Mode
   that trims context and answer length.
 
@@ -163,8 +164,10 @@ Details and reporting: [docs/security.md](docs/security.md) · [SECURITY.md](SEC
 
 ## Limitations
 
-- Indexes live in memory: run one worker, and sources must be re-added after a restart
-  (saved conversations persist).
+- Indexes live in memory, so run a single API worker; several workers would each hold
+  different workspaces. Saved conversations always persist. Sources persist across a
+  restart only if you turn on **Keep sources after restart** in Settings (off by
+  default; it stores document text and uploaded files unencrypted in the data directory).
 - No OCR for scanned PDFs or images.
 - Answer quality depends on the chat model. Small models (for example `qwen2.5:0.5b`)
   often omit citations; verify important answers against the cited passages.
