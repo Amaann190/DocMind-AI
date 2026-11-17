@@ -9,7 +9,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 import eval_harness as evaluation
-from eval_quality import evaluate_answers, grade_answer
+from evaluation.quality import evaluate_answers, grade_answer
 
 
 class EvaluationTests(unittest.TestCase):

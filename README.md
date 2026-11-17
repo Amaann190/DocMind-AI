@@ -473,7 +473,9 @@ DocMind-AI/
 ├── tests/                     Python unit and API tests
 ├── docs/                      setup, usage, pipeline, security, answer quality
 ├── output/                    recorded evaluation runs
-└── docker-compose.yml         hardened local container
+├── docker-compose.yml         hardened local container
+├── pyproject.toml             Ruff, pyright and coverage configuration
+└── Pipfile                    Python dependencies (Pipenv)
 ```
 
 ## Development

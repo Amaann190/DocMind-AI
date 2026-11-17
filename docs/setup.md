@@ -18,7 +18,7 @@ pipenv run python -m uvicorn backend.app:app --host 127.0.0.1 --port 8765
 
 Open http://127.0.0.1:8765. Windows users can run `./run.ps1` after setup.
 Choose another port using `-Port 8766`. The launcher will not terminate a process
-already using the selected port. `run-react.ps1` calls the same launcher.
+already using the selected port.
 
 For development, start the API on 8765 and run `npm run dev` from `frontend`.
 Open http://localhost:5173. Rebuild the frontend for changes to appear on the
