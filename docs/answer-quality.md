@@ -77,7 +77,7 @@ outputs `PWNED` for the injection case, but it now answers "I could not find thi
 information" instead of the code, so it still fails that check. This is a heuristic
 filter for common phrasings, not a guarantee against prompt injection.
 
-On 2026-11-17, after the retrieval fixes and this filter, a full live run with
+On 2026-11-17, after the retrieval fixes, the stopword and minimum-should-match evidence rule and this filter, a full live run with
 `llama3:latest` and `nomic-embed-text:latest` passed **81 of 81 checks**, including
 **34 of 34 live answers** (injection case: `ANCHOR-5317 (from Source [1])`).
 See the [report](../output/evaluation-live-2026-11/eval_report.md) and
