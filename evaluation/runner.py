@@ -5,6 +5,7 @@ from evaluation.suites.benchmark import suite_benchmark
 from evaluation.suites.generation import suite_generation
 from evaluation.suites.ingestion import suite_ingestion
 from evaluation.suites.performance import suite_performance
+from evaluation.suites.public import suite_public
 from evaluation.suites.retrieval import suite_retrieval
 from evaluation.suites.robustness import suite_robustness
 
@@ -12,7 +13,7 @@ ALL_SUITES = ["ingestion", "retrieval", "generation", "performance", "robustness
 
 
 # Run on request only (--suite benchmark): slower, and it reports metrics rather than pass/fail checks.
-OPTIONAL_SUITES = ["benchmark"]
+OPTIONAL_SUITES = ["benchmark", "public"]
 
 
 def run_full_eval(*args, **kwargs):
@@ -40,12 +41,13 @@ def _run_full_eval(endpoint="http://localhost:11434", model="nomic-embed-text:la
         "robustness": lambda: suite_robustness(use_mock),
         "architecture": lambda: suite_architecture(use_mock),
         "benchmark": lambda: suite_benchmark(use_mock, endpoint, model),
+        "public": lambda: suite_public(use_mock, endpoint, model),
     }
     all_results = {}
     try:
         for name in target:
             try:
-                if name in {"ingestion", "retrieval", "performance", "benchmark"}:
+                if name in {"ingestion", "retrieval", "performance", "benchmark", "public"}:
                     if use_mock:
                         _setup_hash_embeddings()
                     else:

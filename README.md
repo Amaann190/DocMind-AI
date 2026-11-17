@@ -129,11 +129,12 @@ pipenv run coverage run -m unittest discover -s tests && pipenv run coverage rep
 pipenv run python eval_harness.py --mock --out output/evaluation-mock
 pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
 pipenv run python eval_harness.py --suite benchmark --out output/evaluation-benchmark
+pipenv run python eval_harness.py --suite public --out output/evaluation-public-nomic-embed-text
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live
 ```
 
 CI also runs the mock evaluation under coverage and fails below 85% statement and branch
-coverage (87% at the time of writing). Pyright and coverage are installed with
+coverage (86% at the time of writing). Pyright and coverage are installed with
 `pipenv run pip install pyright coverage`.
 
 Frontend: `cd frontend && npm run lint && npm test` (ESLint and Vitest unit tests).
@@ -141,19 +142,31 @@ Browser tests (Playwright) run against a started server: `npx playwright test`.
 
 The harness reports passed, failed and skipped checks separately. Mock mode uses hash
 embeddings and never measures answer quality; live mode requires the named models.
-The labelled benchmark (`--suite benchmark`: 20 documents, 70 answerable and 32 off-topic
-queries) compares four retrieval configurations on the same index, with `nomic-embed-text`:
+Two retrieval benchmarks compare four configurations on the same index.
+
+**Public: BEIR SciFact** (`--suite public`: 300 claims over 5,183 abstracts), nDCG@10:
+
+| Configuration | nomic-embed-text | all-minilm |
+|---|---:|---:|
+| Vector only | 0.707 | 0.637 |
+| BM25 only | 0.543 | 0.543 |
+| Hybrid RRF, no evidence floor | **0.718** | **0.691** |
+| **Full DocMind** | **0.718** | 0.645 |
+
+**Labelled** (`--suite benchmark`: 20 documents, 70 answerable and 32 off-topic queries),
+with `nomic-embed-text`:
 
 | Configuration | Recall@1 | Recall@5 | MRR@5 | Correct rejection |
 |---|---:|---:|---:|---:|
 | Vector only | 90% | 99% | 0.940 | 0% |
 | BM25 only | 80% | 80% | 0.800 | 97% |
-| Hybrid RRF, no evidence floor | 96% | 100% | 0.976 | 0% |
-| **Full DocMind (hybrid + evidence floor)** | **96%** | **100%** | **0.976** | **75%** |
+| Hybrid RRF, no evidence floor | 93% | 100% | 0.964 | 0% |
+| **Full DocMind (hybrid + evidence floor)** | **93%** | **100%** | **0.964** | **75%** |
 
-The corpus is synthetic, so these numbers compare configurations rather than predict
-accuracy on your documents. Method, per-type results and live answer results by chat
-model are in [docs/answer-quality.md](docs/answer-quality.md).
+Fusion beats each retrieval channel alone on both benchmarks, and the evidence floor is
+what makes rejection possible. The floor is calibrated for `nomic-embed-text`: with
+`all-minilm` it also drops some relevant results. Details, corrections and live answer
+results by chat model are in [docs/answer-quality.md](docs/answer-quality.md).
 
 ## Security and privacy
 

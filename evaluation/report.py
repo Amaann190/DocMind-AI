@@ -41,6 +41,10 @@ def _write_outputs(all_results, overall, out_dir="."):
     if bench:
         from evaluation.benchmark import markdown_report
         md.extend([""] + markdown_report(bench, bench.get("embedding", "")))
+    public = all_results.get("public", {}).get("summary")
+    if public:
+        from evaluation.suites.public import markdown_report as public_report
+        md.extend([""] + public_report(public))
     for name, result in all_results.items():
         md.extend(["", f"## {name}", ""])
         for item in result["results"]:

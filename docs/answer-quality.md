@@ -117,8 +117,8 @@ type, 32 off-topic queries written naturally (not filtered for keyword overlap) 
 |---|---:|---:|---:|---:|---:|
 | Vector only | 90% | 99% | 99% | 0.940 | 0% |
 | BM25 only | 80% | 80% | 80% | 0.800 | 97% |
-| Hybrid RRF, no evidence floor | 96% | 100% | 100% | 0.976 | 0% |
-| **Full DocMind** | **96%** | **100%** | **100%** | **0.976** | **75%** |
+| Hybrid RRF, no evidence floor | 93% | 100% | 100% | 0.964 | 0% |
+| **Full DocMind** | **93%** | **100%** | **100%** | **0.964** | **75%** |
 
 Recall@5 by query type: BM25 alone finds 61% of paraphrases and 33% of Hinglish
 queries, vector search alone 91% of identifier queries (codes such as `E-219`), and
@@ -133,8 +133,8 @@ any shared word counted as keyword evidence, including "how", "in" and "who".
 Keyword evidence now ignores stopwords and request words, and a chunk with a weak
 vector score needs at least half of a question's content terms (or their synonyms)
 before BM25 vouches for it ("minimum should match"; each question in a resolved
-follow-up is judged separately). That raised correct rejection from 16% to 75% and
-Recall@1 from 90% to 96%, with Recall@5 unchanged at 100%. The 8 off-topic questions
+follow-up is judged separately). That raised correct rejection from 16% to 75%, with
+Recall@5 unchanged at 100%. The 8 off-topic questions
 still retrieved are semantic neighbours scored above the 0.5 floor by the embedding
 model (for example "Which language was created by Guido van Rossum?" retrieves the
 Python style guide); abstaining on those is left to the answer step. Near-miss
@@ -142,6 +142,44 @@ questions retrieve their related document by design.
 
 These figures come from one synthetic corpus and one embedding model; they show
 relative behaviour of the configurations, not accuracy on other collections.
+
+## Public benchmark: BEIR SciFact
+
+SciFact (Wadden et al., 2020; part of BEIR, Thakur et al., 2021) pairs 300 test claims
+with the scientific abstracts that support or refute them, in a corpus of 5,183
+abstracts. It has no unanswerable queries, so it measures ranking, not rejection.
+`eval_harness.py --suite public --model <embedding model>` downloads it on demand
+(SHA-256 pinned; CC BY-NC 2.0, so the data is not committed). On 2026-11-17:
+
+| Configuration | nDCG@10, nomic-embed-text | nDCG@10, all-minilm | Recall@10, nomic / minilm |
+|---|---:|---:|---:|
+| Vector only | 0.707 | 0.637 | 83% / 79% |
+| BM25 only (evidence-gated) | 0.543 | 0.543 | 61% / 61% |
+| Hybrid RRF, no evidence floor | **0.718** | **0.691** | 86% / 82% |
+| Full DocMind | **0.718** | 0.645 | 86% / 76% |
+
+Reports: [nomic-embed-text](../output/evaluation-public-nomic-embed-text/eval_report.md),
+[all-minilm](../output/evaluation-public-all-minilm/eval_report.md). Documents are
+chunked (256 tokens) and ranked by their best chunk, so scores are not directly
+comparable with whole-document results published for these models.
+
+On data the project did not write, fusion beats vector search alone with both
+embedding models (+0.011 nDCG@10 with `nomic-embed-text`, +0.054 with `all-minilm`).
+The evidence floor costs nothing with `nomic-embed-text`, but with `all-minilm`, whose
+similarity scores run lower, the fixed 0.5 floor discards relevant abstracts (4% of
+claims return nothing; nDCG@10 drops from 0.691 to 0.645). The floor is calibrated for
+`nomic-embed-text`; other embedding models need their own value.
+
+Two corrections came out of this benchmark:
+- The hybrid retriever ranked BM25 candidates only from the strict "minimum should
+  match" evidence set. BM25 now ranks every chunk sharing a content term, and the
+  strict set only decides abstention. On SciFact with `nomic-embed-text` this raised
+  hybrid nDCG@10 from 0.687 to 0.718; on the labelled benchmark Recall@1 moved from
+  96% to 93% with rejection unchanged.
+- The benchmark suites did not pin Top K: the hybrid configurations read the session
+  default of 3 while vector-only returned K results, so earlier hybrid Recall@5/@10
+  figures were computed on 3 results. The suites now set Top K explicitly; all
+  numbers on this page come from runs after that fix.
 
 For this installation, use `llama3:latest` for document questions based on these
 observed results. If a previous session saved `qwen2.5:0.5b`, select `llama3:latest`
@@ -162,6 +200,8 @@ pipenv run python eval_harness.py --chat-model llama3:latest --out output/evalua
 pipenv run python eval_harness.py --suite generation --chat-model qwen2.5:0.5b --out output/evaluation-qwen-final
 pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
 pipenv run python eval_harness.py --suite benchmark --out output/evaluation-benchmark
+pipenv run python eval_harness.py --suite public --model nomic-embed-text:latest --out output/evaluation-public-nomic-embed-text
+pipenv run python eval_harness.py --suite public --model all-minilm:latest --out output/evaluation-public-all-minilm
 ```
 
 Legacy DOC, PPT and XLS fixture generation and extraction require LibreOffice.
