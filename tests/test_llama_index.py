@@ -1,5 +1,4 @@
 import unittest
-from utils.runtime import request_state
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -19,6 +18,7 @@ from utils.llama_index import (
     setup_embedding_model,
     verify_embedding_model,
 )
+from utils.runtime import request_state
 
 
 class _FakeOpenAIEmbedding(BaseEmbedding):
@@ -61,7 +61,7 @@ class EmbeddingModelValidationTests(unittest.TestCase):
         self.enterContext(request_state({}))
 
     def test_verify_embedding_model_accepts_installed_embedding_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             self.assertTrue(
                 verify_embedding_model(
                     "nomic-embed-text:latest", "http://localhost:11434"
@@ -69,27 +69,27 @@ class EmbeddingModelValidationTests(unittest.TestCase):
             )
 
     def test_verify_embedding_model_rejects_missing_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             self.assertFalse(
                 verify_embedding_model("missing:latest", "http://localhost:11434")
             )
 
     def test_verify_embedding_model_rejects_non_embedding_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             self.assertFalse(
                 verify_embedding_model("qwen2.5:0.5b", "http://localhost:11434")
             )
 
     def test_verify_embedding_model_false_when_server_down(self):
         with patch(
-            "utils.llama_index.ollama.Client", side_effect=RuntimeError("boom")
+            "utils.llama_index.embeddings.ollama.Client", side_effect=ConnectionError("Failed to connect to Ollama")
         ):
             self.assertFalse(
                 verify_embedding_model("nomic-embed-text:latest", "http://localhost:11434")
             )
 
     def test_setup_embedding_model_raises_for_missing_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             with self.assertRaises(ValueError) as context:
                 setup_embedding_model(
                     "missing:latest", ollama_endpoint="http://localhost:11434"
@@ -214,6 +214,27 @@ class QueryUnderstandingTests(unittest.TestCase):
         self.assertNotIn("hai", rewritten)
         self.assertNotIn("mein", rewritten)
 
+    def test_rewrite_query_stems_exactly_once_like_the_corpus(self):
+        # Porter is not idempotent: stemming twice turns "purchases" into
+        # "purcha" and "agreed" into "agr", which no corpus token matches.
+        for word in ("purchases", "agreed", "generalization", "conditions"):
+            self.assertEqual(_rewrite_query(word).split(), _bm25_tokens(word))
+
+    def test_every_synonym_key_and_value_is_reachable(self):
+        from utils.llama_index import _QUERY_SYNONYMS
+        for word, synonyms in _QUERY_SYNONYMS.items():
+            expanded = _bm25_expanded_tokens(_bm25_tokens(word))
+            for synonym in synonyms:
+                self.assertIn(_bm25_tokens(synonym)[0], expanded, (word, synonym))
+
+    def test_salary_query_expands_to_corpus_form_of_income(self):
+        expanded = _bm25_expanded_tokens(_rewrite_query("salary").split())
+        self.assertIn(_bm25_tokens("income")[0], expanded)
+
+    def test_rewrite_query_drops_inflected_fillers(self):
+        rewritten = _rewrite_query("please, what was it and how does karne kaise karke refund").split()
+        self.assertEqual(rewritten, ["it", "how", "refund"])
+
     def test_dedupe_preserves_different_facts_and_sources(self):
         chunks = [
             Document(text="Welcome to our annual report. The company grew a lot this year."),
@@ -226,12 +247,12 @@ class QueryUnderstandingTests(unittest.TestCase):
 
 class EcoContextTests(unittest.TestCase):
     def test_context_budget_normal_by_default(self):
-        with patch("utils.llama_index.st", SimpleNamespace(session_state={})):
+        with patch("utils.runtime.st", SimpleNamespace(session_state={})):
             self.assertEqual(_context_char_budget(), 4800)
 
     def test_context_budget_shrinks_in_eco_mode(self):
         with patch(
-            "utils.llama_index.st", SimpleNamespace(session_state={"eco_mode": True})
+            "utils.runtime.st", SimpleNamespace(session_state={"eco_mode": True})
         ):
             self.assertEqual(_context_char_budget(), 3200)
 

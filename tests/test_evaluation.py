@@ -1,15 +1,15 @@
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
-from types import SimpleNamespace
 import unittest
+from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 import eval_harness as evaluation
-from eval_quality import grade_answer, evaluate_answers
+from eval_quality import evaluate_answers, grade_answer
 
 
 class EvaluationTests(unittest.TestCase):
@@ -71,6 +71,7 @@ class EvaluationTests(unittest.TestCase):
 
     def test_money_back_phrase_retrieves_refunds_without_expanding_back_alone(self):
         from llama_index.core.schema import TextNode
+
         from utils import llama_index as rag
 
         node = TextNode(text="Refunds are available within 30 days.")
@@ -78,7 +79,7 @@ class EvaluationTests(unittest.TestCase):
         store.get_node.return_value = node
         vector = Mock()
         vector.retrieve.return_value = []
-        with patch.object(rag, "st", SimpleNamespace(session_state={})):
+        with patch("utils.runtime.st", SimpleNamespace(session_state={})):
             retriever = rag.HybridRetriever(vector, store, [node.node_id], 3)
             self.assertTrue(retriever.retrieve("money back rules"))
             self.assertEqual(retriever.retrieve("back pain"), [])
@@ -97,7 +98,8 @@ class EvaluationTests(unittest.TestCase):
         create.assert_not_called()
 
     def test_invalid_citation_is_flagged_without_fabricating_a_replacement(self):
-        from llama_index.core.schema import TextNode, NodeWithScore
+        from llama_index.core.schema import NodeWithScore, TextNode
+
         from utils import ollama
 
         retriever = Mock()

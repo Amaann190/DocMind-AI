@@ -1,0 +1,3864 @@
+{
+  "meta": {
+    "generated": "2026-11-17 22:40",
+    "overall": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "executed": 2,
+      "total": 2,
+      "overall_score": 1.0,
+      "suites": [
+        "benchmark"
+      ],
+      "mode": "live",
+      "embedding_model": "nomic-embed-text:latest",
+      "chat_model": null,
+      "endpoint": "http://localhost:11434",
+      "answer_checks": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "suites": {
+    "benchmark": {
+      "suite": "benchmark",
+      "results": [
+        {
+          "test": "dataset_integrity",
+          "pass": true,
+          "detail": "20 documents, 70 answerable, 32 off-topic, 12 near-miss"
+        },
+        {
+          "test": "benchmark_executed",
+          "pass": true,
+          "detail": "114 queries x 4 configurations; metrics are in the summary"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "total": 2,
+      "executed": 2,
+      "score": 1.0,
+      "summary": {
+        "answerable": 70,
+        "off_topic": 32,
+        "near_miss": 12,
+        "configurations": {
+          "vector_only": {
+            "recall@1": 0.9,
+            "recall@3": 0.986,
+            "recall@5": 0.986,
+            "mrr@5": 0.94,
+            "correct_rejection": 0.0,
+            "near_miss_retrieved": 1.0,
+            "mean_ms": 21.5
+          },
+          "bm25_only": {
+            "recall@1": 0.8,
+            "recall@3": 0.8,
+            "recall@5": 0.8,
+            "mrr@5": 0.8,
+            "correct_rejection": 0.969,
+            "near_miss_retrieved": 0.917,
+            "mean_ms": 0.71
+          },
+          "hybrid_no_floor": {
+            "recall@1": 0.929,
+            "recall@3": 1.0,
+            "recall@5": 1.0,
+            "mrr@5": 0.964,
+            "correct_rejection": 0.0,
+            "near_miss_retrieved": 1.0,
+            "mean_ms": 23.59
+          },
+          "full": {
+            "recall@1": 0.929,
+            "recall@3": 1.0,
+            "recall@5": 1.0,
+            "mrr@5": 0.964,
+            "correct_rejection": 0.75,
+            "near_miss_retrieved": 1.0,
+            "mean_ms": 21.27
+          }
+        },
+        "by_category": {
+          "hinglish": {
+            "queries": 6,
+            "vector_only": 1.0,
+            "bm25_only": 0.333,
+            "hybrid_no_floor": 1.0,
+            "full": 1.0
+          },
+          "identifier": {
+            "queries": 11,
+            "vector_only": 0.909,
+            "bm25_only": 1.0,
+            "hybrid_no_floor": 1.0,
+            "full": 1.0
+          },
+          "keyword": {
+            "queries": 26,
+            "vector_only": 1.0,
+            "bm25_only": 0.962,
+            "hybrid_no_floor": 1.0,
+            "full": 1.0
+          },
+          "numeric": {
+            "queries": 4,
+            "vector_only": 1.0,
+            "bm25_only": 1.0,
+            "hybrid_no_floor": 1.0,
+            "full": 1.0
+          },
+          "paraphrase": {
+            "queries": 23,
+            "vector_only": 1.0,
+            "bm25_only": 0.609,
+            "hybrid_no_floor": 1.0,
+            "full": 1.0
+          }
+        },
+        "embedding": "nomic-embed-text:latest"
+      },
+      "rows": [
+        {
+          "id": "a01",
+          "kind": "answerable",
+          "query": "How many days do I have to return a purchase?",
+          "category": "keyword",
+          "relevant": [
+            "returns_policy.md"
+          ],
+          "vector_only_ranked": [
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "expense_policy.md",
+            "hr_leave_policy.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 15.17,
+          "bm25_only_ranked": [
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "travel_insurance_policy.md"
+          ],
+          "bm25_only_ms": 0.66,
+          "hybrid_no_floor_ranked": [
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md",
+            "travel_insurance_policy.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 21.45,
+          "full_ranked": [
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md",
+            "travel_insurance_policy.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 14.06
+        },
+        {
+          "id": "a02",
+          "kind": "answerable",
+          "query": "Can I send back headphones I already unboxed, and how long do I have?",
+          "category": "paraphrase",
+          "relevant": [
+            "returns_policy.md"
+          ],
+          "vector_only_ranked": [
+            "returns_policy.md",
+            "api_rate_limits.md",
+            "laptop_warranty.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 17.52,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.6,
+          "hybrid_no_floor_ranked": [
+            "returns_policy.md",
+            "library_membership.md",
+            "deployment_runbook.md",
+            "it_security_guidelines.md",
+            "router_manual.md"
+          ],
+          "hybrid_no_floor_ms": 18.68,
+          "full_ranked": [
+            "returns_policy.md"
+          ],
+          "full_ms": 15.9
+        },
+        {
+          "id": "a03",
+          "kind": "answerable",
+          "query": "What does an RMA number start with?",
+          "category": "identifier",
+          "relevant": [
+            "returns_policy.md"
+          ],
+          "vector_only_ranked": [
+            "router_manual.md",
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md",
+            "deployment_runbook.md"
+          ],
+          "vector_only_ms": 16.06,
+          "bm25_only_ranked": [
+            "returns_policy.md"
+          ],
+          "bm25_only_ms": 0.48,
+          "hybrid_no_floor_ranked": [
+            "returns_policy.md",
+            "router_manual.md",
+            "deployment_runbook.md",
+            "library_membership.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 17.46,
+          "full_ranked": [
+            "returns_policy.md",
+            "router_manual.md",
+            "deployment_runbook.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
+          ],
+          "full_ms": 14.97
+        },
+        {
+          "id": "a04",
+          "kind": "answerable",
+          "query": "Is there a charge for sending back a drone?",
+          "category": "paraphrase",
+          "relevant": [
+            "returns_policy.md"
+          ],
+          "vector_only_ranked": [
+            "returns_policy.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "api_rate_limits.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 15.5,
+          "bm25_only_ranked": [
+            "returns_policy.md"
+          ],
+          "bm25_only_ms": 0.58,
+          "hybrid_no_floor_ranked": [
+            "returns_policy.md",
+            "deployment_runbook.md",
+            "library_membership.md",
+            "laptop_warranty.md",
+            "router_manual.md"
+          ],
+          "hybrid_no_floor_ms": 16.26,
+          "full_ranked": [
+            "returns_policy.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "api_rate_limits.md"
+          ],
+          "full_ms": 18.45
+        },
+        {
+          "id": "a05",
+          "kind": "answerable",
+          "query": "How long is the Nimbus X14 warranty?",
+          "category": "keyword",
+          "relevant": [
+            "laptop_warranty.md"
+          ],
+          "vector_only_ranked": [
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "gym_membership_terms.md",
+            "deployment_runbook.md"
+          ],
+          "vector_only_ms": 14.9,
+          "bm25_only_ranked": [
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 0.49,
+          "hybrid_no_floor_ranked": [
+            "laptop_warranty.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "returns_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "hybrid_no_floor_ms": 17.43,
+          "full_ranked": [
+            "laptop_warranty.md",
+            "library_membership.md",
+            "returns_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "full_ms": 16.1
+        },
+        {
+          "id": "a06",
+          "kind": "answerable",
+          "query": "What is CP-220?",
+          "category": "identifier",
+          "relevant": [
+            "laptop_warranty.md"
+          ],
+          "vector_only_ranked": [
+            "api_rate_limits.md",
+            "laptop_warranty.md",
+            "it_security_guidelines.md",
+            "python_style_guide.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 16.11,
+          "bm25_only_ranked": [
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 0.44,
+          "hybrid_no_floor_ranked": [
+            "laptop_warranty.md",
+            "api_rate_limits.md",
+            "it_security_guidelines.md",
+            "python_style_guide.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 15.93,
+          "full_ranked": [
+            "laptop_warranty.md",
+            "api_rate_limits.md",
+            "it_security_guidelines.md"
+          ],
+          "full_ms": 16.18
+        },
+        {
+          "id": "a07",
+          "kind": "answerable",
+          "query": "My laptop screen cracked after I dropped it, will they fix it for free?",
+          "category": "paraphrase",
+          "relevant": [
+            "laptop_warranty.md"
+          ],
+          "vector_only_ranked": [
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "travel_insurance_policy.md",
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ms": 17.47,
+          "bm25_only_ranked": [
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 0.75,
+          "hybrid_no_floor_ranked": [
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "deployment_runbook.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 18.85,
+          "full_ranked": [
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "travel_insurance_policy.md"
+          ],
+          "full_ms": 15.81
+        },
+        {
+          "id": "a08",
+          "kind": "answerable",
+          "query": "What do I need to attach to form W-17?",
+          "category": "identifier",
+          "relevant": [
+            "laptop_warranty.md"
+          ],
+          "vector_only_ranked": [
+            "onboarding_guide.md",
+            "it_security_guidelines.md",
+            "python_style_guide.md",
+            "gym_membership_terms.md",
+            "router_manual.md"
+          ],
+          "vector_only_ms": 14.17,
+          "bm25_only_ranked": [
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 0.46,
+          "hybrid_no_floor_ranked": [
+            "it_security_guidelines.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md",
+            "python_style_guide.md",
+            "gym_membership_terms.md"
+          ],
+          "hybrid_no_floor_ms": 16.26,
+          "full_ranked": [
+            "it_security_guidelines.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md",
+            "python_style_guide.md"
+          ],
+          "full_ms": 14.71
+        },
+        {
+          "id": "a09",
+          "kind": "answerable",
+          "query": "How many days of annual leave do employees get?",
+          "category": "keyword",
+          "relevant": [
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "gym_membership_terms.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 14.78,
+          "bm25_only_ranked": [
+            "hr_leave_policy.md",
+            "annual_report_2024.md",
+            "library_membership.md",
+            "onboarding_guide.md",
+            "expense_policy.md"
+          ],
+          "bm25_only_ms": 0.69,
+          "hybrid_no_floor_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "annual_report_2024.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 16.61,
+          "full_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "annual_report_2024.md",
+            "library_membership.md"
+          ],
+          "full_ms": 18.61
+        },
+        {
+          "id": "a10",
+          "kind": "answerable",
+          "query": "How much time off can a new mother take after the baby arrives?",
+          "category": "paraphrase",
+          "relevant": [
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ranked": [
+            "hr_leave_policy.md",
+            "onboarding_guide.md",
+            "returns_policy.md",
+            "expense_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ms": 17.21,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.59,
+          "hybrid_no_floor_ranked": [
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "laptop_warranty.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 16.23,
+          "full_ranked": [
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "returns_policy.md"
+          ],
+          "full_ms": 15.77
+        },
+        {
+          "id": "a11",
+          "kind": "answerable",
+          "query": "Can I carry over five unused holiday days?",
+          "category": "numeric",
+          "relevant": [
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "returns_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ms": 15.45,
+          "bm25_only_ranked": [
+            "hr_leave_policy.md",
+            "returns_policy.md"
+          ],
+          "bm25_only_ms": 0.62,
+          "hybrid_no_floor_ranked": [
+            "hr_leave_policy.md",
+            "returns_policy.md",
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 16.42,
+          "full_ranked": [
+            "hr_leave_policy.md",
+            "returns_policy.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 15.87
+        },
+        {
+          "id": "a12",
+          "kind": "answerable",
+          "query": "sick leave kitne din milti hai batao",
+          "category": "hinglish",
+          "relevant": [
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "pasta_recipe.md"
+          ],
+          "vector_only_ms": 15.56,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.5,
+          "hybrid_no_floor_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "pasta_recipe.md"
+          ],
+          "hybrid_no_floor_ms": 17.63,
+          "full_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 15.71
+        },
+        {
+          "id": "a13",
+          "kind": "answerable",
+          "query": "What is the daily meal allowance for domestic travel?",
+          "category": "keyword",
+          "relevant": [
+            "expense_policy.md"
+          ],
+          "vector_only_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 13.9,
+          "bm25_only_ranked": [
+            "expense_policy.md"
+          ],
+          "bm25_only_ms": 0.66,
+          "hybrid_no_floor_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "deployment_runbook.md",
+            "coffee_machine_manual.md"
+          ],
+          "hybrid_no_floor_ms": 15.81,
+          "full_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "library_membership.md"
+          ],
+          "full_ms": 15.08
+        },
+        {
+          "id": "a14",
+          "kind": "answerable",
+          "query": "Can I fly business class on a four hour work trip?",
+          "category": "paraphrase",
+          "relevant": [
+            "expense_policy.md"
+          ],
+          "vector_only_ranked": [
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "travel_insurance_policy.md",
+            "hr_leave_policy.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 14.21,
+          "bm25_only_ranked": [
+            "expense_policy.md"
+          ],
+          "bm25_only_ms": 0.68,
+          "hybrid_no_floor_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "onboarding_guide.md",
+            "it_security_guidelines.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 17.11,
+          "full_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "onboarding_guide.md",
+            "hr_leave_policy.md"
+          ],
+          "full_ms": 15.64
+        },
+        {
+          "id": "a15",
+          "kind": "answerable",
+          "query": "Where do I submit claims in ExpenseHub?",
+          "category": "identifier",
+          "relevant": [
+            "expense_policy.md"
+          ],
+          "vector_only_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 14.96,
+          "bm25_only_ranked": [
+            "expense_policy.md"
+          ],
+          "bm25_only_ms": 0.5,
+          "hybrid_no_floor_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 15.98,
+          "full_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md"
+          ],
+          "full_ms": 14.59
+        },
+        {
+          "id": "a16",
+          "kind": "answerable",
+          "query": "How much do I get paid for driving my own car for work?",
+          "category": "paraphrase",
+          "relevant": [
+            "expense_policy.md"
+          ],
+          "vector_only_ranked": [
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "returns_policy.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 14.68,
+          "bm25_only_ranked": [
+            "expense_policy.md",
+            "onboarding_guide.md"
+          ],
+          "bm25_only_ms": 0.66,
+          "hybrid_no_floor_ranked": [
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "laptop_warranty.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 15.84,
+          "full_ranked": [
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "hr_leave_policy.md"
+          ],
+          "full_ms": 17.23
+        },
+        {
+          "id": "a17",
+          "kind": "answerable",
+          "query": "What is the minimum password length?",
+          "category": "keyword",
+          "relevant": [
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ranked": [
+            "it_security_guidelines.md",
+            "gym_membership_terms.md",
+            "api_rate_limits.md",
+            "onboarding_guide.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 34.24,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.43,
+          "hybrid_no_floor_ranked": [
+            "it_security_guidelines.md",
+            "gym_membership_terms.md",
+            "router_manual.md",
+            "api_rate_limits.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 25.38,
+          "full_ranked": [
+            "it_security_guidelines.md",
+            "gym_membership_terms.md",
+            "router_manual.md",
+            "api_rate_limits.md",
+            "onboarding_guide.md"
+          ],
+          "full_ms": 17.17
+        },
+        {
+          "id": "a18",
+          "kind": "answerable",
+          "query": "Which VPN client is SecureLink used for?",
+          "category": "identifier",
+          "relevant": [
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ranked": [
+            "it_security_guidelines.md",
+            "router_manual.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 17.05,
+          "bm25_only_ranked": [
+            "it_security_guidelines.md"
+          ],
+          "bm25_only_ms": 0.55,
+          "hybrid_no_floor_ranked": [
+            "it_security_guidelines.md",
+            "python_style_guide.md",
+            "coffee_machine_manual.md",
+            "library_membership.md",
+            "photosynthesis_notes.md"
+          ],
+          "hybrid_no_floor_ms": 20.28,
+          "full_ranked": [
+            "it_security_guidelines.md"
+          ],
+          "full_ms": 19.0
+        },
+        {
+          "id": "a19",
+          "kind": "answerable",
+          "query": "I left my work computer on the train, what should I do?",
+          "category": "paraphrase",
+          "relevant": [
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ranked": [
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "router_manual.md",
+            "deployment_runbook.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 17.73,
+          "bm25_only_ranked": [
+            "onboarding_guide.md"
+          ],
+          "bm25_only_ms": 0.71,
+          "hybrid_no_floor_ranked": [
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "laptop_warranty.md",
+            "router_manual.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 21.11,
+          "full_ranked": [
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "router_manual.md",
+            "deployment_runbook.md"
+          ],
+          "full_ms": 16.56
+        },
+        {
+          "id": "a20",
+          "kind": "answerable",
+          "query": "phishing email aaye to kya karna hai",
+          "category": "hinglish",
+          "relevant": [
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ranked": [
+            "it_security_guidelines.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "annual_report_2024.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 17.48,
+          "bm25_only_ranked": [
+            "it_security_guidelines.md"
+          ],
+          "bm25_only_ms": 0.83,
+          "hybrid_no_floor_ranked": [
+            "it_security_guidelines.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "annual_report_2024.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 17.95,
+          "full_ranked": [
+            "it_security_guidelines.md",
+            "library_membership.md"
+          ],
+          "full_ms": 17.29
+        },
+        {
+          "id": "a21",
+          "kind": "answerable",
+          "query": "How do I factory reset the router?",
+          "category": "keyword",
+          "relevant": [
+            "router_manual.md"
+          ],
+          "vector_only_ranked": [
+            "router_manual.md",
+            "deployment_runbook.md",
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
+          ],
+          "vector_only_ms": 21.33,
+          "bm25_only_ranked": [
+            "router_manual.md"
+          ],
+          "bm25_only_ms": 0.62,
+          "hybrid_no_floor_ranked": [
+            "router_manual.md",
+            "deployment_runbook.md",
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 21.8,
+          "full_ranked": [
+            "router_manual.md",
+            "deployment_runbook.md"
+          ],
+          "full_ms": 16.0
+        },
+        {
+          "id": "a22",
+          "kind": "answerable",
+          "query": "What does error E-219 mean?",
+          "category": "identifier",
+          "relevant": [
+            "router_manual.md"
+          ],
+          "vector_only_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "onboarding_guide.md",
+            "deployment_runbook.md",
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ms": 18.68,
+          "bm25_only_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md"
+          ],
+          "bm25_only_ms": 0.54,
+          "hybrid_no_floor_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "onboarding_guide.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 19.62,
+          "full_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "onboarding_guide.md",
+            "it_security_guidelines.md"
+          ],
+          "full_ms": 17.27
+        },
+        {
+          "id": "a23",
+          "kind": "answerable",
+          "query": "What is at 192.168.8.1?",
+          "category": "identifier",
+          "relevant": [
+            "router_manual.md"
+          ],
+          "vector_only_ranked": [
+            "router_manual.md",
+            "api_rate_limits.md",
+            "annual_report_2024.md",
+            "coffee_machine_manual.md",
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ms": 18.13,
+          "bm25_only_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md"
+          ],
+          "bm25_only_ms": 0.55,
+          "hybrid_no_floor_ranked": [
+            "router_manual.md",
+            "api_rate_limits.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "expense_policy.md"
+          ],
+          "hybrid_no_floor_ms": 20.32,
+          "full_ranked": [
+            "router_manual.md",
+            "api_rate_limits.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "annual_report_2024.md"
+          ],
+          "full_ms": 16.42
+        },
+        {
+          "id": "a24",
+          "kind": "answerable",
+          "query": "The light on my wifi box is solid red, what is wrong?",
+          "category": "paraphrase",
+          "relevant": [
+            "router_manual.md"
+          ],
+          "vector_only_ranked": [
+            "router_manual.md",
+            "returns_policy.md",
+            "photosynthesis_notes.md",
+            "deployment_runbook.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 22.53,
+          "bm25_only_ranked": [
+            "router_manual.md"
+          ],
+          "bm25_only_ms": 0.75,
+          "hybrid_no_floor_ranked": [
+            "router_manual.md",
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
+            "returns_policy.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 23.11,
+          "full_ranked": [
+            "router_manual.md"
+          ],
+          "full_ms": 17.21
+        },
+        {
+          "id": "a25",
+          "kind": "answerable",
+          "query": "How often should the espresso machine be descaled?",
+          "category": "keyword",
+          "relevant": [
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ranked": [
+            "coffee_machine_manual.md",
+            "api_rate_limits.md",
+            "deployment_runbook.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ms": 17.99,
+          "bm25_only_ranked": [
+            "coffee_machine_manual.md"
+          ],
+          "bm25_only_ms": 0.64,
+          "hybrid_no_floor_ranked": [
+            "coffee_machine_manual.md",
+            "api_rate_limits.md",
+            "deployment_runbook.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md"
+          ],
+          "hybrid_no_floor_ms": 18.94,
+          "full_ranked": [
+            "coffee_machine_manual.md",
+            "api_rate_limits.md",
+            "deployment_runbook.md"
+          ],
+          "full_ms": 16.19
+        },
+        {
+          "id": "a26",
+          "kind": "answerable",
+          "query": "BrewMaster error E04",
+          "category": "identifier",
+          "relevant": [
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ranked": [
+            "coffee_machine_manual.md",
+            "onboarding_guide.md",
+            "annual_report_2024.md",
+            "router_manual.md",
+            "deployment_runbook.md"
+          ],
+          "vector_only_ms": 17.59,
+          "bm25_only_ranked": [
+            "coffee_machine_manual.md"
+          ],
+          "bm25_only_ms": 0.49,
+          "hybrid_no_floor_ranked": [
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "router_manual.md",
+            "onboarding_guide.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 19.53,
+          "full_ranked": [
+            "coffee_machine_manual.md",
+            "onboarding_guide.md",
+            "annual_report_2024.md"
+          ],
+          "full_ms": 16.16
+        },
+        {
+          "id": "a27",
+          "kind": "answerable",
+          "query": "How much water fits in the coffee maker?",
+          "category": "paraphrase",
+          "relevant": [
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ranked": [
+            "coffee_machine_manual.md",
+            "solar_system_notes.md",
+            "bread_recipe.md",
+            "api_rate_limits.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 17.59,
+          "bm25_only_ranked": [
+            "coffee_machine_manual.md"
+          ],
+          "bm25_only_ms": 0.76,
+          "hybrid_no_floor_ranked": [
+            "coffee_machine_manual.md",
+            "bread_recipe.md",
+            "photosynthesis_notes.md",
+            "pasta_recipe.md",
+            "solar_system_notes.md"
+          ],
+          "hybrid_no_floor_ms": 20.1,
+          "full_ranked": [
+            "coffee_machine_manual.md"
+          ],
+          "full_ms": 17.58
+        },
+        {
+          "id": "a28",
+          "kind": "answerable",
+          "query": "What was the revenue in fiscal year 2024?",
+          "category": "keyword",
+          "relevant": [
+            "annual_report_2024.md"
+          ],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "expense_policy.md",
+            "returns_policy.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 18.37,
+          "bm25_only_ranked": [
+            "annual_report_2024.md"
+          ],
+          "bm25_only_ms": 0.95,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "returns_policy.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "hybrid_no_floor_ms": 23.04,
+          "full_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 17.22
+        },
+        {
+          "id": "a29",
+          "kind": "answerable",
+          "query": "In which cities did the company open new offices last year?",
+          "category": "paraphrase",
+          "relevant": [
+            "annual_report_2024.md"
+          ],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "deployment_runbook.md",
+            "onboarding_guide.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 18.68,
+          "bm25_only_ranked": [
+            "annual_report_2024.md",
+            "it_security_guidelines.md"
+          ],
+          "bm25_only_ms": 0.79,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "onboarding_guide.md",
+            "it_security_guidelines.md",
+            "q3_sales_review.md",
+            "gym_membership_terms.md"
+          ],
+          "hybrid_no_floor_ms": 19.03,
+          "full_ranked": [
+            "annual_report_2024.md",
+            "it_security_guidelines.md",
+            "q3_sales_review.md",
+            "deployment_runbook.md"
+          ],
+          "full_ms": 19.37
+        },
+        {
+          "id": "a30",
+          "kind": "answerable",
+          "query": "How many employees did the company have at the end of 2024?",
+          "category": "numeric",
+          "relevant": [
+            "annual_report_2024.md"
+          ],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "hr_leave_policy.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 21.11,
+          "bm25_only_ranked": [
+            "annual_report_2024.md",
+            "expense_policy.md",
+            "onboarding_guide.md"
+          ],
+          "bm25_only_ms": 0.84,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 20.12,
+          "full_ranked": [
+            "annual_report_2024.md",
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "q3_sales_review.md"
+          ],
+          "full_ms": 18.56
+        },
+        {
+          "id": "a31",
+          "kind": "answerable",
+          "query": "What dividend did the board recommend?",
+          "category": "keyword",
+          "relevant": [
+            "annual_report_2024.md"
+          ],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "expense_policy.md",
+            "q3_sales_review.md",
+            "library_membership.md",
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ms": 18.04,
+          "bm25_only_ranked": [
+            "annual_report_2024.md"
+          ],
+          "bm25_only_ms": 0.51,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "expense_policy.md",
+            "q3_sales_review.md",
+            "library_membership.md",
+            "hr_leave_policy.md"
+          ],
+          "hybrid_no_floor_ms": 19.6,
+          "full_ranked": [
+            "annual_report_2024.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 18.49
+        },
+        {
+          "id": "a32",
+          "kind": "answerable",
+          "query": "Which region had the most sales in Q3?",
+          "category": "keyword",
+          "relevant": [
+            "q3_sales_review.md"
+          ],
+          "vector_only_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "returns_policy.md",
+            "expense_policy.md",
+            "deployment_runbook.md"
+          ],
+          "vector_only_ms": 16.72,
+          "bm25_only_ranked": [
+            "q3_sales_review.md"
+          ],
+          "bm25_only_ms": 0.5,
+          "hybrid_no_floor_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "returns_policy.md",
+            "expense_policy.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 19.65,
+          "full_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "returns_policy.md"
+          ],
+          "full_ms": 15.94
+        },
+        {
+          "id": "a33",
+          "kind": "answerable",
+          "query": "What share of customers stopped buying last quarter?",
+          "category": "paraphrase",
+          "relevant": [
+            "q3_sales_review.md"
+          ],
+          "vector_only_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "returns_policy.md",
+            "gym_membership_terms.md",
+            "deployment_runbook.md"
+          ],
+          "vector_only_ms": 18.17,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.52,
+          "hybrid_no_floor_ranked": [
+            "q3_sales_review.md",
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md",
+            "solar_system_notes.md"
+          ],
+          "hybrid_no_floor_ms": 21.04,
+          "full_ranked": [
+            "q3_sales_review.md"
+          ],
+          "full_ms": 17.7
+        },
+        {
+          "id": "a34",
+          "kind": "answerable",
+          "query": "How did the Lumen lamp sell?",
+          "category": "identifier",
+          "relevant": [
+            "q3_sales_review.md"
+          ],
+          "vector_only_ranked": [
+            "q3_sales_review.md",
+            "photosynthesis_notes.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 17.04,
+          "bm25_only_ranked": [
+            "q3_sales_review.md"
+          ],
+          "bm25_only_ms": 0.48,
+          "hybrid_no_floor_ranked": [
+            "q3_sales_review.md",
+            "photosynthesis_notes.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 20.52,
+          "full_ranked": [
+            "q3_sales_review.md"
+          ],
+          "full_ms": 17.68
+        },
+        {
+          "id": "a35",
+          "kind": "answerable",
+          "query": "East region ka target kyun miss hua",
+          "category": "hinglish",
+          "relevant": [
+            "q3_sales_review.md"
+          ],
+          "vector_only_ranked": [
+            "q3_sales_review.md",
+            "expense_policy.md",
+            "solar_system_notes.md",
+            "annual_report_2024.md",
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ms": 15.8,
+          "bm25_only_ranked": [
+            "q3_sales_review.md"
+          ],
+          "bm25_only_ms": 0.55,
+          "hybrid_no_floor_ranked": [
+            "q3_sales_review.md",
+            "expense_policy.md",
+            "solar_system_notes.md",
+            "annual_report_2024.md",
+            "travel_insurance_policy.md"
+          ],
+          "hybrid_no_floor_ms": 18.37,
+          "full_ranked": [
+            "q3_sales_review.md"
+          ],
+          "full_ms": 16.56
+        },
+        {
+          "id": "a36",
+          "kind": "answerable",
+          "query": "Where do new employees collect their laptop on the first day?",
+          "category": "keyword",
+          "relevant": [
+            "onboarding_guide.md"
+          ],
+          "vector_only_ranked": [
+            "onboarding_guide.md",
+            "returns_policy.md",
+            "deployment_runbook.md",
+            "it_security_guidelines.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 17.52,
+          "bm25_only_ranked": [
+            "onboarding_guide.md",
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 1.0,
+          "hybrid_no_floor_ranked": [
+            "onboarding_guide.md",
+            "laptop_warranty.md",
+            "it_security_guidelines.md",
+            "expense_policy.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 18.77,
+          "full_ranked": [
+            "onboarding_guide.md",
+            "laptop_warranty.md",
+            "it_security_guidelines.md",
+            "expense_policy.md",
+            "annual_report_2024.md"
+          ],
+          "full_ms": 19.11
+        },
+        {
+          "id": "a37",
+          "kind": "answerable",
+          "query": "How long is the probation period?",
+          "category": "keyword",
+          "relevant": [
+            "onboarding_guide.md"
+          ],
+          "vector_only_ranked": [
+            "onboarding_guide.md",
+            "gym_membership_terms.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md",
+            "solar_system_notes.md"
+          ],
+          "vector_only_ms": 20.13,
+          "bm25_only_ranked": [
+            "onboarding_guide.md"
+          ],
+          "bm25_only_ms": 0.48,
+          "hybrid_no_floor_ranked": [
+            "onboarding_guide.md",
+            "it_security_guidelines.md",
+            "library_membership.md",
+            "gym_membership_terms.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 20.03,
+          "full_ranked": [
+            "onboarding_guide.md",
+            "gym_membership_terms.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md"
+          ],
+          "full_ms": 17.03
+        },
+        {
+          "id": "a38",
+          "kind": "answerable",
+          "query": "When does salary get credited each month?",
+          "category": "paraphrase",
+          "relevant": [
+            "onboarding_guide.md"
+          ],
+          "vector_only_ranked": [
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "annual_report_2024.md",
+            "library_membership.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 18.23,
+          "bm25_only_ranked": [
+            "onboarding_guide.md",
+            "hr_leave_policy.md"
+          ],
+          "bm25_only_ms": 0.63,
+          "hybrid_no_floor_ranked": [
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md",
+            "travel_insurance_policy.md",
+            "coffee_machine_manual.md"
+          ],
+          "hybrid_no_floor_ms": 20.34,
+          "full_ranked": [
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "annual_report_2024.md"
+          ],
+          "full_ms": 19.2
+        },
+        {
+          "id": "a39",
+          "kind": "answerable",
+          "query": "What is the maximum line length in the Python style guide?",
+          "category": "keyword",
+          "relevant": [
+            "python_style_guide.md"
+          ],
+          "vector_only_ranked": [
+            "python_style_guide.md",
+            "api_rate_limits.md",
+            "pasta_recipe.md",
+            "it_security_guidelines.md",
+            "solar_system_notes.md"
+          ],
+          "vector_only_ms": 18.99,
+          "bm25_only_ranked": [
+            "python_style_guide.md"
+          ],
+          "bm25_only_ms": 0.8,
+          "hybrid_no_floor_ranked": [
+            "python_style_guide.md",
+            "onboarding_guide.md",
+            "api_rate_limits.md",
+            "pasta_recipe.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 20.68,
+          "full_ranked": [
+            "python_style_guide.md",
+            "onboarding_guide.md",
+            "api_rate_limits.md",
+            "pasta_recipe.md",
+            "it_security_guidelines.md"
+          ],
+          "full_ms": 18.29
+        },
+        {
+          "id": "a40",
+          "kind": "answerable",
+          "query": "Which testing framework should our Python code use?",
+          "category": "paraphrase",
+          "relevant": [
+            "python_style_guide.md"
+          ],
+          "vector_only_ranked": [
+            "python_style_guide.md",
+            "q3_sales_review.md",
+            "it_security_guidelines.md",
+            "pasta_recipe.md",
+            "api_rate_limits.md"
+          ],
+          "vector_only_ms": 18.78,
+          "bm25_only_ranked": [
+            "python_style_guide.md"
+          ],
+          "bm25_only_ms": 0.69,
+          "hybrid_no_floor_ranked": [
+            "python_style_guide.md",
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "router_manual.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 20.55,
+          "full_ranked": [
+            "python_style_guide.md",
+            "q3_sales_review.md"
+          ],
+          "full_ms": 17.11
+        },
+        {
+          "id": "a41",
+          "kind": "answerable",
+          "query": "What docstring style do we use?",
+          "category": "keyword",
+          "relevant": [
+            "python_style_guide.md"
+          ],
+          "vector_only_ranked": [
+            "python_style_guide.md",
+            "it_security_guidelines.md",
+            "deployment_runbook.md",
+            "onboarding_guide.md",
+            "api_rate_limits.md"
+          ],
+          "vector_only_ms": 16.78,
+          "bm25_only_ranked": [
+            "python_style_guide.md"
+          ],
+          "bm25_only_ms": 0.53,
+          "hybrid_no_floor_ranked": [
+            "python_style_guide.md",
+            "it_security_guidelines.md",
+            "coffee_machine_manual.md",
+            "library_membership.md",
+            "photosynthesis_notes.md"
+          ],
+          "hybrid_no_floor_ms": 18.04,
+          "full_ranked": [
+            "python_style_guide.md",
+            "it_security_guidelines.md",
+            "coffee_machine_manual.md",
+            "library_membership.md",
+            "deployment_runbook.md"
+          ],
+          "full_ms": 17.18
+        },
+        {
+          "id": "a42",
+          "kind": "answerable",
+          "query": "How many API requests per minute are allowed per key?",
+          "category": "keyword",
+          "relevant": [
+            "api_rate_limits.md"
+          ],
+          "vector_only_ranked": [
+            "api_rate_limits.md",
+            "it_security_guidelines.md",
+            "library_membership.md",
+            "returns_policy.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 17.57,
+          "bm25_only_ranked": [
+            "api_rate_limits.md"
+          ],
+          "bm25_only_ms": 0.74,
+          "hybrid_no_floor_ranked": [
+            "api_rate_limits.md",
+            "expense_policy.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 20.46,
+          "full_ranked": [
+            "api_rate_limits.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md",
+            "it_security_guidelines.md"
+          ],
+          "full_ms": 17.16
+        },
+        {
+          "id": "a43",
+          "kind": "answerable",
+          "query": "What happens when the API returns HTTP 429?",
+          "category": "identifier",
+          "relevant": [
+            "api_rate_limits.md"
+          ],
+          "vector_only_ranked": [
+            "api_rate_limits.md",
+            "returns_policy.md",
+            "annual_report_2024.md",
+            "router_manual.md",
+            "python_style_guide.md"
+          ],
+          "vector_only_ms": 19.06,
+          "bm25_only_ranked": [
+            "api_rate_limits.md"
+          ],
+          "bm25_only_ms": 0.58,
+          "hybrid_no_floor_ranked": [
+            "api_rate_limits.md",
+            "returns_policy.md",
+            "deployment_runbook.md",
+            "python_style_guide.md",
+            "travel_insurance_policy.md"
+          ],
+          "hybrid_no_floor_ms": 21.05,
+          "full_ranked": [
+            "api_rate_limits.md"
+          ],
+          "full_ms": 17.4
+        },
+        {
+          "id": "a44",
+          "kind": "answerable",
+          "query": "How often do we need to change our developer keys?",
+          "category": "paraphrase",
+          "relevant": [
+            "api_rate_limits.md"
+          ],
+          "vector_only_ranked": [
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 19.19,
+          "bm25_only_ranked": [
+            "api_rate_limits.md"
+          ],
+          "bm25_only_ms": 0.57,
+          "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "returns_policy.md",
+            "annual_report_2024.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 19.32,
+          "full_ranked": [
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "library_membership.md"
+          ],
+          "full_ms": 19.16
+        },
+        {
+          "id": "a45",
+          "kind": "answerable",
+          "query": "On which days are production deployments allowed?",
+          "category": "keyword",
+          "relevant": [
+            "deployment_runbook.md"
+          ],
+          "vector_only_ranked": [
+            "deployment_runbook.md",
+            "returns_policy.md",
+            "onboarding_guide.md",
+            "hr_leave_policy.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 16.97,
+          "bm25_only_ranked": [
+            "deployment_runbook.md",
+            "expense_policy.md",
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 0.62,
+          "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
+            "expense_policy.md",
+            "returns_policy.md",
+            "hr_leave_policy.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 19.37,
+          "full_ranked": [
+            "deployment_runbook.md",
+            "expense_policy.md",
+            "returns_policy.md",
+            "hr_leave_policy.md",
+            "laptop_warranty.md"
+          ],
+          "full_ms": 17.42
+        },
+        {
+          "id": "a46",
+          "kind": "answerable",
+          "query": "When is the December change freeze?",
+          "category": "keyword",
+          "relevant": [
+            "deployment_runbook.md"
+          ],
+          "vector_only_ranked": [
+            "deployment_runbook.md",
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 19.86,
+          "bm25_only_ranked": [
+            "deployment_runbook.md"
+          ],
+          "bm25_only_ms": 0.67,
+          "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 17.69,
+          "full_ranked": [
+            "deployment_runbook.md"
+          ],
+          "full_ms": 18.05
+        },
+        {
+          "id": "a47",
+          "kind": "answerable",
+          "query": "How do I undo a bad release?",
+          "category": "paraphrase",
+          "relevant": [
+            "deployment_runbook.md"
+          ],
+          "vector_only_ranked": [
+            "deployment_runbook.md",
+            "coffee_machine_manual.md",
+            "returns_policy.md",
+            "router_manual.md",
+            "laptop_warranty.md"
+          ],
+          "vector_only_ms": 16.51,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.38,
+          "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
+            "photosynthesis_notes.md",
+            "coffee_machine_manual.md",
+            "returns_policy.md",
+            "router_manual.md"
+          ],
+          "hybrid_no_floor_ms": 20.97,
+          "full_ranked": [
+            "deployment_runbook.md",
+            "coffee_machine_manual.md",
+            "returns_policy.md",
+            "router_manual.md",
+            "laptop_warranty.md"
+          ],
+          "full_ms": 19.49
+        },
+        {
+          "id": "a48",
+          "kind": "answerable",
+          "query": "How much traffic does a canary release get, and for how long?",
+          "category": "numeric",
+          "relevant": [
+            "deployment_runbook.md"
+          ],
+          "vector_only_ranked": [
+            "api_rate_limits.md",
+            "deployment_runbook.md",
+            "returns_policy.md",
+            "q3_sales_review.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 19.56,
+          "bm25_only_ranked": [
+            "deployment_runbook.md"
+          ],
+          "bm25_only_ms": 0.98,
+          "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "expense_policy.md",
+            "photosynthesis_notes.md"
+          ],
+          "hybrid_no_floor_ms": 20.73,
+          "full_ranked": [
+            "deployment_runbook.md",
+            "library_membership.md",
+            "api_rate_limits.md",
+            "returns_policy.md",
+            "q3_sales_review.md"
+          ],
+          "full_ms": 20.33
+        },
+        {
+          "id": "a49",
+          "kind": "answerable",
+          "query": "How long should spaghetti boil?",
+          "category": "keyword",
+          "relevant": [
+            "pasta_recipe.md"
+          ],
+          "vector_only_ranked": [
+            "pasta_recipe.md",
+            "coffee_machine_manual.md",
+            "bread_recipe.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
+          ],
+          "vector_only_ms": 18.42,
+          "bm25_only_ranked": [
+            "pasta_recipe.md"
+          ],
+          "bm25_only_ms": 0.61,
+          "hybrid_no_floor_ranked": [
+            "pasta_recipe.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "coffee_machine_manual.md",
+            "bread_recipe.md"
+          ],
+          "hybrid_no_floor_ms": 21.55,
+          "full_ranked": [
+            "pasta_recipe.md"
+          ],
+          "full_ms": 17.55
+        },
+        {
+          "id": "a50",
+          "kind": "answerable",
+          "query": "How much cheese goes into the lemon pasta?",
+          "category": "paraphrase",
+          "relevant": [
+            "pasta_recipe.md"
+          ],
+          "vector_only_ranked": [
+            "pasta_recipe.md",
+            "bread_recipe.md",
+            "coffee_machine_manual.md",
+            "gym_membership_terms.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 18.6,
+          "bm25_only_ranked": [
+            "pasta_recipe.md"
+          ],
+          "bm25_only_ms": 0.74,
+          "hybrid_no_floor_ranked": [
+            "pasta_recipe.md",
+            "bread_recipe.md",
+            "coffee_machine_manual.md",
+            "gym_membership_terms.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 21.71,
+          "full_ranked": [
+            "pasta_recipe.md"
+          ],
+          "full_ms": 19.23
+        },
+        {
+          "id": "a51",
+          "kind": "answerable",
+          "query": "pasta mein kitne lehsun dalne hai",
+          "category": "hinglish",
+          "relevant": [
+            "pasta_recipe.md"
+          ],
+          "vector_only_ranked": [
+            "pasta_recipe.md",
+            "expense_policy.md",
+            "library_membership.md",
+            "solar_system_notes.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 18.93,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.45,
+          "hybrid_no_floor_ranked": [
+            "pasta_recipe.md",
+            "expense_policy.md",
+            "library_membership.md",
+            "solar_system_notes.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 20.14,
+          "full_ranked": [
+            "pasta_recipe.md"
+          ],
+          "full_ms": 19.14
+        },
+        {
+          "id": "a52",
+          "kind": "answerable",
+          "query": "What is the hydration of the sourdough loaf?",
+          "category": "keyword",
+          "relevant": [
+            "bread_recipe.md"
+          ],
+          "vector_only_ranked": [
+            "bread_recipe.md",
+            "coffee_machine_manual.md",
+            "pasta_recipe.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md"
+          ],
+          "vector_only_ms": 20.98,
+          "bm25_only_ranked": [
+            "bread_recipe.md"
+          ],
+          "bm25_only_ms": 0.68,
+          "hybrid_no_floor_ranked": [
+            "bread_recipe.md",
+            "coffee_machine_manual.md",
+            "pasta_recipe.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 19.74,
+          "full_ranked": [
+            "bread_recipe.md",
+            "coffee_machine_manual.md",
+            "pasta_recipe.md"
+          ],
+          "full_ms": 18.3
+        },
+        {
+          "id": "a53",
+          "kind": "answerable",
+          "query": "At what oven temperature do I bake the bread?",
+          "category": "paraphrase",
+          "relevant": [
+            "bread_recipe.md"
+          ],
+          "vector_only_ranked": [
+            "bread_recipe.md",
+            "pasta_recipe.md",
+            "router_manual.md",
+            "onboarding_guide.md",
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ms": 16.92,
+          "bm25_only_ranked": [
+            "bread_recipe.md"
+          ],
+          "bm25_only_ms": 0.72,
+          "hybrid_no_floor_ranked": [
+            "bread_recipe.md",
+            "solar_system_notes.md",
+            "pasta_recipe.md",
+            "router_manual.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 19.33,
+          "full_ranked": [
+            "bread_recipe.md",
+            "pasta_recipe.md"
+          ],
+          "full_ms": 17.63
+        },
+        {
+          "id": "a54",
+          "kind": "answerable",
+          "query": "How long is the bulk fermentation?",
+          "category": "numeric",
+          "relevant": [
+            "bread_recipe.md"
+          ],
+          "vector_only_ranked": [
+            "bread_recipe.md",
+            "api_rate_limits.md",
+            "coffee_machine_manual.md",
+            "onboarding_guide.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 18.65,
+          "bm25_only_ranked": [
+            "bread_recipe.md"
+          ],
+          "bm25_only_ms": 0.74,
+          "hybrid_no_floor_ranked": [
+            "bread_recipe.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "api_rate_limits.md",
+            "coffee_machine_manual.md"
+          ],
+          "hybrid_no_floor_ms": 19.96,
+          "full_ranked": [
+            "bread_recipe.md",
+            "api_rate_limits.md",
+            "coffee_machine_manual.md",
+            "onboarding_guide.md",
+            "returns_policy.md"
+          ],
+          "full_ms": 19.44
+        },
+        {
+          "id": "a55",
+          "kind": "answerable",
+          "query": "What are the names of the moons of Mars?",
+          "category": "keyword",
+          "relevant": [
+            "solar_system_notes.md"
+          ],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "photosynthesis_notes.md",
+            "q3_sales_review.md",
+            "laptop_warranty.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 17.84,
+          "bm25_only_ranked": [
+            "solar_system_notes.md"
+          ],
+          "bm25_only_ms": 0.53,
+          "hybrid_no_floor_ranked": [
+            "solar_system_notes.md",
+            "python_style_guide.md",
+            "photosynthesis_notes.md",
+            "q3_sales_review.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 19.97,
+          "full_ranked": [
+            "solar_system_notes.md"
+          ],
+          "full_ms": 17.33
+        },
+        {
+          "id": "a56",
+          "kind": "answerable",
+          "query": "Which planet has the highest surface temperature?",
+          "category": "paraphrase",
+          "relevant": [
+            "solar_system_notes.md"
+          ],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "photosynthesis_notes.md",
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 17.28,
+          "bm25_only_ranked": [
+            "solar_system_notes.md"
+          ],
+          "bm25_only_ms": 0.58,
+          "hybrid_no_floor_ranked": [
+            "solar_system_notes.md",
+            "photosynthesis_notes.md",
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 18.64,
+          "full_ranked": [
+            "solar_system_notes.md"
+          ],
+          "full_ms": 17.8
+        },
+        {
+          "id": "a57",
+          "kind": "answerable",
+          "query": "How long is a sol on Mars?",
+          "category": "keyword",
+          "relevant": [
+            "solar_system_notes.md"
+          ],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "gym_membership_terms.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 15.92,
+          "bm25_only_ranked": [
+            "solar_system_notes.md"
+          ],
+          "bm25_only_ms": 0.48,
+          "hybrid_no_floor_ranked": [
+            "solar_system_notes.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "gym_membership_terms.md",
+            "expense_policy.md"
+          ],
+          "hybrid_no_floor_ms": 17.1,
+          "full_ranked": [
+            "solar_system_notes.md"
+          ],
+          "full_ms": 17.12
+        },
+        {
+          "id": "a58",
+          "kind": "answerable",
+          "query": "Where does the Calvin cycle take place?",
+          "category": "keyword",
+          "relevant": [
+            "photosynthesis_notes.md"
+          ],
+          "vector_only_ranked": [
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
+            "deployment_runbook.md",
+            "q3_sales_review.md",
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ms": 15.95,
+          "bm25_only_ranked": [
+            "photosynthesis_notes.md",
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 0.59,
+          "hybrid_no_floor_ranked": [
+            "photosynthesis_notes.md",
+            "annual_report_2024.md",
+            "laptop_warranty.md",
+            "solar_system_notes.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 17.78,
+          "full_ranked": [
+            "photosynthesis_notes.md",
+            "laptop_warranty.md",
+            "solar_system_notes.md"
+          ],
+          "full_ms": 16.78
+        },
+        {
+          "id": "a59",
+          "kind": "answerable",
+          "query": "Why do leaves look green?",
+          "category": "paraphrase",
+          "relevant": [
+            "photosynthesis_notes.md"
+          ],
+          "vector_only_ranked": [
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
+            "laptop_warranty.md",
+            "q3_sales_review.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 18.23,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.4,
+          "hybrid_no_floor_ranked": [
+            "photosynthesis_notes.md",
+            "hr_leave_policy.md",
+            "solar_system_notes.md",
+            "laptop_warranty.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 18.18,
+          "full_ranked": [
+            "photosynthesis_notes.md"
+          ],
+          "full_ms": 17.37
+        },
+        {
+          "id": "a60",
+          "kind": "answerable",
+          "query": "What gas do plants give off when they make food from sunlight?",
+          "category": "paraphrase",
+          "relevant": [
+            "photosynthesis_notes.md"
+          ],
+          "vector_only_ranked": [
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
+            "q3_sales_review.md",
+            "pasta_recipe.md",
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ms": 16.34,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.54,
+          "hybrid_no_floor_ranked": [
+            "photosynthesis_notes.md",
+            "api_rate_limits.md",
+            "laptop_warranty.md",
+            "solar_system_notes.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 18.43,
+          "full_ranked": [
+            "photosynthesis_notes.md",
+            "solar_system_notes.md"
+          ],
+          "full_ms": 17.1
+        },
+        {
+          "id": "a61",
+          "kind": "answerable",
+          "query": "How much does a library membership cost?",
+          "category": "keyword",
+          "relevant": [
+            "library_membership.md"
+          ],
+          "vector_only_ranked": [
+            "library_membership.md",
+            "gym_membership_terms.md",
+            "expense_policy.md",
+            "onboarding_guide.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 18.26,
+          "bm25_only_ranked": [
+            "library_membership.md",
+            "gym_membership_terms.md"
+          ],
+          "bm25_only_ms": 0.85,
+          "hybrid_no_floor_ranked": [
+            "library_membership.md",
+            "gym_membership_terms.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 20.04,
+          "full_ranked": [
+            "library_membership.md",
+            "gym_membership_terms.md"
+          ],
+          "full_ms": 16.83
+        },
+        {
+          "id": "a62",
+          "kind": "answerable",
+          "query": "How many novels can I take home at once from the library?",
+          "category": "paraphrase",
+          "relevant": [
+            "library_membership.md"
+          ],
+          "vector_only_ranked": [
+            "library_membership.md",
+            "returns_policy.md",
+            "expense_policy.md",
+            "api_rate_limits.md",
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ms": 17.17,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.66,
+          "hybrid_no_floor_ranked": [
+            "library_membership.md",
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "python_style_guide.md",
+            "photosynthesis_notes.md"
+          ],
+          "hybrid_no_floor_ms": 19.66,
+          "full_ranked": [
+            "library_membership.md"
+          ],
+          "full_ms": 17.65
+        },
+        {
+          "id": "a63",
+          "kind": "answerable",
+          "query": "library book late hone par fine kitna hai",
+          "category": "hinglish",
+          "relevant": [
+            "library_membership.md"
+          ],
+          "vector_only_ranked": [
+            "library_membership.md",
+            "expense_policy.md",
+            "annual_report_2024.md",
+            "python_style_guide.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 16.84,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.53,
+          "hybrid_no_floor_ranked": [
+            "library_membership.md",
+            "expense_policy.md",
+            "python_style_guide.md",
+            "annual_report_2024.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 20.73,
+          "full_ranked": [
+            "library_membership.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 17.59
+        },
+        {
+          "id": "a64",
+          "kind": "answerable",
+          "query": "How much notice is needed to cancel a FitZone membership?",
+          "category": "keyword",
+          "relevant": [
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ranked": [
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "library_membership.md",
+            "returns_policy.md",
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ms": 20.56,
+          "bm25_only_ranked": [
+            "gym_membership_terms.md"
+          ],
+          "bm25_only_ms": 0.56,
+          "hybrid_no_floor_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "travel_insurance_policy.md",
+            "hr_leave_policy.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 20.5,
+          "full_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "hr_leave_policy.md",
+            "returns_policy.md"
+          ],
+          "full_ms": 18.47
+        },
+        {
+          "id": "a65",
+          "kind": "answerable",
+          "query": "Can I pause my gym subscription while I travel?",
+          "category": "paraphrase",
+          "relevant": [
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ranked": [
+            "gym_membership_terms.md",
+            "travel_insurance_policy.md",
+            "expense_policy.md",
+            "library_membership.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 18.03,
+          "bm25_only_ranked": [
+            "gym_membership_terms.md"
+          ],
+          "bm25_only_ms": 0.53,
+          "hybrid_no_floor_ranked": [
+            "gym_membership_terms.md",
+            "travel_insurance_policy.md",
+            "expense_policy.md",
+            "library_membership.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 20.07,
+          "full_ranked": [
+            "gym_membership_terms.md",
+            "travel_insurance_policy.md",
+            "expense_policy.md",
+            "library_membership.md"
+          ],
+          "full_ms": 21.91
+        },
+        {
+          "id": "a66",
+          "kind": "answerable",
+          "query": "How many guest passes do gym members get?",
+          "category": "keyword",
+          "relevant": [
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ranked": [
+            "gym_membership_terms.md",
+            "expense_policy.md",
+            "library_membership.md",
+            "travel_insurance_policy.md",
+            "onboarding_guide.md"
+          ],
+          "vector_only_ms": 19.1,
+          "bm25_only_ranked": [
+            "gym_membership_terms.md"
+          ],
+          "bm25_only_ms": 0.53,
+          "hybrid_no_floor_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "python_style_guide.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md"
+          ],
+          "hybrid_no_floor_ms": 21.0,
+          "full_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "onboarding_guide.md"
+          ],
+          "full_ms": 18.66
+        },
+        {
+          "id": "a67",
+          "kind": "answerable",
+          "query": "What medical cover does TI-Gold include?",
+          "category": "identifier",
+          "relevant": [
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ranked": [
+            "travel_insurance_policy.md",
+            "q3_sales_review.md",
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "python_style_guide.md"
+          ],
+          "vector_only_ms": 16.73,
+          "bm25_only_ranked": [
+            "travel_insurance_policy.md"
+          ],
+          "bm25_only_ms": 0.6,
+          "hybrid_no_floor_ranked": [
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 19.57,
+          "full_ranked": [
+            "travel_insurance_policy.md"
+          ],
+          "full_ms": 19.07
+        },
+        {
+          "id": "a68",
+          "kind": "answerable",
+          "query": "My suitcase arrived a day late on holiday, can I claim anything?",
+          "category": "paraphrase",
+          "relevant": [
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ranked": [
+            "expense_policy.md",
+            "returns_policy.md",
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ms": 18.22,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.59,
+          "hybrid_no_floor_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 21.95,
+          "full_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "returns_policy.md"
+          ],
+          "full_ms": 18.71
+        },
+        {
+          "id": "a69",
+          "kind": "answerable",
+          "query": "Is skydiving covered by the travel insurance?",
+          "category": "keyword",
+          "relevant": [
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ranked": [
+            "travel_insurance_policy.md",
+            "expense_policy.md",
+            "gym_membership_terms.md",
+            "returns_policy.md",
+            "laptop_warranty.md"
+          ],
+          "vector_only_ms": 19.9,
+          "bm25_only_ranked": [
+            "travel_insurance_policy.md"
+          ],
+          "bm25_only_ms": 0.71,
+          "hybrid_no_floor_ranked": [
+            "travel_insurance_policy.md",
+            "expense_policy.md",
+            "laptop_warranty.md",
+            "gym_membership_terms.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 19.04,
+          "full_ranked": [
+            "travel_insurance_policy.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 23.01
+        },
+        {
+          "id": "a70",
+          "kind": "answerable",
+          "query": "trip cancel karne par kitna paisa wapas milega",
+          "category": "hinglish",
+          "relevant": [
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 19.37,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.55,
+          "hybrid_no_floor_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 19.82,
+          "full_ranked": [
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "returns_policy.md"
+          ],
+          "full_ms": 19.51
+        },
+        {
+          "id": "o01",
+          "kind": "off_topic",
+          "query": "What is the capital of Australia?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "annual_report_2024.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 17.45,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.49,
+          "hybrid_no_floor_ranked": [
+            "solar_system_notes.md",
+            "annual_report_2024.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 18.76,
+          "full_ranked": [],
+          "full_ms": 18.32
+        },
+        {
+          "id": "o02",
+          "kind": "off_topic",
+          "query": "Who wrote Pride and Prejudice?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "python_style_guide.md",
+            "library_membership.md",
+            "photosynthesis_notes.md",
+            "it_security_guidelines.md",
+            "onboarding_guide.md"
+          ],
+          "vector_only_ms": 17.06,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.46,
+          "hybrid_no_floor_ranked": [
+            "python_style_guide.md",
+            "library_membership.md",
+            "photosynthesis_notes.md",
+            "it_security_guidelines.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 21.18,
+          "full_ranked": [],
+          "full_ms": 19.17
+        },
+        {
+          "id": "o03",
+          "kind": "off_topic",
+          "query": "How do I tune a guitar to drop D?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "bread_recipe.md",
+            "pasta_recipe.md",
+            "python_style_guide.md",
+            "deployment_runbook.md",
+            "photosynthesis_notes.md"
+          ],
+          "vector_only_ms": 18.55,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.4,
+          "hybrid_no_floor_ranked": [
+            "laptop_warranty.md",
+            "bread_recipe.md",
+            "pasta_recipe.md",
+            "python_style_guide.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 18.99,
+          "full_ranked": [],
+          "full_ms": 17.62
+        },
+        {
+          "id": "o04",
+          "kind": "off_topic",
+          "query": "When is the best season to see the northern lights in Iceland?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "q3_sales_review.md",
+            "solar_system_notes.md",
+            "travel_insurance_policy.md",
+            "deployment_runbook.md",
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ms": 18.79,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.71,
+          "hybrid_no_floor_ranked": [
+            "q3_sales_review.md",
+            "photosynthesis_notes.md",
+            "router_manual.md",
+            "pasta_recipe.md",
+            "solar_system_notes.md"
+          ],
+          "hybrid_no_floor_ms": 21.17,
+          "full_ranked": [],
+          "full_ms": 18.65
+        },
+        {
+          "id": "o05",
+          "kind": "off_topic",
+          "query": "How do I house-train a puppy?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "onboarding_guide.md",
+            "python_style_guide.md",
+            "pasta_recipe.md",
+            "gym_membership_terms.md",
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ms": 23.73,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.6,
+          "hybrid_no_floor_ranked": [
+            "onboarding_guide.md",
+            "python_style_guide.md",
+            "pasta_recipe.md",
+            "gym_membership_terms.md",
+            "coffee_machine_manual.md"
+          ],
+          "hybrid_no_floor_ms": 22.49,
+          "full_ranked": [
+            "onboarding_guide.md"
+          ],
+          "full_ms": 18.56
+        },
+        {
+          "id": "o06",
+          "kind": "off_topic",
+          "query": "What is the boiling point of nitrogen?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "pasta_recipe.md",
+            "photosynthesis_notes.md",
+            "q3_sales_review.md",
+            "solar_system_notes.md",
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ms": 21.83,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.86,
+          "hybrid_no_floor_ranked": [
+            "pasta_recipe.md",
+            "photosynthesis_notes.md",
+            "q3_sales_review.md",
+            "solar_system_notes.md",
+            "coffee_machine_manual.md"
+          ],
+          "hybrid_no_floor_ms": 32.11,
+          "full_ranked": [
+            "pasta_recipe.md",
+            "photosynthesis_notes.md",
+            "q3_sales_review.md",
+            "solar_system_notes.md",
+            "coffee_machine_manual.md"
+          ],
+          "full_ms": 37.56
+        },
+        {
+          "id": "o07",
+          "kind": "off_topic",
+          "query": "Who won the 2019 Cricket World Cup?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "expense_policy.md",
+            "library_membership.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 25.64,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.7,
+          "hybrid_no_floor_ranked": [
+            "coffee_machine_manual.md",
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "expense_policy.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 30.94,
+          "full_ranked": [],
+          "full_ms": 27.8
+        },
+        {
+          "id": "o08",
+          "kind": "off_topic",
+          "query": "Explain how a blockchain reaches consensus.",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md",
+            "library_membership.md",
+            "deployment_runbook.md"
+          ],
+          "vector_only_ms": 28.2,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.52,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md",
+            "library_membership.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 28.19,
+          "full_ranked": [],
+          "full_ms": 24.52
+        },
+        {
+          "id": "o09",
+          "kind": "off_topic",
+          "query": "What are the rules of chess castling?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "bread_recipe.md",
+            "onboarding_guide.md",
+            "pasta_recipe.md",
+            "it_security_guidelines.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 21.76,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.79,
+          "hybrid_no_floor_ranked": [
+            "library_membership.md",
+            "bread_recipe.md",
+            "onboarding_guide.md",
+            "pasta_recipe.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 30.87,
+          "full_ranked": [],
+          "full_ms": 30.44
+        },
+        {
+          "id": "o10",
+          "kind": "off_topic",
+          "query": "How many bones are in the human body?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "gym_membership_terms.md",
+            "expense_policy.md",
+            "solar_system_notes.md",
+            "library_membership.md",
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ms": 28.8,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.75,
+          "hybrid_no_floor_ranked": [
+            "gym_membership_terms.md",
+            "expense_policy.md",
+            "solar_system_notes.md",
+            "library_membership.md",
+            "hr_leave_policy.md"
+          ],
+          "hybrid_no_floor_ms": 35.55,
+          "full_ranked": [],
+          "full_ms": 32.73
+        },
+        {
+          "id": "o11",
+          "kind": "off_topic",
+          "query": "Translate good morning into Japanese.",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "onboarding_guide.md",
+            "q3_sales_review.md",
+            "gym_membership_terms.md",
+            "router_manual.md",
+            "bread_recipe.md"
+          ],
+          "vector_only_ms": 34.56,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 1.21,
+          "hybrid_no_floor_ranked": [
+            "onboarding_guide.md",
+            "gym_membership_terms.md",
+            "q3_sales_review.md",
+            "router_manual.md",
+            "bread_recipe.md"
+          ],
+          "hybrid_no_floor_ms": 29.23,
+          "full_ranked": [],
+          "full_ms": 24.94
+        },
+        {
+          "id": "o12",
+          "kind": "off_topic",
+          "query": "What causes ocean tides?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
+            "travel_insurance_policy.md",
+            "deployment_runbook.md",
+            "router_manual.md"
+          ],
+          "vector_only_ms": 29.44,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 1.06,
+          "hybrid_no_floor_ranked": [
+            "travel_insurance_policy.md",
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
+            "deployment_runbook.md",
+            "router_manual.md"
+          ],
+          "hybrid_no_floor_ms": 31.37,
+          "full_ranked": [],
+          "full_ms": 28.76
+        },
+        {
+          "id": "o13",
+          "kind": "off_topic",
+          "query": "Recommend a good science fiction novel.",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "library_membership.md",
+            "q3_sales_review.md",
+            "returns_policy.md",
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ms": 29.44,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 1.08,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "solar_system_notes.md",
+            "library_membership.md",
+            "q3_sales_review.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 34.07,
+          "full_ranked": [
+            "solar_system_notes.md",
+            "library_membership.md"
+          ],
+          "full_ms": 30.98
+        },
+        {
+          "id": "o14",
+          "kind": "off_topic",
+          "query": "How do vaccines train the immune system?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "photosynthesis_notes.md",
+            "hr_leave_policy.md",
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ms": 31.87,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 1.07,
+          "hybrid_no_floor_ranked": [
+            "onboarding_guide.md",
+            "it_security_guidelines.md",
+            "solar_system_notes.md",
+            "router_manual.md",
+            "photosynthesis_notes.md"
+          ],
+          "hybrid_no_floor_ms": 28.68,
+          "full_ranked": [],
+          "full_ms": 27.64
+        },
+        {
+          "id": "o15",
+          "kind": "off_topic",
+          "query": "What is the plot of the movie Inception?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "onboarding_guide.md",
+            "q3_sales_review.md",
+            "photosynthesis_notes.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 38.61,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.61,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "onboarding_guide.md",
+            "q3_sales_review.md",
+            "photosynthesis_notes.md",
+            "expense_policy.md"
+          ],
+          "hybrid_no_floor_ms": 28.44,
+          "full_ranked": [],
+          "full_ms": 27.2
+        },
+        {
+          "id": "o16",
+          "kind": "off_topic",
+          "query": "How tall is Mount Kilimanjaro?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 27.78,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.5,
+          "hybrid_no_floor_ranked": [
+            "solar_system_notes.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "annual_report_2024.md"
+          ],
+          "hybrid_no_floor_ms": 28.36,
+          "full_ranked": [],
+          "full_ms": 26.21
+        },
+        {
+          "id": "o17",
+          "kind": "off_topic",
+          "query": "Which programming language was created by Guido van Rossum?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "python_style_guide.md",
+            "solar_system_notes.md",
+            "pasta_recipe.md",
+            "api_rate_limits.md",
+            "it_security_guidelines.md"
+          ],
+          "vector_only_ms": 24.9,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.89,
+          "hybrid_no_floor_ranked": [
+            "python_style_guide.md",
+            "solar_system_notes.md",
+            "pasta_recipe.md",
+            "api_rate_limits.md",
+            "it_security_guidelines.md"
+          ],
+          "hybrid_no_floor_ms": 28.6,
+          "full_ranked": [
+            "python_style_guide.md"
+          ],
+          "full_ms": 24.24
+        },
+        {
+          "id": "o18",
+          "kind": "off_topic",
+          "query": "How do I change a flat bicycle tyre?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "deployment_runbook.md",
+            "python_style_guide.md"
+          ],
+          "vector_only_ms": 23.97,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.76,
+          "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
+            "solar_system_notes.md",
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "python_style_guide.md"
+          ],
+          "hybrid_no_floor_ms": 27.08,
+          "full_ranked": [],
+          "full_ms": 25.54
+        },
+        {
+          "id": "o19",
+          "kind": "off_topic",
+          "query": "What is the GDP of Brazil?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "expense_policy.md",
+            "solar_system_notes.md",
+            "q3_sales_review.md",
+            "travel_insurance_policy.md"
+          ],
+          "vector_only_ms": 25.35,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.85,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "expense_policy.md",
+            "solar_system_notes.md",
+            "q3_sales_review.md",
+            "travel_insurance_policy.md"
+          ],
+          "hybrid_no_floor_ms": 27.02,
+          "full_ranked": [
+            "annual_report_2024.md"
+          ],
+          "full_ms": 23.27
+        },
+        {
+          "id": "o20",
+          "kind": "off_topic",
+          "query": "Who painted the Starry Night?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "photosynthesis_notes.md",
+            "library_membership.md",
+            "laptop_warranty.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 24.9,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.68,
+          "hybrid_no_floor_ranked": [
+            "gym_membership_terms.md",
+            "solar_system_notes.md",
+            "photosynthesis_notes.md",
+            "library_membership.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 25.52,
+          "full_ranked": [],
+          "full_ms": 23.9
+        },
+        {
+          "id": "o21",
+          "kind": "off_topic",
+          "query": "How long do elephants live?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "library_membership.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 23.78,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.94,
+          "hybrid_no_floor_ranked": [
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "hybrid_no_floor_ms": 27.64,
+          "full_ranked": [],
+          "full_ms": 23.57
+        },
+        {
+          "id": "o22",
+          "kind": "off_topic",
+          "query": "What is quantum entanglement?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "travel_insurance_policy.md",
+            "router_manual.md",
+            "expense_policy.md",
+            "it_security_guidelines.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 24.1,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.48,
+          "hybrid_no_floor_ranked": [
+            "travel_insurance_policy.md",
+            "router_manual.md",
+            "expense_policy.md",
+            "it_security_guidelines.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 31.83,
+          "full_ranked": [],
+          "full_ms": 26.89
+        },
+        {
+          "id": "o23",
+          "kind": "off_topic",
+          "query": "Suggest exercises for lower back pain.",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "python_style_guide.md",
+            "gym_membership_terms.md",
+            "onboarding_guide.md",
+            "q3_sales_review.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 23.51,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.8,
+          "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
+            "router_manual.md",
+            "python_style_guide.md",
+            "gym_membership_terms.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 26.23,
+          "full_ranked": [],
+          "full_ms": 26.16
+        },
+        {
+          "id": "o24",
+          "kind": "off_topic",
+          "query": "How does a refrigerator keep food cold?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "bread_recipe.md",
+            "solar_system_notes.md",
+            "gym_membership_terms.md",
+            "photosynthesis_notes.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 25.46,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.65,
+          "hybrid_no_floor_ranked": [
+            "coffee_machine_manual.md",
+            "bread_recipe.md",
+            "solar_system_notes.md",
+            "gym_membership_terms.md",
+            "photosynthesis_notes.md"
+          ],
+          "hybrid_no_floor_ms": 27.57,
+          "full_ranked": [],
+          "full_ms": 24.54
+        },
+        {
+          "id": "o25",
+          "kind": "off_topic",
+          "query": "What is the population of Tokyo?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "solar_system_notes.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 29.6,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 1.05,
+          "hybrid_no_floor_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "solar_system_notes.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 30.5,
+          "full_ranked": [],
+          "full_ms": 26.74
+        },
+        {
+          "id": "o26",
+          "kind": "off_topic",
+          "query": "Explain the offside rule in football.",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "hr_leave_policy.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md",
+            "expense_policy.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 27.07,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.79,
+          "hybrid_no_floor_ranked": [
+            "library_membership.md",
+            "hr_leave_policy.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md",
+            "expense_policy.md"
+          ],
+          "hybrid_no_floor_ms": 33.06,
+          "full_ranked": [
+            "hr_leave_policy.md"
+          ],
+          "full_ms": 26.0
+        },
+        {
+          "id": "o27",
+          "kind": "off_topic",
+          "query": "How do I knit a scarf?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "bread_recipe.md",
+            "python_style_guide.md",
+            "photosynthesis_notes.md",
+            "router_manual.md",
+            "pasta_recipe.md"
+          ],
+          "vector_only_ms": 26.18,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.75,
+          "hybrid_no_floor_ranked": [
+            "bread_recipe.md",
+            "python_style_guide.md",
+            "photosynthesis_notes.md",
+            "router_manual.md",
+            "pasta_recipe.md"
+          ],
+          "hybrid_no_floor_ms": 33.4,
+          "full_ranked": [],
+          "full_ms": 30.33
+        },
+        {
+          "id": "o28",
+          "kind": "off_topic",
+          "query": "What year did the Berlin Wall fall?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "deployment_runbook.md",
+            "q3_sales_review.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "annual_report_2024.md"
+          ],
+          "vector_only_ms": 26.29,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.64,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "laptop_warranty.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 35.47,
+          "full_ranked": [],
+          "full_ms": 26.11
+        },
+        {
+          "id": "o29",
+          "kind": "off_topic",
+          "query": "mujhe ek achhi hindi film batao",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "expense_policy.md",
+            "annual_report_2024.md",
+            "library_membership.md",
+            "onboarding_guide.md",
+            "solar_system_notes.md"
+          ],
+          "vector_only_ms": 26.72,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.85,
+          "hybrid_no_floor_ranked": [
+            "expense_policy.md",
+            "annual_report_2024.md",
+            "library_membership.md",
+            "onboarding_guide.md",
+            "solar_system_notes.md"
+          ],
+          "hybrid_no_floor_ms": 30.99,
+          "full_ranked": [],
+          "full_ms": 28.06
+        },
+        {
+          "id": "o30",
+          "kind": "off_topic",
+          "query": "How are rainbows formed?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "photosynthesis_notes.md",
+            "library_membership.md",
+            "annual_report_2024.md",
+            "solar_system_notes.md",
+            "pasta_recipe.md"
+          ],
+          "vector_only_ms": 25.67,
+          "bm25_only_ranked": [
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 0.88,
+          "hybrid_no_floor_ranked": [
+            "laptop_warranty.md",
+            "photosynthesis_notes.md",
+            "library_membership.md",
+            "annual_report_2024.md",
+            "solar_system_notes.md"
+          ],
+          "hybrid_no_floor_ms": 29.82,
+          "full_ranked": [
+            "laptop_warranty.md",
+            "photosynthesis_notes.md"
+          ],
+          "full_ms": 25.91
+        },
+        {
+          "id": "o31",
+          "kind": "off_topic",
+          "query": "What is the speed of sound in water?",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "api_rate_limits.md",
+            "library_membership.md",
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
+            "gym_membership_terms.md"
+          ],
+          "vector_only_ms": 26.68,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.92,
+          "hybrid_no_floor_ranked": [
+            "photosynthesis_notes.md",
+            "coffee_machine_manual.md",
+            "pasta_recipe.md",
+            "bread_recipe.md",
+            "api_rate_limits.md"
+          ],
+          "hybrid_no_floor_ms": 26.84,
+          "full_ranked": [
+            "api_rate_limits.md"
+          ],
+          "full_ms": 27.59
+        },
+        {
+          "id": "o32",
+          "kind": "off_topic",
+          "query": "Name three famous jazz musicians.",
+          "category": "off_topic",
+          "relevant": [],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 28.57,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.55,
+          "hybrid_no_floor_ranked": [
+            "python_style_guide.md",
+            "travel_insurance_policy.md",
+            "solar_system_notes.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 26.86,
+          "full_ranked": [],
+          "full_ms": 26.96
+        },
+        {
+          "id": "n01",
+          "kind": "near_miss",
+          "query": "What is the warranty on the Nimbus X14 charger?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "router_manual.md",
+            "library_membership.md",
+            "coffee_machine_manual.md"
+          ],
+          "vector_only_ms": 37.76,
+          "bm25_only_ranked": [
+            "laptop_warranty.md"
+          ],
+          "bm25_only_ms": 1.33,
+          "hybrid_no_floor_ranked": [
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "router_manual.md",
+            "library_membership.md",
+            "coffee_machine_manual.md"
+          ],
+          "hybrid_no_floor_ms": 47.65,
+          "full_ranked": [
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "router_manual.md"
+          ],
+          "full_ms": 39.04
+        },
+        {
+          "id": "n02",
+          "kind": "near_miss",
+          "query": "How many guest passes does the city library give?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "library_membership.md",
+            "expense_policy.md",
+            "gym_membership_terms.md",
+            "api_rate_limits.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 37.98,
+          "bm25_only_ranked": [
+            "library_membership.md",
+            "gym_membership_terms.md",
+            "python_style_guide.md"
+          ],
+          "bm25_only_ms": 1.37,
+          "hybrid_no_floor_ranked": [
+            "library_membership.md",
+            "gym_membership_terms.md",
+            "python_style_guide.md",
+            "expense_policy.md",
+            "api_rate_limits.md"
+          ],
+          "hybrid_no_floor_ms": 37.12,
+          "full_ranked": [
+            "library_membership.md",
+            "gym_membership_terms.md",
+            "python_style_guide.md",
+            "expense_policy.md",
+            "api_rate_limits.md"
+          ],
+          "full_ms": 32.0
+        },
+        {
+          "id": "n03",
+          "kind": "near_miss",
+          "query": "What is the late fee at FitZone gym?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 32.11,
+          "bm25_only_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md"
+          ],
+          "bm25_only_ms": 1.12,
+          "hybrid_no_floor_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "returns_policy.md",
+            "travel_insurance_policy.md"
+          ],
+          "hybrid_no_floor_ms": 31.95,
+          "full_ranked": [
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md"
+          ],
+          "full_ms": 29.91
+        },
+        {
+          "id": "n04",
+          "kind": "near_miss",
+          "query": "What is the restocking fee for returned laptops at Orion?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "library_membership.md",
+            "deployment_runbook.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 30.28,
+          "bm25_only_ranked": [
+            "returns_policy.md"
+          ],
+          "bm25_only_ms": 1.12,
+          "hybrid_no_floor_ranked": [
+            "returns_policy.md",
+            "library_membership.md",
+            "laptop_warranty.md",
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "hybrid_no_floor_ms": 39.26,
+          "full_ranked": [
+            "returns_policy.md",
+            "library_membership.md",
+            "laptop_warranty.md",
+            "travel_insurance_policy.md",
+            "it_security_guidelines.md"
+          ],
+          "full_ms": 32.07
+        },
+        {
+          "id": "n05",
+          "kind": "near_miss",
+          "query": "How much paternity leave do contractors get?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
+          ],
+          "vector_only_ms": 24.89,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.62,
+          "hybrid_no_floor_ranked": [
+            "hr_leave_policy.md",
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
+          ],
+          "hybrid_no_floor_ms": 30.64,
+          "full_ranked": [
+            "hr_leave_policy.md"
+          ],
+          "full_ms": 27.83
+        },
+        {
+          "id": "n06",
+          "kind": "near_miss",
+          "query": "What was the revenue in fiscal year 2023?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "expense_policy.md",
+            "returns_policy.md",
+            "library_membership.md"
+          ],
+          "vector_only_ms": 26.24,
+          "bm25_only_ranked": [
+            "annual_report_2024.md"
+          ],
+          "bm25_only_ms": 0.83,
+          "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "returns_policy.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md"
+          ],
+          "hybrid_no_floor_ms": 26.24,
+          "full_ranked": [
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "expense_policy.md"
+          ],
+          "full_ms": 30.43
+        },
+        {
+          "id": "n07",
+          "kind": "near_miss",
+          "query": "What does router error E-305 mean?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "api_rate_limits.md",
+            "deployment_runbook.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 31.06,
+          "bm25_only_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md"
+          ],
+          "bm25_only_ms": 0.84,
+          "hybrid_no_floor_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 25.12,
+          "full_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md"
+          ],
+          "full_ms": 26.77
+        },
+        {
+          "id": "n08",
+          "kind": "near_miss",
+          "query": "How do I descale the AX3000 router?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md"
+          ],
+          "vector_only_ms": 31.98,
+          "bm25_only_ranked": [
+            "router_manual.md"
+          ],
+          "bm25_only_ms": 0.79,
+          "hybrid_no_floor_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 43.33,
+          "full_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md"
+          ],
+          "full_ms": 30.8
+        },
+        {
+          "id": "n09",
+          "kind": "near_miss",
+          "query": "Which region had the most sales in Q4?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "returns_policy.md",
+            "expense_policy.md",
+            "deployment_runbook.md"
+          ],
+          "vector_only_ms": 34.57,
+          "bm25_only_ranked": [
+            "q3_sales_review.md"
+          ],
+          "bm25_only_ms": 1.59,
+          "hybrid_no_floor_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "returns_policy.md",
+            "expense_policy.md",
+            "deployment_runbook.md"
+          ],
+          "hybrid_no_floor_ms": 40.1,
+          "full_ranked": [
+            "q3_sales_review.md",
+            "annual_report_2024.md",
+            "returns_policy.md"
+          ],
+          "full_ms": 33.83
+        },
+        {
+          "id": "n10",
+          "kind": "near_miss",
+          "query": "Does TI-Gold cover pet medical bills?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "expense_policy.md",
+            "library_membership.md",
+            "hr_leave_policy.md"
+          ],
+          "vector_only_ms": 30.47,
+          "bm25_only_ranked": [
+            "travel_insurance_policy.md"
+          ],
+          "bm25_only_ms": 1.25,
+          "hybrid_no_floor_ranked": [
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "laptop_warranty.md",
+            "expense_policy.md",
+            "library_membership.md"
+          ],
+          "hybrid_no_floor_ms": 30.72,
+          "full_ranked": [
+            "travel_insurance_policy.md"
+          ],
+          "full_ms": 28.19
+        },
+        {
+          "id": "n11",
+          "kind": "near_miss",
+          "query": "How many moons does Venus have?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "solar_system_notes.md",
+            "photosynthesis_notes.md",
+            "laptop_warranty.md",
+            "q3_sales_review.md",
+            "returns_policy.md"
+          ],
+          "vector_only_ms": 27.04,
+          "bm25_only_ranked": [
+            "solar_system_notes.md"
+          ],
+          "bm25_only_ms": 1.12,
+          "hybrid_no_floor_ranked": [
+            "solar_system_notes.md",
+            "photosynthesis_notes.md",
+            "laptop_warranty.md",
+            "q3_sales_review.md",
+            "returns_policy.md"
+          ],
+          "hybrid_no_floor_ms": 34.97,
+          "full_ranked": [
+            "solar_system_notes.md"
+          ],
+          "full_ms": 29.74
+        },
+        {
+          "id": "n12",
+          "kind": "near_miss",
+          "query": "What is the rate limit for the internal admin API?",
+          "category": "near_miss",
+          "relevant": [],
+          "vector_only_ranked": [
+            "api_rate_limits.md",
+            "annual_report_2024.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "expense_policy.md"
+          ],
+          "vector_only_ms": 31.42,
+          "bm25_only_ranked": [
+            "api_rate_limits.md"
+          ],
+          "bm25_only_ms": 0.98,
+          "hybrid_no_floor_ranked": [
+            "api_rate_limits.md",
+            "deployment_runbook.md",
+            "expense_policy.md",
+            "it_security_guidelines.md",
+            "laptop_warranty.md"
+          ],
+          "hybrid_no_floor_ms": 36.68,
+          "full_ranked": [
+            "api_rate_limits.md",
+            "deployment_runbook.md",
+            "expense_policy.md",
+            "it_security_guidelines.md",
+            "annual_report_2024.md"
+          ],
+          "full_ms": 30.82
+        }
+      ]
+    }
+  }
+}

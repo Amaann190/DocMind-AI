@@ -1,2 +1,32 @@
 target-version = "py313"
-extend-exclude = ["tmp", "output"]
+line-length = 120
+extend-exclude = ["tmp", "output", "frontend"]
+
+[lint]
+# Errors and likely bugs, plus a small set of readability rules. CI runs all of them.
+select = [
+    "E4", "E7", "E9", "F",  # pycodestyle errors and pyflakes
+    "B",                    # bugbear: likely bugs
+    "BLE",                  # blind except: catch specific errors or justify the boundary
+    "S110", "S112",         # silently swallowed exceptions
+    "TRY002",               # raise a specific exception type
+    "PLW1510",              # subprocess.run without an explicit check
+    "LOG",                  # logging misuse
+    "I",                    # import order
+    "UP",                   # modern syntax for the target Python
+    "C4", "PIE", "SIM",     # simpler comprehensions and expressions
+    "RUF013", "RUF015",     # implicit Optional, first-element allocation
+]
+
+[lint.per-file-ignores]
+# Tests use small, local blind excepts to drive worker threads and subprocesses.
+# Tests build throwaway loggers outside the logging registry on purpose.
+"tests/**" = ["BLE001", "S110", "B023", "SIM117", "LOG001"]
+# The evaluation harness records any failure as a failed check.
+"eval_*.py" = ["BLE001"]
+"evaluation/**" = ["BLE001"]
+# The container check talks to the running API before importing heavy libraries.
+"scripts/check_container.py" = ["E402"]
+
+[lint.isort]
+known-first-party = ["backend", "utils"]

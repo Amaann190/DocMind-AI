@@ -3,17 +3,19 @@
 Uses synthetic content and mock embeddings; no model server or network is needed.
 """
 import os
-from pathlib import Path
 import subprocess
 import tempfile
+from pathlib import Path
 
 assert os.getuid() != 0, "Container must run as a non-root user"
 assert os.statvfs(".").f_flag & os.ST_RDONLY, "Application filesystem must be read-only"
 subprocess.run(["git", "--version"], check=True, timeout=10)
 
 # Exercise React asset delivery and API/session persistence without a model.
-import httpx
 import re
+
+import httpx
+
 from utils.runtime import request_state
 
 with httpx.Client(base_url="http://127.0.0.1:8765", headers={"X-DocMind-Client": "react"}) as client:
@@ -32,11 +34,12 @@ with httpx.Client(base_url="http://127.0.0.1:8765", headers={"X-DocMind-Client":
 print("PASS React assets, API health and writable conversation storage", flush=True)
 
 from docx import Document as WordDocument
-from pptx import Presentation
 from llama_index.core.embeddings import MockEmbedding
+from pptx import Presentation
+
 from utils.document_readers import libreoffice_executable
 from utils.llama_index import create_index, load_documents
-from utils.session_workspace import session_directory, clear_session_workspace
+from utils.session_workspace import clear_session_workspace, session_directory
 
 marker = "ORBIT-7429"
 state = {}

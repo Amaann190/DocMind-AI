@@ -25,11 +25,16 @@ def connect():
 
 
 def listing(owner, query=""):
+    # Search titles and message text only. Matching the raw JSON payload made
+    # field names ("role", "content", "sources") match every conversation.
     with connect() as db:
         return [dict(row) for row in db.execute(
             """SELECT id, title, updated, json_array_length(payload, '$.messages') > 0 AS started
-               FROM conversations WHERE owner=? AND instr(lower(title || payload), lower(?)) > 0
-               ORDER BY updated DESC""", (owner, query))]
+               FROM conversations
+               WHERE owner=:owner AND (:query = '' OR instr(lower(title), lower(:query)) > 0
+                   OR EXISTS (SELECT 1 FROM json_each(payload, '$.messages') AS message
+                              WHERE instr(lower(json_extract(message.value, '$.content')), lower(:query)) > 0))
+               ORDER BY updated DESC""", {"owner": owner, "query": query})]
 
 
 def read(owner, conversation_id):

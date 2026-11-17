@@ -146,14 +146,17 @@ class DocumentTextReader(BaseReader):
             text = email_text(BytesParser(policy=policy.default).parsebytes(file.read_bytes()))
         elif suffix == ".mbox":
             parser = BytesParser(policy=policy.default)
-            with closing(mailbox.mbox(str(file), factory=parser.parse, create=False)) as box:
+            # typeshed types mbox's factory narrowly; BytesParser.parse accepts the binary file it is given.
+            with closing(mailbox.mbox(str(file), factory=parser.parse, create=False)) as box:  # pyright: ignore[reportArgumentType]
                 return [Document(text=email_text(message), metadata=metadata) for message in box]
         elif suffix == ".msg":
             import extract_msg
 
             with extract_msg.openMsg(str(file), delayAttachments=True) as message:
-                text = message.body or html_text(message.htmlBody or b"")
-                text = f"Subject: {message.subject or ''}\n\n{text}"
+                # openMsg returns the specific class for the item; only mail-like items have these fields.
+                body, html, subject = (getattr(message, name, None) for name in ("body", "htmlBody", "subject"))
+                text = body or html_text(html or b"")
+                text = f"Subject: {subject or ''}\n\n{text}"
         elif suffix == ".ipynb":
             notebook = json.loads(read_text(file))
             parts = []
@@ -202,10 +205,12 @@ class ExcelReader(BaseReader):
             with closing(load_workbook(file, read_only=True, data_only=False, keep_links=False)) as formulas, \
                     closing(load_workbook(file, read_only=True, data_only=True, keep_links=False)) as values:
                 for sheet in formulas:
-                    def rows():
-                        for formula_row, value_row in zip(sheet.iter_rows(), values[sheet.title].iter_rows()):
+                    def rows(sheet=sheet):
+                        # Formula and cached-value workbooks have identical shapes.
+                        pairs = zip(sheet.iter_rows(), values[sheet.title].iter_rows(), strict=False)
+                        for formula_row, value_row in pairs:
                             row = []
-                            for cell, cached in zip(formula_row, value_row):
+                            for cell, cached in zip(formula_row, value_row, strict=False):
                                 if cell.data_type == "f":
                                     formula = getattr(cell.value, "text", cell.value)
                                     result = (f"saved result: {cached.value}" if cached.value is not None
@@ -222,7 +227,7 @@ def document_file_extractors():
     from llama_index.readers.file import DocxReader, EpubReader, PDFReader, PptxReader
 
     text_reader = DocumentTextReader()
-    readers = {extension: text_reader for extension in ALLOWED_UPLOAD_EXTENSIONS}
+    readers: dict[str, BaseReader] = dict.fromkeys(ALLOWED_UPLOAD_EXTENSIONS, text_reader)
     readers.update({
         ".pdf": PDFReader(),
         ".docx": DocxReader(),
