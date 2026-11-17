@@ -155,14 +155,12 @@ def _rag_history_budget() -> int:
     return 300 if _is_eco_mode() else 500
 
 
-_SOURCE_TAG = re.compile(r"<\s*/?\s*(?:source|documents)\b[^>]*>", re.IGNORECASE)
-
-
 # Sentences in retrieved text that address the model rather than state facts.
-# Prompt wording alone does not stop small local models from obeying them
-# (qwen2.5:0.5b and llama3 both answered "PWNED" in the injection check), so
-# such sentences are withheld from the model. The UI still shows the original
-# passage. Heuristic by design: it targets the common injection phrasings.
+# Prompt wording alone does not reliably stop local models from obeying them
+# (qwen2.5:0.5b answers "PWNED" in the injection check, as llama3 did before
+# the boundary reminder), so such sentences are withheld from the model. The
+# UI still shows the original passage. Heuristic by design: it targets the
+# common injection phrasings.
 _INSTRUCTION_PATTERNS = [
     re.compile(r"\b(ignore|disregard|forget|override|bypass)\b[^.!?\n]{0,40}"
                r"\b(previous|prior|above|earlier|preceding|all|any|your|the)\b[^.!?\n]{0,25}"
@@ -188,17 +186,14 @@ def _withhold_instructions(text):
 
 
 def _quoted_source(number, name, text):
-    """Wrap one retrieved passage so the model can tell evidence from instructions.
+    """Format one retrieved passage as numbered evidence for the prompt.
 
-    Wrapper tags inside the document are escaped, so a document cannot close
-    its own quote early and continue as if it were part of the prompt, and
-    instruction-like sentences are withheld (see _withhold_instructions).
+    Keeps the plain "Source [n] (name):" label: the answer cites "[n]" and the
+    UI turns those into citation chips. Wrapping passages in XML-style tags made
+    llama3 cite the tag instead of "[n]". Instruction-like sentences are
+    withheld (see _withhold_instructions).
     """
-    def escape(match):
-        return match.group(0).replace("<", "&lt;").replace(">", "&gt;")
-    safe_name = _SOURCE_TAG.sub(escape, str(name)).replace('"', "'")
-    body = _SOURCE_TAG.sub(escape, _withhold_instructions(text))
-    return f'<source n="{number}" name="{safe_name}">\nSource [{number}] ({safe_name}):\n{body}\n</source>'
+    return f"Source [{number}] ({name}):\n{_withhold_instructions(text)}"
 
 
 def _build_rag_messages(
