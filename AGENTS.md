@@ -4,7 +4,8 @@
 DocMind is a React/Vite frontend with a Python FastAPI backend for document RAG.
 Use the React worktree for changes; preserve the user's separate original checkout.
 
-- `frontend/src/main.jsx`: website and browser settings.
+- `frontend/src/App.jsx`: workspace state and API calls; `frontend/src/components/`: UI pieces.
+- `frontend/src/styles/`: CSS split by area; `style.css` imports them in cascade order.
 - `backend/app.py`: API, sessions, imports, chat and source lifecycle.
 - `backend/history.py`: SQLite transcripts and titles.
 - `utils/`: shared ingestion, model clients and retrieval.
