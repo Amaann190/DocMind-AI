@@ -214,6 +214,27 @@ class QueryUnderstandingTests(unittest.TestCase):
         self.assertNotIn("hai", rewritten)
         self.assertNotIn("mein", rewritten)
 
+    def test_rewrite_query_stems_exactly_once_like_the_corpus(self):
+        # Porter is not idempotent: stemming twice turns "purchases" into
+        # "purcha" and "agreed" into "agr", which no corpus token matches.
+        for word in ("purchases", "agreed", "generalization", "conditions"):
+            self.assertEqual(_rewrite_query(word).split(), _bm25_tokens(word))
+
+    def test_every_synonym_key_and_value_is_reachable(self):
+        from utils.llama_index import _QUERY_SYNONYMS
+        for word, synonyms in _QUERY_SYNONYMS.items():
+            expanded = _bm25_expanded_tokens(_bm25_tokens(word))
+            for synonym in synonyms:
+                self.assertIn(_bm25_tokens(synonym)[0], expanded, (word, synonym))
+
+    def test_salary_query_expands_to_corpus_form_of_income(self):
+        expanded = _bm25_expanded_tokens(_rewrite_query("salary").split())
+        self.assertIn(_bm25_tokens("income")[0], expanded)
+
+    def test_rewrite_query_drops_inflected_fillers(self):
+        rewritten = _rewrite_query("please, what was it and how does karne kaise karke refund").split()
+        self.assertEqual(rewritten, ["it", "how", "refund"])
+
     def test_dedupe_preserves_different_facts_and_sources(self):
         chunks = [
             Document(text="Welcome to our annual report. The company grew a lot this year."),
