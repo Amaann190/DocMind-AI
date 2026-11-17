@@ -619,7 +619,7 @@ More: [docs/troubleshooting.md](docs/troubleshooting.md).
 - **Evidence floor calibration.** The 0.5 floor suits `nomic-embed-text`; other
   embedding models may need a different value.
 - **Prompt-injection filtering is pattern-based** and can be evaded by rewording.
-- **No OCR** for scanned documents or images.
+- **No OCR** for scanned documents or images, and email attachments are not extracted.
 - **Model-dependent answers.** Small chat models often omit citations; verify important
   answers against the cited passages.
 - **Benchmarks** use one synthetic corpus, one public dataset and one chat model.
