@@ -6,9 +6,11 @@ Use the React worktree for changes; preserve the user's separate original checko
 
 - `frontend/src/state/WorkspaceContext.jsx`: workspace state and actions behind `useWorkspace()`; `frontend/src/App.jsx`: page shell; `frontend/src/components/`: UI pieces that read state through the hook.
 - `frontend/src/styles/`: CSS split by area; `style.css` imports them in cascade order.
-- `backend/app.py`: API, sessions, imports, chat and source lifecycle.
+- `backend/app.py`: app assembly; `backend/routes/`: endpoints; `backend/workspace.py`: sessions;
+  `backend/sources.py`: source lifecycle; `backend/security.py`: request boundary.
 - `backend/history.py`: SQLite transcripts and titles.
-- `utils/`: shared ingestion, model clients and retrieval.
+- `utils/llama_index/`: ingestion, chunking, embeddings, cache, query normalization, retrieval.
+- `utils/`: model clients, readers, helpers.
 - `tests/` and `frontend/tests/`: backend and browser regressions.
 
 ## Setup and verification

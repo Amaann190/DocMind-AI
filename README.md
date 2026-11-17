@@ -52,14 +52,18 @@ flowchart LR
 
 | Path | Contents |
 |---|---|
-| `backend/app.py` | FastAPI API: sessions, uploads, imports, chat streaming, sources |
+| `backend/app.py` | FastAPI app assembly: middleware, routers, built frontend |
+| `backend/routes/` | HTTP endpoints: session and settings, sources, conversations, chat |
+| `backend/workspace.py` | In-memory workspaces, conversation state and background chat naming |
+| `backend/sources.py` | Source lifecycle: reading uploads, indexing, replacing and removing |
+| `backend/security.py` | Request boundary: origin check, client header, body size limit |
 | `backend/history.py` | SQLite conversation storage and search |
-| `utils/llama_index.py` | Ingestion, chunking, index cache, hybrid retriever |
+| `utils/llama_index/` | Ingestion, chunking, embeddings, index cache, query normalization, hybrid retrieval |
 | `utils/ollama.py` | Model clients, grounded prompt building, streaming |
 | `utils/helpers.py` | Upload validation, website fetching (SSRF-safe), GitHub cloning |
 | `utils/document_readers.py` | Readers for Office, email, EPUB, spreadsheets and other formats |
-| `frontend/src/App.jsx` | Workspace state and API calls |
-| `frontend/src/components/` | Sidebar, chat, library, settings and modal components |
+| `frontend/src/state/` | `WorkspaceProvider` / `useWorkspace()` state, theme and layout hooks |
+| `frontend/src/components/` | Sidebar, chat, library, settings and dialog components |
 | `frontend/src/styles/` | Stylesheets, imported in cascade order by `style.css` |
 | `eval_harness.py`, `eval_quality.py` | Reproducible evaluation (mock and live) |
 
@@ -123,7 +127,8 @@ pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retr
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live
 ```
 
-Browser tests (Playwright) run against a started server: `cd frontend && npx playwright test`.
+Frontend: `cd frontend && npm run lint && npm test` (ESLint and Vitest unit tests).
+Browser tests (Playwright) run against a started server: `npx playwright test`.
 
 The harness reports passed, failed and skipped checks separately. Mock mode uses hash
 embeddings and never measures answer quality; live mode requires the named models.

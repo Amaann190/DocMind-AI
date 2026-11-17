@@ -91,7 +91,7 @@ class ContentPreservationTests(unittest.TestCase):
         vector.retrieve.return_value = [NodeWithScore(node=item, score=0.8) for item in nodes]
         docstore = Mock()
         docstore.get_node.side_effect = lookup.__getitem__
-        with patch.object(ingestion, "st", SimpleNamespace(session_state={})):
+        with patch("utils.runtime.st", SimpleNamespace(session_state={})):
             retriever = ingestion.HybridRetriever(vector, docstore, list(lookup), top_k=3)
             results = retriever.retrieve("How many leave days?")
         self.assertEqual({result.node.node_id for result in results}, set(lookup))

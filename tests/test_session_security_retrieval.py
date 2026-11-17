@@ -14,7 +14,7 @@ from unittest.mock import Mock, patch
 from llama_index.core.embeddings import MockEmbedding
 from llama_index.core.schema import Document, NodeWithScore, TextNode
 
-from utils import helpers, llama_index as rag, ollama, session_workspace as workspace
+from utils import helpers, llama_index as rag, ollama, runtime, session_workspace as workspace
 
 
 class RetrievalBoundaryTests(unittest.TestCase):
@@ -25,7 +25,7 @@ class RetrievalBoundaryTests(unittest.TestCase):
         vector.retrieve.return_value = [NodeWithScore(node=nodes[i], score=value) for i, value in (scores or {}).items()]
         store = Mock()
         store.get_node.side_effect = lookup.__getitem__
-        with patch.object(rag, "st", SimpleNamespace(session_state=settings)):
+        with patch.object(runtime, "st", SimpleNamespace(session_state=settings)):
             retriever = rag.HybridRetriever(vector, store, list(lookup), top_k=3)
             results = retriever.retrieve(question)
         return results, vector, nodes
@@ -77,7 +77,7 @@ class SessionIsolationTests(unittest.TestCase):
         state = {"llm": llm, "embedding_model": MockEmbedding(embed_dim=4),
                  "embedding_config": {"model": "mock", "chunk_size": 64, "chunk_overlap": 0}}
         try:
-            with patch.object(rag, "st", SimpleNamespace(session_state=state)), \
+            with patch.object(runtime, "st", SimpleNamespace(session_state=state)), \
                     patch.object(workspace, "st", SimpleNamespace(session_state=state)):
                 engine = rag.create_query_engine([Document(text="Private local fact")])
                 self.assertIs(engine._response_synthesizer._llm, llm)
@@ -111,8 +111,8 @@ class SessionIsolationTests(unittest.TestCase):
             self.assertEqual(restored._embed_model.embed_dim, dimension)
             return directory, list(index.vector_store.data.embedding_dict.values())[0]
         try:
-            with patch.object(rag, "st", ui), patch.object(ollama, "st", ui), patch.object(workspace, "st", ui), \
-                    patch.object(rag, "verify_embedding_model", return_value=True), patch.object(rag, "OllamaEmbedding", side_effect=embedding):
+            with patch.object(runtime, "st", ui), patch.object(ollama, "st", ui), patch.object(workspace, "st", ui), \
+                    patch.object(rag.embeddings, "verify_embedding_model", return_value=True), patch.object(rag.embeddings, "OllamaEmbedding", side_effect=embedding):
                 with ThreadPoolExecutor(max_workers=2) as executor:
                     first, second = list(executor.map(run_session, [4, 8]))
                 self.assertNotEqual(first[0], second[0])
@@ -140,7 +140,7 @@ class SessionIsolationTests(unittest.TestCase):
 
     def test_cache_key_includes_boundaries_sources_and_endpoint(self):
         state = {"embedding_config": {"model": "same", "endpoint": "http://one"}}
-        with patch.object(rag, "st", SimpleNamespace(session_state=state)):
+        with patch.object(runtime, "st", SimpleNamespace(session_state=state)):
             self.assertNotEqual(rag.index_cache_key(["ab", "c"]), rag.index_cache_key(["a", "bc"]))
             first = Document(text="fact", metadata={"file_name": "first.txt"})
             second = Document(text="fact", metadata={"file_name": "second.txt"})

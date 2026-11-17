@@ -61,7 +61,7 @@ class EmbeddingModelValidationTests(unittest.TestCase):
         self.enterContext(request_state({}))
 
     def test_verify_embedding_model_accepts_installed_embedding_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             self.assertTrue(
                 verify_embedding_model(
                     "nomic-embed-text:latest", "http://localhost:11434"
@@ -69,27 +69,27 @@ class EmbeddingModelValidationTests(unittest.TestCase):
             )
 
     def test_verify_embedding_model_rejects_missing_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             self.assertFalse(
                 verify_embedding_model("missing:latest", "http://localhost:11434")
             )
 
     def test_verify_embedding_model_rejects_non_embedding_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             self.assertFalse(
                 verify_embedding_model("qwen2.5:0.5b", "http://localhost:11434")
             )
 
     def test_verify_embedding_model_false_when_server_down(self):
         with patch(
-            "utils.llama_index.ollama.Client", side_effect=RuntimeError("boom")
+            "utils.llama_index.embeddings.ollama.Client", side_effect=RuntimeError("boom")
         ):
             self.assertFalse(
                 verify_embedding_model("nomic-embed-text:latest", "http://localhost:11434")
             )
 
     def test_setup_embedding_model_raises_for_missing_model(self):
-        with patch("utils.llama_index.ollama.Client", _FakeOllamaClient):
+        with patch("utils.llama_index.embeddings.ollama.Client", _FakeOllamaClient):
             with self.assertRaises(ValueError) as context:
                 setup_embedding_model(
                     "missing:latest", ollama_endpoint="http://localhost:11434"
@@ -247,12 +247,12 @@ class QueryUnderstandingTests(unittest.TestCase):
 
 class EcoContextTests(unittest.TestCase):
     def test_context_budget_normal_by_default(self):
-        with patch("utils.llama_index.st", SimpleNamespace(session_state={})):
+        with patch("utils.runtime.st", SimpleNamespace(session_state={})):
             self.assertEqual(_context_char_budget(), 4800)
 
     def test_context_budget_shrinks_in_eco_mode(self):
         with patch(
-            "utils.llama_index.st", SimpleNamespace(session_state={"eco_mode": True})
+            "utils.runtime.st", SimpleNamespace(session_state={"eco_mode": True})
         ):
             self.assertEqual(_context_char_budget(), 3200)
 

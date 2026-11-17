@@ -1,6 +1,6 @@
 # DocMind evaluation report
 
-Generated 2026-11-17 19:24 · Mode: **mock**
+Generated 2026-11-17 19:50 · Mode: **mock**
 Chat model: not used · Embeddings: hash-mock
 
 **47 passed · 0 failed · 34 skipped**
@@ -24,10 +24,10 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 
 | Configuration | Answerable hit rate | Correct rejection | Mean retrieval ms |
 |---|---:|---:|---:|
-| vector_only | 73% | 67% | 0.5 |
-| bm25_only | 100% | 100% | 0.2 |
-| hybrid_no_floor | 100% | 67% | 0.7 |
-| full | 100% | 100% | 0.7 |
+| vector_only | 82% | 67% | 0.6 |
+| bm25_only | 100% | 100% | 0.3 |
+| hybrid_no_floor | 100% | 67% | 0.9 |
+| full | 100% | 100% | 0.9 |
 
 ## ingestion
 
@@ -52,7 +52,7 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 - **PASSED — What is the capital of France?**: vector_only: miss · bm25_only: hit · hybrid_no_floor: miss · full: hit
 - **PASSED — quantum physics equations**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
 - **PASSED — refunded purchases**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
-- **PASSED — tell me about the annual report**: vector_only: miss · bm25_only: hit · hybrid_no_floor: hit · full: hit
+- **PASSED — tell me about the annual report**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
 - **PASSED — what about purchases?**: vector_only: miss · bm25_only: hit · hybrid_no_floor: hit · full: hit
 - **PASSED — Who painted the Mona Lisa?**: vector_only: miss · bm25_only: hit · hybrid_no_floor: miss · full: hit
 - **PASSED — How do I repot an orchid?**: vector_only: hit · bm25_only: hit · hybrid_no_floor: hit · full: hit
@@ -104,7 +104,7 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 ## performance
 
 - **PASSED — ingest_5_docs**: 0.0s for 5 docs
-- **PASSED — cache_hit_faster**: cold 0.0s vs cache 0.03s
+- **PASSED — cache_hit_faster**: cold 0.0s vs cache 0.04s
 - **PASSED — retrieval_latency**: vector 0ms hybrid 1ms
 - **PASSED — eco_mode_trims**: ctx 4800->3200 pred 512->256 batch 16->4
 - **PASSED — batch_oom_resilience**: shrunk to 4 after OOM
@@ -129,7 +129,7 @@ empty.txt: No readable text found. The file may be emp
 - **PASSED — r2r_health**: health mocked
 - **PASSED — no_torch_at_import**: Fresh-process import checks: .
 ----------------------------------------------------------------------
-Ran 1 test in 5.694s
+Ran 1 test in 5.797s
 
 OK
 
