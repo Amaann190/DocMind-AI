@@ -150,9 +150,15 @@ class HybridRetriever:
             bm25_scores = self._bm25.get_scores(expanded_tokens)
             questions = [_content_tokens(_rewrite_query(line).split()) for line in query.splitlines()]
             bm25_hit_ids = self._keyword_evidence([q for q in questions if q] or [content])
+            # Ranking and evidence are separate jobs. BM25 ranks every chunk that
+            # shares a content term (standard BM25), so fusion sees its full list;
+            # the stricter evidence set above only decides whether a chunk with a
+            # weak vector score may be kept (see _is_credible below).
+            query_terms = set(expanded_tokens)
             bm25_ids = [node_id for node_id, _ in sorted(
-                ((node_id, score) for node_id, score in zip(self.corpus, bm25_scores, strict=True)
-                 if node_id in bm25_hit_ids), key=lambda item: item[1], reverse=True,
+                ((node_id, score) for node_id, score, terms in zip(
+                    self.corpus, bm25_scores, self._token_sets, strict=True) if query_terms & terms),
+                key=lambda item: item[1], reverse=True,
             )]
             for rank, node_id in enumerate(bm25_ids):
                 rrf_scores[node_id] = rrf_scores.get(node_id, 0.0) + 1.0 / (60 + rank)

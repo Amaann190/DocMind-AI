@@ -1,6 +1,6 @@
 # DocMind evaluation report
 
-Generated 2026-11-17 20:12 · Mode: **live**
+Generated 2026-11-17 22:40 · Mode: **live**
 Chat model: not used · Embeddings: nomic-embed-text:latest
 
 **2 passed · 0 failed · 0 skipped**
@@ -19,10 +19,10 @@ Near-miss retrieved is informational: retrieving the related document is accepta
 
 | Configuration | Recall@1 | Recall@3 | Recall@5 | MRR@5 | Correct rejection | Near-miss retrieved | ms |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| vector_only | 90% | 99% | 99% | 0.940 | 0% | 100% | 27.68 |
-| bm25_only | 80% | 80% | 80% | 0.800 | 97% | 92% | 1.03 |
-| hybrid_no_floor | 96% | 100% | 100% | 0.976 | 0% | 100% | 30.2 |
-| full | 96% | 100% | 100% | 0.976 | 75% | 100% | 27.89 |
+| vector_only | 90% | 99% | 99% | 0.940 | 0% | 100% | 21.5 |
+| bm25_only | 80% | 80% | 80% | 0.800 | 97% | 92% | 0.71 |
+| hybrid_no_floor | 93% | 100% | 100% | 0.964 | 0% | 100% | 23.59 |
+| full | 93% | 100% | 100% | 0.964 | 75% | 100% | 21.27 |
 
 Recall@5 by query category:
 

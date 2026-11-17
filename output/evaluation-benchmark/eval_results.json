@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-11-17 20:12",
+    "generated": "2026-11-17 22:40",
     "overall": {
       "passed": 2,
       "failed": 0,
@@ -55,7 +55,7 @@
             "mrr@5": 0.94,
             "correct_rejection": 0.0,
             "near_miss_retrieved": 1.0,
-            "mean_ms": 27.68
+            "mean_ms": 21.5
           },
           "bm25_only": {
             "recall@1": 0.8,
@@ -64,25 +64,25 @@
             "mrr@5": 0.8,
             "correct_rejection": 0.969,
             "near_miss_retrieved": 0.917,
-            "mean_ms": 1.03
+            "mean_ms": 0.71
           },
           "hybrid_no_floor": {
-            "recall@1": 0.957,
+            "recall@1": 0.929,
             "recall@3": 1.0,
             "recall@5": 1.0,
-            "mrr@5": 0.976,
+            "mrr@5": 0.964,
             "correct_rejection": 0.0,
             "near_miss_retrieved": 1.0,
-            "mean_ms": 30.2
+            "mean_ms": 23.59
           },
           "full": {
-            "recall@1": 0.957,
+            "recall@1": 0.929,
             "recall@3": 1.0,
             "recall@5": 1.0,
-            "mrr@5": 0.976,
+            "mrr@5": 0.964,
             "correct_rejection": 0.75,
             "near_miss_retrieved": 1.0,
-            "mean_ms": 27.89
+            "mean_ms": 21.27
           }
         },
         "by_category": {
@@ -140,25 +140,29 @@
             "hr_leave_policy.md",
             "q3_sales_review.md"
           ],
-          "vector_only_ms": 28.42,
+          "vector_only_ms": 15.17,
           "bm25_only_ranked": [
             "returns_policy.md",
             "laptop_warranty.md",
             "travel_insurance_policy.md"
           ],
-          "bm25_only_ms": 1.34,
+          "bm25_only_ms": 0.66,
           "hybrid_no_floor_ranked": [
             "returns_policy.md",
             "laptop_warranty.md",
-            "travel_insurance_policy.md"
+            "hr_leave_policy.md",
+            "travel_insurance_policy.md",
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 31.2,
+          "hybrid_no_floor_ms": 21.45,
           "full_ranked": [
             "returns_policy.md",
             "laptop_warranty.md",
-            "travel_insurance_policy.md"
+            "hr_leave_policy.md",
+            "travel_insurance_policy.md",
+            "expense_policy.md"
           ],
-          "full_ms": 26.66
+          "full_ms": 14.06
         },
         {
           "id": "a02",
@@ -175,19 +179,21 @@
             "gym_membership_terms.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 25.79,
+          "vector_only_ms": 17.52,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.2,
+          "bm25_only_ms": 0.6,
           "hybrid_no_floor_ranked": [
             "returns_policy.md",
-            "api_rate_limits.md",
-            "laptop_warranty.md"
+            "library_membership.md",
+            "deployment_runbook.md",
+            "it_security_guidelines.md",
+            "router_manual.md"
           ],
-          "hybrid_no_floor_ms": 29.22,
+          "hybrid_no_floor_ms": 18.68,
           "full_ranked": [
             "returns_policy.md"
           ],
-          "full_ms": 22.27
+          "full_ms": 15.9
         },
         {
           "id": "a03",
@@ -204,23 +210,27 @@
             "onboarding_guide.md",
             "deployment_runbook.md"
           ],
-          "vector_only_ms": 20.21,
+          "vector_only_ms": 16.06,
           "bm25_only_ranked": [
             "returns_policy.md"
           ],
-          "bm25_only_ms": 1.05,
+          "bm25_only_ms": 0.48,
           "hybrid_no_floor_ranked": [
             "returns_policy.md",
             "router_manual.md",
+            "deployment_runbook.md",
+            "library_membership.md",
             "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 27.64,
+          "hybrid_no_floor_ms": 17.46,
           "full_ranked": [
             "returns_policy.md",
             "router_manual.md",
-            "laptop_warranty.md"
+            "deployment_runbook.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
           ],
-          "full_ms": 27.86
+          "full_ms": 14.97
         },
         {
           "id": "a04",
@@ -237,23 +247,26 @@
             "api_rate_limits.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 25.85,
+          "vector_only_ms": 15.5,
           "bm25_only_ranked": [
             "returns_policy.md"
           ],
-          "bm25_only_ms": 1.51,
+          "bm25_only_ms": 0.58,
           "hybrid_no_floor_ranked": [
             "returns_policy.md",
-            "expense_policy.md",
-            "travel_insurance_policy.md"
+            "deployment_runbook.md",
+            "library_membership.md",
+            "laptop_warranty.md",
+            "router_manual.md"
           ],
-          "hybrid_no_floor_ms": 25.59,
+          "hybrid_no_floor_ms": 16.26,
           "full_ranked": [
             "returns_policy.md",
             "expense_policy.md",
-            "travel_insurance_policy.md"
+            "travel_insurance_policy.md",
+            "api_rate_limits.md"
           ],
-          "full_ms": 20.86
+          "full_ms": 18.45
         },
         {
           "id": "a05",
@@ -270,23 +283,26 @@
             "gym_membership_terms.md",
             "deployment_runbook.md"
           ],
-          "vector_only_ms": 21.79,
+          "vector_only_ms": 14.9,
           "bm25_only_ranked": [
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 1.38,
+          "bm25_only_ms": 0.49,
           "hybrid_no_floor_ranked": [
             "laptop_warranty.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
             "returns_policy.md",
-            "library_membership.md"
+            "gym_membership_terms.md"
           ],
-          "hybrid_no_floor_ms": 25.26,
+          "hybrid_no_floor_ms": 17.43,
           "full_ranked": [
             "laptop_warranty.md",
+            "library_membership.md",
             "returns_policy.md",
-            "library_membership.md"
+            "gym_membership_terms.md"
           ],
-          "full_ms": 23.82
+          "full_ms": 16.1
         },
         {
           "id": "a06",
@@ -303,23 +319,25 @@
             "python_style_guide.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 25.73,
+          "vector_only_ms": 16.11,
           "bm25_only_ranked": [
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 0.84,
+          "bm25_only_ms": 0.44,
           "hybrid_no_floor_ranked": [
             "laptop_warranty.md",
             "api_rate_limits.md",
-            "it_security_guidelines.md"
+            "it_security_guidelines.md",
+            "python_style_guide.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 26.94,
+          "hybrid_no_floor_ms": 15.93,
           "full_ranked": [
             "laptop_warranty.md",
             "api_rate_limits.md",
             "it_security_guidelines.md"
           ],
-          "full_ms": 26.95
+          "full_ms": 16.18
         },
         {
           "id": "a07",
@@ -336,23 +354,26 @@
             "travel_insurance_policy.md",
             "it_security_guidelines.md"
           ],
-          "vector_only_ms": 33.68,
+          "vector_only_ms": 17.47,
           "bm25_only_ranked": [
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 1.83,
+          "bm25_only_ms": 0.75,
           "hybrid_no_floor_ranked": [
             "laptop_warranty.md",
             "returns_policy.md",
-            "library_membership.md"
+            "library_membership.md",
+            "deployment_runbook.md",
+            "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 33.24,
+          "hybrid_no_floor_ms": 18.85,
           "full_ranked": [
             "laptop_warranty.md",
             "returns_policy.md",
-            "library_membership.md"
+            "library_membership.md",
+            "travel_insurance_policy.md"
           ],
-          "full_ms": 27.89
+          "full_ms": 15.81
         },
         {
           "id": "a08",
@@ -363,29 +384,32 @@
             "laptop_warranty.md"
           ],
           "vector_only_ranked": [
-            "it_security_guidelines.md",
             "onboarding_guide.md",
+            "it_security_guidelines.md",
             "python_style_guide.md",
             "gym_membership_terms.md",
             "router_manual.md"
           ],
-          "vector_only_ms": 30.48,
+          "vector_only_ms": 14.17,
           "bm25_only_ranked": [
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 1.12,
+          "bm25_only_ms": 0.46,
           "hybrid_no_floor_ranked": [
-            "laptop_warranty.md",
             "it_security_guidelines.md",
-            "onboarding_guide.md"
+            "laptop_warranty.md",
+            "onboarding_guide.md",
+            "python_style_guide.md",
+            "gym_membership_terms.md"
           ],
-          "hybrid_no_floor_ms": 30.54,
+          "hybrid_no_floor_ms": 16.26,
           "full_ranked": [
-            "laptop_warranty.md",
             "it_security_guidelines.md",
-            "onboarding_guide.md"
+            "laptop_warranty.md",
+            "onboarding_guide.md",
+            "python_style_guide.md"
           ],
-          "full_ms": 28.73
+          "full_ms": 14.71
         },
         {
           "id": "a09",
@@ -402,25 +426,31 @@
             "gym_membership_terms.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 42.29,
+          "vector_only_ms": 14.78,
           "bm25_only_ranked": [
             "hr_leave_policy.md",
             "annual_report_2024.md",
-            "library_membership.md"
+            "library_membership.md",
+            "onboarding_guide.md",
+            "expense_policy.md"
           ],
-          "bm25_only_ms": 1.37,
+          "bm25_only_ms": 0.69,
           "hybrid_no_floor_ranked": [
             "hr_leave_policy.md",
             "expense_policy.md",
-            "onboarding_guide.md"
+            "onboarding_guide.md",
+            "annual_report_2024.md",
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 34.57,
+          "hybrid_no_floor_ms": 16.61,
           "full_ranked": [
             "hr_leave_policy.md",
             "expense_policy.md",
-            "onboarding_guide.md"
+            "onboarding_guide.md",
+            "annual_report_2024.md",
+            "library_membership.md"
           ],
-          "full_ms": 30.79
+          "full_ms": 18.61
         },
         {
           "id": "a10",
@@ -437,21 +467,23 @@
             "expense_policy.md",
             "gym_membership_terms.md"
           ],
-          "vector_only_ms": 32.17,
+          "vector_only_ms": 17.21,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 2.11,
+          "bm25_only_ms": 0.59,
           "hybrid_no_floor_ranked": [
-            "hr_leave_policy.md",
             "onboarding_guide.md",
-            "returns_policy.md"
+            "hr_leave_policy.md",
+            "laptop_warranty.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 29.3,
+          "hybrid_no_floor_ms": 16.23,
           "full_ranked": [
-            "hr_leave_policy.md",
             "onboarding_guide.md",
+            "hr_leave_policy.md",
             "returns_policy.md"
           ],
-          "full_ms": 27.64
+          "full_ms": 15.77
         },
         {
           "id": "a11",
@@ -468,24 +500,26 @@
             "travel_insurance_policy.md",
             "gym_membership_terms.md"
           ],
-          "vector_only_ms": 26.64,
+          "vector_only_ms": 15.45,
           "bm25_only_ranked": [
             "hr_leave_policy.md",
             "returns_policy.md"
           ],
-          "bm25_only_ms": 2.39,
+          "bm25_only_ms": 0.62,
           "hybrid_no_floor_ranked": [
             "hr_leave_policy.md",
             "returns_policy.md",
-            "expense_policy.md"
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 33.4,
+          "hybrid_no_floor_ms": 16.42,
           "full_ranked": [
             "hr_leave_policy.md",
             "returns_policy.md",
             "expense_policy.md"
           ],
-          "full_ms": 34.14
+          "full_ms": 15.87
         },
         {
           "id": "a12",
@@ -502,20 +536,22 @@
             "gym_membership_terms.md",
             "pasta_recipe.md"
           ],
-          "vector_only_ms": 33.49,
+          "vector_only_ms": 15.56,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.08,
+          "bm25_only_ms": 0.5,
           "hybrid_no_floor_ranked": [
             "hr_leave_policy.md",
             "expense_policy.md",
-            "travel_insurance_policy.md"
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md",
+            "pasta_recipe.md"
           ],
-          "hybrid_no_floor_ms": 31.71,
+          "hybrid_no_floor_ms": 17.63,
           "full_ranked": [
             "hr_leave_policy.md",
             "expense_policy.md"
           ],
-          "full_ms": 29.31
+          "full_ms": 15.71
         },
         {
           "id": "a13",
@@ -532,23 +568,27 @@
             "gym_membership_terms.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 25.29,
+          "vector_only_ms": 13.9,
           "bm25_only_ranked": [
             "expense_policy.md"
           ],
-          "bm25_only_ms": 2.05,
+          "bm25_only_ms": 0.66,
           "hybrid_no_floor_ranked": [
             "expense_policy.md",
             "travel_insurance_policy.md",
-            "hr_leave_policy.md"
+            "gym_membership_terms.md",
+            "deployment_runbook.md",
+            "coffee_machine_manual.md"
           ],
-          "hybrid_no_floor_ms": 29.4,
+          "hybrid_no_floor_ms": 15.81,
           "full_ranked": [
             "expense_policy.md",
             "travel_insurance_policy.md",
-            "hr_leave_policy.md"
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "library_membership.md"
           ],
-          "full_ms": 27.9
+          "full_ms": 15.08
         },
         {
           "id": "a14",
@@ -565,23 +605,26 @@
             "hr_leave_policy.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 43.11,
+          "vector_only_ms": 14.21,
           "bm25_only_ranked": [
             "expense_policy.md"
           ],
-          "bm25_only_ms": 0.84,
+          "bm25_only_ms": 0.68,
           "hybrid_no_floor_ranked": [
             "expense_policy.md",
+            "travel_insurance_policy.md",
             "onboarding_guide.md",
-            "travel_insurance_policy.md"
+            "it_security_guidelines.md",
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 29.03,
+          "hybrid_no_floor_ms": 17.11,
           "full_ranked": [
             "expense_policy.md",
+            "travel_insurance_policy.md",
             "onboarding_guide.md",
-            "travel_insurance_policy.md"
+            "hr_leave_policy.md"
           ],
-          "full_ms": 28.69
+          "full_ms": 15.64
         },
         {
           "id": "a15",
@@ -595,25 +638,27 @@
             "expense_policy.md",
             "travel_insurance_policy.md",
             "returns_policy.md",
-            "annual_report_2024.md",
-            "hr_leave_policy.md"
+            "laptop_warranty.md",
+            "annual_report_2024.md"
           ],
-          "vector_only_ms": 31.38,
+          "vector_only_ms": 14.96,
           "bm25_only_ranked": [
             "expense_policy.md"
           ],
-          "bm25_only_ms": 0.7,
+          "bm25_only_ms": 0.5,
           "hybrid_no_floor_ranked": [
             "expense_policy.md",
             "travel_insurance_policy.md",
-            "returns_policy.md"
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 31.62,
+          "hybrid_no_floor_ms": 15.98,
           "full_ranked": [
             "expense_policy.md",
             "travel_insurance_policy.md"
           ],
-          "full_ms": 26.24
+          "full_ms": 14.59
         },
         {
           "id": "a16",
@@ -628,26 +673,28 @@
             "onboarding_guide.md",
             "hr_leave_policy.md",
             "returns_policy.md",
-            "travel_insurance_policy.md"
+            "library_membership.md"
           ],
-          "vector_only_ms": 28.34,
+          "vector_only_ms": 14.68,
           "bm25_only_ranked": [
             "expense_policy.md",
             "onboarding_guide.md"
           ],
-          "bm25_only_ms": 1.71,
+          "bm25_only_ms": 0.66,
           "hybrid_no_floor_ranked": [
             "expense_policy.md",
             "onboarding_guide.md",
-            "hr_leave_policy.md"
+            "hr_leave_policy.md",
+            "laptop_warranty.md",
+            "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 29.3,
+          "hybrid_no_floor_ms": 15.84,
           "full_ranked": [
             "expense_policy.md",
             "onboarding_guide.md",
             "hr_leave_policy.md"
           ],
-          "full_ms": 27.76
+          "full_ms": 17.23
         },
         {
           "id": "a17",
@@ -664,21 +711,25 @@
             "onboarding_guide.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 25.16,
+          "vector_only_ms": 34.24,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.86,
+          "bm25_only_ms": 0.43,
           "hybrid_no_floor_ranked": [
             "it_security_guidelines.md",
             "gym_membership_terms.md",
-            "api_rate_limits.md"
+            "router_manual.md",
+            "api_rate_limits.md",
+            "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 34.48,
+          "hybrid_no_floor_ms": 25.38,
           "full_ranked": [
             "it_security_guidelines.md",
             "gym_membership_terms.md",
-            "api_rate_limits.md"
+            "router_manual.md",
+            "api_rate_limits.md",
+            "onboarding_guide.md"
           ],
-          "full_ms": 25.9
+          "full_ms": 17.17
         },
         {
           "id": "a18",
@@ -695,21 +746,23 @@
             "q3_sales_review.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 28.05,
+          "vector_only_ms": 17.05,
           "bm25_only_ranked": [
             "it_security_guidelines.md"
           ],
-          "bm25_only_ms": 1.14,
+          "bm25_only_ms": 0.55,
           "hybrid_no_floor_ranked": [
             "it_security_guidelines.md",
-            "router_manual.md",
-            "api_rate_limits.md"
+            "python_style_guide.md",
+            "coffee_machine_manual.md",
+            "library_membership.md",
+            "photosynthesis_notes.md"
           ],
-          "hybrid_no_floor_ms": 32.73,
+          "hybrid_no_floor_ms": 20.28,
           "full_ranked": [
             "it_security_guidelines.md"
           ],
-          "full_ms": 22.16
+          "full_ms": 19.0
         },
         {
           "id": "a19",
@@ -722,27 +775,30 @@
           "vector_only_ranked": [
             "it_security_guidelines.md",
             "onboarding_guide.md",
-            "deployment_runbook.md",
             "router_manual.md",
+            "deployment_runbook.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 23.25,
+          "vector_only_ms": 17.73,
           "bm25_only_ranked": [
             "onboarding_guide.md"
           ],
-          "bm25_only_ms": 1.01,
+          "bm25_only_ms": 0.71,
           "hybrid_no_floor_ranked": [
-            "onboarding_guide.md",
             "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "laptop_warranty.md",
+            "router_manual.md",
             "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 27.3,
+          "hybrid_no_floor_ms": 21.11,
           "full_ranked": [
-            "onboarding_guide.md",
             "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "router_manual.md",
             "deployment_runbook.md"
           ],
-          "full_ms": 27.39
+          "full_ms": 16.56
         },
         {
           "id": "a20",
@@ -759,23 +815,24 @@
             "annual_report_2024.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 24.57,
+          "vector_only_ms": 17.48,
           "bm25_only_ranked": [
             "it_security_guidelines.md"
           ],
-          "bm25_only_ms": 1.27,
+          "bm25_only_ms": 0.83,
           "hybrid_no_floor_ranked": [
             "it_security_guidelines.md",
             "library_membership.md",
-            "expense_policy.md"
+            "expense_policy.md",
+            "annual_report_2024.md",
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 27.52,
+          "hybrid_no_floor_ms": 17.95,
           "full_ranked": [
             "it_security_guidelines.md",
-            "library_membership.md",
-            "expense_policy.md"
+            "library_membership.md"
           ],
-          "full_ms": 25.59
+          "full_ms": 17.29
         },
         {
           "id": "a21",
@@ -792,22 +849,24 @@
             "laptop_warranty.md",
             "onboarding_guide.md"
           ],
-          "vector_only_ms": 25.86,
+          "vector_only_ms": 21.33,
           "bm25_only_ranked": [
             "router_manual.md"
           ],
-          "bm25_only_ms": 0.81,
+          "bm25_only_ms": 0.62,
           "hybrid_no_floor_ranked": [
             "router_manual.md",
             "deployment_runbook.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 27.44,
+          "hybrid_no_floor_ms": 21.8,
           "full_ranked": [
             "router_manual.md",
             "deployment_runbook.md"
           ],
-          "full_ms": 26.98
+          "full_ms": 16.0
         },
         {
           "id": "a22",
@@ -821,27 +880,31 @@
             "router_manual.md",
             "coffee_machine_manual.md",
             "onboarding_guide.md",
-            "q3_sales_review.md",
-            "deployment_runbook.md"
+            "deployment_runbook.md",
+            "it_security_guidelines.md"
           ],
-          "vector_only_ms": 23.77,
+          "vector_only_ms": 18.68,
           "bm25_only_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md"
           ],
-          "bm25_only_ms": 1.3,
+          "bm25_only_ms": 0.54,
           "hybrid_no_floor_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md",
-            "onboarding_guide.md"
+            "deployment_runbook.md",
+            "onboarding_guide.md",
+            "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 30.48,
+          "hybrid_no_floor_ms": 19.62,
           "full_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md",
-            "onboarding_guide.md"
+            "deployment_runbook.md",
+            "onboarding_guide.md",
+            "it_security_guidelines.md"
           ],
-          "full_ms": 26.63
+          "full_ms": 17.27
         },
         {
           "id": "a23",
@@ -855,27 +918,31 @@
             "router_manual.md",
             "api_rate_limits.md",
             "annual_report_2024.md",
-            "it_security_guidelines.md",
-            "coffee_machine_manual.md"
+            "coffee_machine_manual.md",
+            "it_security_guidelines.md"
           ],
-          "vector_only_ms": 25.73,
+          "vector_only_ms": 18.13,
           "bm25_only_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md"
           ],
-          "bm25_only_ms": 1.47,
+          "bm25_only_ms": 0.55,
           "hybrid_no_floor_ranked": [
             "router_manual.md",
+            "api_rate_limits.md",
             "coffee_machine_manual.md",
-            "api_rate_limits.md"
+            "deployment_runbook.md",
+            "expense_policy.md"
           ],
-          "hybrid_no_floor_ms": 32.18,
+          "hybrid_no_floor_ms": 20.32,
           "full_ranked": [
             "router_manual.md",
+            "api_rate_limits.md",
             "coffee_machine_manual.md",
-            "api_rate_limits.md"
+            "deployment_runbook.md",
+            "annual_report_2024.md"
           ],
-          "full_ms": 27.07
+          "full_ms": 16.42
         },
         {
           "id": "a24",
@@ -892,21 +959,23 @@
             "deployment_runbook.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 30.24,
+          "vector_only_ms": 22.53,
           "bm25_only_ranked": [
             "router_manual.md"
           ],
-          "bm25_only_ms": 1.0,
+          "bm25_only_ms": 0.75,
           "hybrid_no_floor_ranked": [
             "router_manual.md",
+            "photosynthesis_notes.md",
+            "solar_system_notes.md",
             "returns_policy.md",
-            "photosynthesis_notes.md"
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 34.43,
+          "hybrid_no_floor_ms": 23.11,
           "full_ranked": [
             "router_manual.md"
           ],
-          "full_ms": 25.86
+          "full_ms": 17.21
         },
         {
           "id": "a25",
@@ -921,25 +990,27 @@
             "api_rate_limits.md",
             "deployment_runbook.md",
             "laptop_warranty.md",
-            "gym_membership_terms.md"
+            "hr_leave_policy.md"
           ],
-          "vector_only_ms": 24.82,
+          "vector_only_ms": 17.99,
           "bm25_only_ranked": [
             "coffee_machine_manual.md"
           ],
-          "bm25_only_ms": 1.21,
+          "bm25_only_ms": 0.64,
           "hybrid_no_floor_ranked": [
             "coffee_machine_manual.md",
             "api_rate_limits.md",
-            "deployment_runbook.md"
+            "deployment_runbook.md",
+            "laptop_warranty.md",
+            "hr_leave_policy.md"
           ],
-          "hybrid_no_floor_ms": 30.06,
+          "hybrid_no_floor_ms": 18.94,
           "full_ranked": [
             "coffee_machine_manual.md",
             "api_rate_limits.md",
             "deployment_runbook.md"
           ],
-          "full_ms": 28.88
+          "full_ms": 16.19
         },
         {
           "id": "a26",
@@ -954,25 +1025,27 @@
             "onboarding_guide.md",
             "annual_report_2024.md",
             "router_manual.md",
-            "q3_sales_review.md"
+            "deployment_runbook.md"
           ],
-          "vector_only_ms": 29.02,
+          "vector_only_ms": 17.59,
           "bm25_only_ranked": [
             "coffee_machine_manual.md"
           ],
-          "bm25_only_ms": 1.34,
+          "bm25_only_ms": 0.49,
           "hybrid_no_floor_ranked": [
             "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "router_manual.md",
             "onboarding_guide.md",
             "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 34.82,
+          "hybrid_no_floor_ms": 19.53,
           "full_ranked": [
             "coffee_machine_manual.md",
             "onboarding_guide.md",
             "annual_report_2024.md"
           ],
-          "full_ms": 22.87
+          "full_ms": 16.16
         },
         {
           "id": "a27",
@@ -989,21 +1062,23 @@
             "api_rate_limits.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 25.95,
+          "vector_only_ms": 17.59,
           "bm25_only_ranked": [
             "coffee_machine_manual.md"
           ],
-          "bm25_only_ms": 0.86,
+          "bm25_only_ms": 0.76,
           "hybrid_no_floor_ranked": [
             "coffee_machine_manual.md",
-            "solar_system_notes.md",
-            "bread_recipe.md"
+            "bread_recipe.md",
+            "photosynthesis_notes.md",
+            "pasta_recipe.md",
+            "solar_system_notes.md"
           ],
-          "hybrid_no_floor_ms": 30.97,
+          "hybrid_no_floor_ms": 20.1,
           "full_ranked": [
             "coffee_machine_manual.md"
           ],
-          "full_ms": 28.79
+          "full_ms": 17.58
         },
         {
           "id": "a28",
@@ -1020,23 +1095,25 @@
             "returns_policy.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 26.09,
+          "vector_only_ms": 18.37,
           "bm25_only_ranked": [
             "annual_report_2024.md"
           ],
-          "bm25_only_ms": 0.9,
+          "bm25_only_ms": 0.95,
           "hybrid_no_floor_ranked": [
             "annual_report_2024.md",
             "q3_sales_review.md",
-            "expense_policy.md"
+            "returns_policy.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md"
           ],
-          "hybrid_no_floor_ms": 29.53,
+          "hybrid_no_floor_ms": 23.04,
           "full_ranked": [
             "annual_report_2024.md",
             "q3_sales_review.md",
             "expense_policy.md"
           ],
-          "full_ms": 27.24
+          "full_ms": 17.22
         },
         {
           "id": "a29",
@@ -1053,24 +1130,27 @@
             "onboarding_guide.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 28.57,
+          "vector_only_ms": 18.68,
           "bm25_only_ranked": [
             "annual_report_2024.md",
             "it_security_guidelines.md"
           ],
-          "bm25_only_ms": 1.79,
+          "bm25_only_ms": 0.79,
           "hybrid_no_floor_ranked": [
             "annual_report_2024.md",
+            "onboarding_guide.md",
             "it_security_guidelines.md",
-            "q3_sales_review.md"
+            "q3_sales_review.md",
+            "gym_membership_terms.md"
           ],
-          "hybrid_no_floor_ms": 32.8,
+          "hybrid_no_floor_ms": 19.03,
           "full_ranked": [
             "annual_report_2024.md",
             "it_security_guidelines.md",
-            "q3_sales_review.md"
+            "q3_sales_review.md",
+            "deployment_runbook.md"
           ],
-          "full_ms": 26.25
+          "full_ms": 19.37
         },
         {
           "id": "a30",
@@ -1087,25 +1167,29 @@
             "onboarding_guide.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 25.85,
+          "vector_only_ms": 21.11,
           "bm25_only_ranked": [
             "annual_report_2024.md",
             "expense_policy.md",
             "onboarding_guide.md"
           ],
-          "bm25_only_ms": 1.01,
+          "bm25_only_ms": 0.84,
           "hybrid_no_floor_ranked": [
             "annual_report_2024.md",
+            "hr_leave_policy.md",
             "expense_policy.md",
-            "onboarding_guide.md"
+            "onboarding_guide.md",
+            "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 28.2,
+          "hybrid_no_floor_ms": 20.12,
           "full_ranked": [
             "annual_report_2024.md",
+            "hr_leave_policy.md",
             "expense_policy.md",
-            "onboarding_guide.md"
+            "onboarding_guide.md",
+            "q3_sales_review.md"
           ],
-          "full_ms": 27.34
+          "full_ms": 18.56
         },
         {
           "id": "a31",
@@ -1120,24 +1204,26 @@
             "expense_policy.md",
             "q3_sales_review.md",
             "library_membership.md",
-            "onboarding_guide.md"
+            "hr_leave_policy.md"
           ],
-          "vector_only_ms": 23.51,
+          "vector_only_ms": 18.04,
           "bm25_only_ranked": [
             "annual_report_2024.md"
           ],
-          "bm25_only_ms": 0.78,
+          "bm25_only_ms": 0.51,
           "hybrid_no_floor_ranked": [
             "annual_report_2024.md",
             "expense_policy.md",
-            "q3_sales_review.md"
+            "q3_sales_review.md",
+            "library_membership.md",
+            "hr_leave_policy.md"
           ],
-          "hybrid_no_floor_ms": 30.27,
+          "hybrid_no_floor_ms": 19.6,
           "full_ranked": [
             "annual_report_2024.md",
             "expense_policy.md"
           ],
-          "full_ms": 24.58
+          "full_ms": 18.49
         },
         {
           "id": "a32",
@@ -1152,25 +1238,27 @@
             "annual_report_2024.md",
             "returns_policy.md",
             "expense_policy.md",
-            "travel_insurance_policy.md"
+            "deployment_runbook.md"
           ],
-          "vector_only_ms": 23.46,
+          "vector_only_ms": 16.72,
           "bm25_only_ranked": [
             "q3_sales_review.md"
           ],
-          "bm25_only_ms": 1.19,
+          "bm25_only_ms": 0.5,
           "hybrid_no_floor_ranked": [
             "q3_sales_review.md",
             "annual_report_2024.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "expense_policy.md",
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 30.05,
+          "hybrid_no_floor_ms": 19.65,
           "full_ranked": [
             "q3_sales_review.md",
             "annual_report_2024.md",
             "returns_policy.md"
           ],
-          "full_ms": 23.84
+          "full_ms": 15.94
         },
         {
           "id": "a33",
@@ -1182,24 +1270,26 @@
           ],
           "vector_only_ranked": [
             "q3_sales_review.md",
-            "returns_policy.md",
             "annual_report_2024.md",
+            "returns_policy.md",
             "gym_membership_terms.md",
             "deployment_runbook.md"
           ],
-          "vector_only_ms": 24.0,
+          "vector_only_ms": 18.17,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.05,
+          "bm25_only_ms": 0.52,
           "hybrid_no_floor_ranked": [
             "q3_sales_review.md",
             "returns_policy.md",
-            "annual_report_2024.md"
+            "laptop_warranty.md",
+            "onboarding_guide.md",
+            "solar_system_notes.md"
           ],
-          "hybrid_no_floor_ms": 25.06,
+          "hybrid_no_floor_ms": 21.04,
           "full_ranked": [
             "q3_sales_review.md"
           ],
-          "full_ms": 22.86
+          "full_ms": 17.7
         },
         {
           "id": "a34",
@@ -1216,21 +1306,23 @@
             "library_membership.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 24.15,
+          "vector_only_ms": 17.04,
           "bm25_only_ranked": [
             "q3_sales_review.md"
           ],
-          "bm25_only_ms": 1.19,
+          "bm25_only_ms": 0.48,
           "hybrid_no_floor_ranked": [
             "q3_sales_review.md",
             "photosynthesis_notes.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 26.49,
+          "hybrid_no_floor_ms": 20.52,
           "full_ranked": [
             "q3_sales_review.md"
           ],
-          "full_ms": 22.75
+          "full_ms": 17.68
         },
         {
           "id": "a35",
@@ -1244,24 +1336,26 @@
             "q3_sales_review.md",
             "expense_policy.md",
             "solar_system_notes.md",
-            "travel_insurance_policy.md",
-            "annual_report_2024.md"
+            "annual_report_2024.md",
+            "travel_insurance_policy.md"
           ],
-          "vector_only_ms": 22.74,
+          "vector_only_ms": 15.8,
           "bm25_only_ranked": [
             "q3_sales_review.md"
           ],
-          "bm25_only_ms": 1.31,
+          "bm25_only_ms": 0.55,
           "hybrid_no_floor_ranked": [
             "q3_sales_review.md",
             "expense_policy.md",
-            "solar_system_notes.md"
+            "solar_system_notes.md",
+            "annual_report_2024.md",
+            "travel_insurance_policy.md"
           ],
-          "hybrid_no_floor_ms": 26.11,
+          "hybrid_no_floor_ms": 18.37,
           "full_ranked": [
             "q3_sales_review.md"
           ],
-          "full_ms": 29.07
+          "full_ms": 16.56
         },
         {
           "id": "a36",
@@ -1278,24 +1372,28 @@
             "it_security_guidelines.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 26.4,
+          "vector_only_ms": 17.52,
           "bm25_only_ranked": [
             "onboarding_guide.md",
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 1.81,
+          "bm25_only_ms": 1.0,
           "hybrid_no_floor_ranked": [
             "onboarding_guide.md",
             "laptop_warranty.md",
-            "returns_policy.md"
+            "it_security_guidelines.md",
+            "expense_policy.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 27.99,
+          "hybrid_no_floor_ms": 18.77,
           "full_ranked": [
             "onboarding_guide.md",
             "laptop_warranty.md",
-            "returns_policy.md"
+            "it_security_guidelines.md",
+            "expense_policy.md",
+            "annual_report_2024.md"
           ],
-          "full_ms": 25.48
+          "full_ms": 19.11
         },
         {
           "id": "a37",
@@ -1312,23 +1410,26 @@
             "hr_leave_policy.md",
             "solar_system_notes.md"
           ],
-          "vector_only_ms": 25.89,
+          "vector_only_ms": 20.13,
           "bm25_only_ranked": [
             "onboarding_guide.md"
           ],
-          "bm25_only_ms": 1.03,
+          "bm25_only_ms": 0.48,
           "hybrid_no_floor_ranked": [
             "onboarding_guide.md",
+            "it_security_guidelines.md",
+            "library_membership.md",
             "gym_membership_terms.md",
             "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 29.77,
+          "hybrid_no_floor_ms": 20.03,
           "full_ranked": [
             "onboarding_guide.md",
             "gym_membership_terms.md",
-            "laptop_warranty.md"
+            "laptop_warranty.md",
+            "hr_leave_policy.md"
           ],
-          "full_ms": 26.36
+          "full_ms": 17.03
         },
         {
           "id": "a38",
@@ -1345,24 +1446,26 @@
             "library_membership.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 25.54,
+          "vector_only_ms": 18.23,
           "bm25_only_ranked": [
             "onboarding_guide.md",
             "hr_leave_policy.md"
           ],
-          "bm25_only_ms": 1.0,
+          "bm25_only_ms": 0.63,
           "hybrid_no_floor_ranked": [
             "onboarding_guide.md",
             "hr_leave_policy.md",
-            "annual_report_2024.md"
+            "gym_membership_terms.md",
+            "travel_insurance_policy.md",
+            "coffee_machine_manual.md"
           ],
-          "hybrid_no_floor_ms": 28.44,
+          "hybrid_no_floor_ms": 20.34,
           "full_ranked": [
             "onboarding_guide.md",
             "hr_leave_policy.md",
             "annual_report_2024.md"
           ],
-          "full_ms": 29.44
+          "full_ms": 19.2
         },
         {
           "id": "a39",
@@ -1375,27 +1478,31 @@
           "vector_only_ranked": [
             "python_style_guide.md",
             "api_rate_limits.md",
-            "it_security_guidelines.md",
             "pasta_recipe.md",
+            "it_security_guidelines.md",
             "solar_system_notes.md"
           ],
-          "vector_only_ms": 30.14,
+          "vector_only_ms": 18.99,
           "bm25_only_ranked": [
             "python_style_guide.md"
           ],
-          "bm25_only_ms": 1.58,
+          "bm25_only_ms": 0.8,
           "hybrid_no_floor_ranked": [
             "python_style_guide.md",
+            "onboarding_guide.md",
             "api_rate_limits.md",
+            "pasta_recipe.md",
             "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 30.05,
+          "hybrid_no_floor_ms": 20.68,
           "full_ranked": [
             "python_style_guide.md",
+            "onboarding_guide.md",
             "api_rate_limits.md",
+            "pasta_recipe.md",
             "it_security_guidelines.md"
           ],
-          "full_ms": 28.53
+          "full_ms": 18.29
         },
         {
           "id": "a40",
@@ -1412,23 +1519,24 @@
             "pasta_recipe.md",
             "api_rate_limits.md"
           ],
-          "vector_only_ms": 24.5,
+          "vector_only_ms": 18.78,
           "bm25_only_ranked": [
             "python_style_guide.md"
           ],
-          "bm25_only_ms": 0.96,
+          "bm25_only_ms": 0.69,
           "hybrid_no_floor_ranked": [
             "python_style_guide.md",
-            "q3_sales_review.md",
-            "it_security_guidelines.md"
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "router_manual.md",
+            "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 29.77,
+          "hybrid_no_floor_ms": 20.55,
           "full_ranked": [
             "python_style_guide.md",
-            "q3_sales_review.md",
-            "it_security_guidelines.md"
+            "q3_sales_review.md"
           ],
-          "full_ms": 26.15
+          "full_ms": 17.11
         },
         {
           "id": "a41",
@@ -1443,25 +1551,29 @@
             "it_security_guidelines.md",
             "deployment_runbook.md",
             "onboarding_guide.md",
-            "q3_sales_review.md"
+            "api_rate_limits.md"
           ],
-          "vector_only_ms": 29.51,
+          "vector_only_ms": 16.78,
           "bm25_only_ranked": [
             "python_style_guide.md"
           ],
-          "bm25_only_ms": 1.27,
+          "bm25_only_ms": 0.53,
           "hybrid_no_floor_ranked": [
             "python_style_guide.md",
             "it_security_guidelines.md",
-            "deployment_runbook.md"
+            "coffee_machine_manual.md",
+            "library_membership.md",
+            "photosynthesis_notes.md"
           ],
-          "hybrid_no_floor_ms": 30.36,
+          "hybrid_no_floor_ms": 18.04,
           "full_ranked": [
             "python_style_guide.md",
             "it_security_guidelines.md",
+            "coffee_machine_manual.md",
+            "library_membership.md",
             "deployment_runbook.md"
           ],
-          "full_ms": 29.13
+          "full_ms": 17.18
         },
         {
           "id": "a42",
@@ -1478,23 +1590,27 @@
             "returns_policy.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 32.53,
+          "vector_only_ms": 17.57,
           "bm25_only_ranked": [
             "api_rate_limits.md"
           ],
-          "bm25_only_ms": 1.49,
+          "bm25_only_ms": 0.74,
           "hybrid_no_floor_ranked": [
             "api_rate_limits.md",
-            "it_security_guidelines.md",
-            "library_membership.md"
+            "expense_policy.md",
+            "returns_policy.md",
+            "library_membership.md",
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 31.02,
+          "hybrid_no_floor_ms": 20.46,
           "full_ranked": [
             "api_rate_limits.md",
-            "it_security_guidelines.md",
-            "library_membership.md"
+            "returns_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md",
+            "it_security_guidelines.md"
           ],
-          "full_ms": 32.63
+          "full_ms": 17.16
         },
         {
           "id": "a43",
@@ -1511,21 +1627,23 @@
             "router_manual.md",
             "python_style_guide.md"
           ],
-          "vector_only_ms": 29.54,
+          "vector_only_ms": 19.06,
           "bm25_only_ranked": [
             "api_rate_limits.md"
           ],
-          "bm25_only_ms": 1.12,
+          "bm25_only_ms": 0.58,
           "hybrid_no_floor_ranked": [
             "api_rate_limits.md",
             "returns_policy.md",
-            "annual_report_2024.md"
+            "deployment_runbook.md",
+            "python_style_guide.md",
+            "travel_insurance_policy.md"
           ],
-          "hybrid_no_floor_ms": 33.4,
+          "hybrid_no_floor_ms": 21.05,
           "full_ranked": [
             "api_rate_limits.md"
           ],
-          "full_ms": 28.53
+          "full_ms": 17.4
         },
         {
           "id": "a44",
@@ -1542,23 +1660,27 @@
             "onboarding_guide.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 38.02,
+          "vector_only_ms": 19.19,
           "bm25_only_ranked": [
             "api_rate_limits.md"
           ],
-          "bm25_only_ms": 1.02,
+          "bm25_only_ms": 0.57,
           "hybrid_no_floor_ranked": [
-            "api_rate_limits.md",
             "deployment_runbook.md",
+            "api_rate_limits.md",
+            "returns_policy.md",
+            "annual_report_2024.md",
             "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 31.56,
+          "hybrid_no_floor_ms": 19.32,
           "full_ranked": [
-            "api_rate_limits.md",
             "deployment_runbook.md",
-            "it_security_guidelines.md"
+            "api_rate_limits.md",
+            "it_security_guidelines.md",
+            "onboarding_guide.md",
+            "library_membership.md"
           ],
-          "full_ms": 30.88
+          "full_ms": 19.16
         },
         {
           "id": "a45",
@@ -1575,25 +1697,29 @@
             "hr_leave_policy.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 28.08,
+          "vector_only_ms": 16.97,
           "bm25_only_ranked": [
             "deployment_runbook.md",
             "expense_policy.md",
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 1.59,
+          "bm25_only_ms": 0.62,
           "hybrid_no_floor_ranked": [
             "deployment_runbook.md",
             "expense_policy.md",
+            "returns_policy.md",
+            "hr_leave_policy.md",
             "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 31.2,
+          "hybrid_no_floor_ms": 19.37,
           "full_ranked": [
             "deployment_runbook.md",
             "expense_policy.md",
+            "returns_policy.md",
+            "hr_leave_policy.md",
             "laptop_warranty.md"
           ],
-          "full_ms": 27.1
+          "full_ms": 17.42
         },
         {
           "id": "a46",
@@ -1610,21 +1736,23 @@
             "library_membership.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 29.28,
+          "vector_only_ms": 19.86,
           "bm25_only_ranked": [
             "deployment_runbook.md"
           ],
-          "bm25_only_ms": 1.36,
+          "bm25_only_ms": 0.67,
           "hybrid_no_floor_ranked": [
             "deployment_runbook.md",
             "gym_membership_terms.md",
-            "hr_leave_policy.md"
+            "hr_leave_policy.md",
+            "library_membership.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 30.23,
+          "hybrid_no_floor_ms": 17.69,
           "full_ranked": [
             "deployment_runbook.md"
           ],
-          "full_ms": 27.47
+          "full_ms": 18.05
         },
         {
           "id": "a47",
@@ -1641,21 +1769,25 @@
             "router_manual.md",
             "laptop_warranty.md"
           ],
-          "vector_only_ms": 28.73,
+          "vector_only_ms": 16.51,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.87,
+          "bm25_only_ms": 0.38,
           "hybrid_no_floor_ranked": [
             "deployment_runbook.md",
+            "photosynthesis_notes.md",
             "coffee_machine_manual.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "router_manual.md"
           ],
-          "hybrid_no_floor_ms": 33.33,
+          "hybrid_no_floor_ms": 20.97,
           "full_ranked": [
             "deployment_runbook.md",
             "coffee_machine_manual.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "router_manual.md",
+            "laptop_warranty.md"
           ],
-          "full_ms": 27.98
+          "full_ms": 19.49
         },
         {
           "id": "a48",
@@ -1672,23 +1804,27 @@
             "q3_sales_review.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 27.86,
+          "vector_only_ms": 19.56,
           "bm25_only_ranked": [
             "deployment_runbook.md"
           ],
-          "bm25_only_ms": 1.33,
+          "bm25_only_ms": 0.98,
           "hybrid_no_floor_ranked": [
             "deployment_runbook.md",
-            "api_rate_limits.md",
-            "returns_policy.md"
+            "library_membership.md",
+            "it_security_guidelines.md",
+            "expense_policy.md",
+            "photosynthesis_notes.md"
           ],
-          "hybrid_no_floor_ms": 29.52,
+          "hybrid_no_floor_ms": 20.73,
           "full_ranked": [
             "deployment_runbook.md",
+            "library_membership.md",
             "api_rate_limits.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "q3_sales_review.md"
           ],
-          "full_ms": 29.23
+          "full_ms": 20.33
         },
         {
           "id": "a49",
@@ -1702,24 +1838,26 @@
             "pasta_recipe.md",
             "coffee_machine_manual.md",
             "bread_recipe.md",
-            "api_rate_limits.md",
-            "python_style_guide.md"
+            "laptop_warranty.md",
+            "onboarding_guide.md"
           ],
-          "vector_only_ms": 25.64,
+          "vector_only_ms": 18.42,
           "bm25_only_ranked": [
             "pasta_recipe.md"
           ],
-          "bm25_only_ms": 0.93,
+          "bm25_only_ms": 0.61,
           "hybrid_no_floor_ranked": [
             "pasta_recipe.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
             "coffee_machine_manual.md",
             "bread_recipe.md"
           ],
-          "hybrid_no_floor_ms": 27.56,
+          "hybrid_no_floor_ms": 21.55,
           "full_ranked": [
             "pasta_recipe.md"
           ],
-          "full_ms": 28.47
+          "full_ms": 17.55
         },
         {
           "id": "a50",
@@ -1736,21 +1874,23 @@
             "gym_membership_terms.md",
             "q3_sales_review.md"
           ],
-          "vector_only_ms": 28.36,
+          "vector_only_ms": 18.6,
           "bm25_only_ranked": [
             "pasta_recipe.md"
           ],
-          "bm25_only_ms": 1.21,
+          "bm25_only_ms": 0.74,
           "hybrid_no_floor_ranked": [
             "pasta_recipe.md",
             "bread_recipe.md",
-            "coffee_machine_manual.md"
+            "coffee_machine_manual.md",
+            "gym_membership_terms.md",
+            "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 30.22,
+          "hybrid_no_floor_ms": 21.71,
           "full_ranked": [
             "pasta_recipe.md"
           ],
-          "full_ms": 26.19
+          "full_ms": 19.23
         },
         {
           "id": "a51",
@@ -1767,19 +1907,21 @@
             "solar_system_notes.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 25.3,
+          "vector_only_ms": 18.93,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.74,
+          "bm25_only_ms": 0.45,
           "hybrid_no_floor_ranked": [
             "pasta_recipe.md",
             "expense_policy.md",
-            "library_membership.md"
+            "library_membership.md",
+            "solar_system_notes.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 32.34,
+          "hybrid_no_floor_ms": 20.14,
           "full_ranked": [
             "pasta_recipe.md"
           ],
-          "full_ms": 27.65
+          "full_ms": 19.14
         },
         {
           "id": "a52",
@@ -1796,23 +1938,25 @@
             "q3_sales_review.md",
             "onboarding_guide.md"
           ],
-          "vector_only_ms": 25.02,
+          "vector_only_ms": 20.98,
           "bm25_only_ranked": [
             "bread_recipe.md"
           ],
-          "bm25_only_ms": 1.24,
+          "bm25_only_ms": 0.68,
           "hybrid_no_floor_ranked": [
             "bread_recipe.md",
             "coffee_machine_manual.md",
-            "pasta_recipe.md"
+            "pasta_recipe.md",
+            "q3_sales_review.md",
+            "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 27.79,
+          "hybrid_no_floor_ms": 19.74,
           "full_ranked": [
             "bread_recipe.md",
             "coffee_machine_manual.md",
             "pasta_recipe.md"
           ],
-          "full_ms": 30.1
+          "full_ms": 18.3
         },
         {
           "id": "a53",
@@ -1829,22 +1973,24 @@
             "onboarding_guide.md",
             "coffee_machine_manual.md"
           ],
-          "vector_only_ms": 26.51,
+          "vector_only_ms": 16.92,
           "bm25_only_ranked": [
             "bread_recipe.md"
           ],
-          "bm25_only_ms": 1.25,
+          "bm25_only_ms": 0.72,
           "hybrid_no_floor_ranked": [
             "bread_recipe.md",
+            "solar_system_notes.md",
             "pasta_recipe.md",
-            "router_manual.md"
+            "router_manual.md",
+            "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 30.78,
+          "hybrid_no_floor_ms": 19.33,
           "full_ranked": [
             "bread_recipe.md",
             "pasta_recipe.md"
           ],
-          "full_ms": 27.56
+          "full_ms": 17.63
         },
         {
           "id": "a54",
@@ -1857,27 +2003,31 @@
           "vector_only_ranked": [
             "bread_recipe.md",
             "api_rate_limits.md",
+            "coffee_machine_manual.md",
             "onboarding_guide.md",
-            "returns_policy.md",
-            "coffee_machine_manual.md"
+            "returns_policy.md"
           ],
-          "vector_only_ms": 25.91,
+          "vector_only_ms": 18.65,
           "bm25_only_ranked": [
             "bread_recipe.md"
           ],
-          "bm25_only_ms": 0.99,
+          "bm25_only_ms": 0.74,
           "hybrid_no_floor_ranked": [
             "bread_recipe.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
             "api_rate_limits.md",
-            "onboarding_guide.md"
+            "coffee_machine_manual.md"
           ],
-          "hybrid_no_floor_ms": 30.34,
+          "hybrid_no_floor_ms": 19.96,
           "full_ranked": [
             "bread_recipe.md",
             "api_rate_limits.md",
-            "onboarding_guide.md"
+            "coffee_machine_manual.md",
+            "onboarding_guide.md",
+            "returns_policy.md"
           ],
-          "full_ms": 27.76
+          "full_ms": 19.44
         },
         {
           "id": "a55",
@@ -1894,21 +2044,23 @@
             "laptop_warranty.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 25.19,
+          "vector_only_ms": 17.84,
           "bm25_only_ranked": [
             "solar_system_notes.md"
           ],
-          "bm25_only_ms": 1.15,
+          "bm25_only_ms": 0.53,
           "hybrid_no_floor_ranked": [
             "solar_system_notes.md",
+            "python_style_guide.md",
             "photosynthesis_notes.md",
-            "q3_sales_review.md"
+            "q3_sales_review.md",
+            "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 28.82,
+          "hybrid_no_floor_ms": 19.97,
           "full_ranked": [
             "solar_system_notes.md"
           ],
-          "full_ms": 29.86
+          "full_ms": 17.33
         },
         {
           "id": "a56",
@@ -1923,23 +2075,25 @@
             "photosynthesis_notes.md",
             "annual_report_2024.md",
             "q3_sales_review.md",
-            "gym_membership_terms.md"
+            "library_membership.md"
           ],
-          "vector_only_ms": 28.1,
+          "vector_only_ms": 17.28,
           "bm25_only_ranked": [
             "solar_system_notes.md"
           ],
-          "bm25_only_ms": 1.29,
+          "bm25_only_ms": 0.58,
           "hybrid_no_floor_ranked": [
             "solar_system_notes.md",
             "photosynthesis_notes.md",
-            "annual_report_2024.md"
+            "annual_report_2024.md",
+            "q3_sales_review.md",
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 27.82,
+          "hybrid_no_floor_ms": 18.64,
           "full_ranked": [
             "solar_system_notes.md"
           ],
-          "full_ms": 29.05
+          "full_ms": 17.8
         },
         {
           "id": "a57",
@@ -1956,21 +2110,23 @@
             "travel_insurance_policy.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 24.02,
+          "vector_only_ms": 15.92,
           "bm25_only_ranked": [
             "solar_system_notes.md"
           ],
-          "bm25_only_ms": 0.94,
+          "bm25_only_ms": 0.48,
           "hybrid_no_floor_ranked": [
             "solar_system_notes.md",
+            "library_membership.md",
+            "it_security_guidelines.md",
             "gym_membership_terms.md",
             "expense_policy.md"
           ],
-          "hybrid_no_floor_ms": 27.94,
+          "hybrid_no_floor_ms": 17.1,
           "full_ranked": [
             "solar_system_notes.md"
           ],
-          "full_ms": 25.95
+          "full_ms": 17.12
         },
         {
           "id": "a58",
@@ -1987,24 +2143,26 @@
             "q3_sales_review.md",
             "coffee_machine_manual.md"
           ],
-          "vector_only_ms": 24.07,
+          "vector_only_ms": 15.95,
           "bm25_only_ranked": [
             "photosynthesis_notes.md",
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 0.96,
+          "bm25_only_ms": 0.59,
           "hybrid_no_floor_ranked": [
             "photosynthesis_notes.md",
+            "annual_report_2024.md",
             "laptop_warranty.md",
-            "solar_system_notes.md"
+            "solar_system_notes.md",
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 25.32,
+          "hybrid_no_floor_ms": 17.78,
           "full_ranked": [
             "photosynthesis_notes.md",
             "laptop_warranty.md",
             "solar_system_notes.md"
           ],
-          "full_ms": 26.48
+          "full_ms": 16.78
         },
         {
           "id": "a59",
@@ -2018,22 +2176,24 @@
             "photosynthesis_notes.md",
             "solar_system_notes.md",
             "laptop_warranty.md",
-            "returns_policy.md",
-            "q3_sales_review.md"
+            "q3_sales_review.md",
+            "returns_policy.md"
           ],
-          "vector_only_ms": 23.91,
+          "vector_only_ms": 18.23,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.5,
+          "bm25_only_ms": 0.4,
           "hybrid_no_floor_ranked": [
             "photosynthesis_notes.md",
+            "hr_leave_policy.md",
             "solar_system_notes.md",
-            "laptop_warranty.md"
+            "laptop_warranty.md",
+            "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 26.64,
+          "hybrid_no_floor_ms": 18.18,
           "full_ranked": [
             "photosynthesis_notes.md"
           ],
-          "full_ms": 27.01
+          "full_ms": 17.37
         },
         {
           "id": "a60",
@@ -2050,20 +2210,22 @@
             "pasta_recipe.md",
             "coffee_machine_manual.md"
           ],
-          "vector_only_ms": 26.85,
+          "vector_only_ms": 16.34,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.78,
+          "bm25_only_ms": 0.54,
           "hybrid_no_floor_ranked": [
             "photosynthesis_notes.md",
+            "api_rate_limits.md",
+            "laptop_warranty.md",
             "solar_system_notes.md",
             "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 28.91,
+          "hybrid_no_floor_ms": 18.43,
           "full_ranked": [
             "photosynthesis_notes.md",
             "solar_system_notes.md"
           ],
-          "full_ms": 28.74
+          "full_ms": 17.1
         },
         {
           "id": "a61",
@@ -2080,23 +2242,25 @@
             "onboarding_guide.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 25.46,
+          "vector_only_ms": 18.26,
           "bm25_only_ranked": [
             "library_membership.md",
             "gym_membership_terms.md"
           ],
-          "bm25_only_ms": 0.89,
+          "bm25_only_ms": 0.85,
           "hybrid_no_floor_ranked": [
             "library_membership.md",
             "gym_membership_terms.md",
-            "expense_policy.md"
+            "expense_policy.md",
+            "travel_insurance_policy.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 29.68,
+          "hybrid_no_floor_ms": 20.04,
           "full_ranked": [
             "library_membership.md",
             "gym_membership_terms.md"
           ],
-          "full_ms": 29.8
+          "full_ms": 16.83
         },
         {
           "id": "a62",
@@ -2113,19 +2277,21 @@
             "api_rate_limits.md",
             "gym_membership_terms.md"
           ],
-          "vector_only_ms": 25.62,
+          "vector_only_ms": 17.17,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.81,
+          "bm25_only_ms": 0.66,
           "hybrid_no_floor_ranked": [
             "library_membership.md",
-            "returns_policy.md",
-            "expense_policy.md"
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "python_style_guide.md",
+            "photosynthesis_notes.md"
           ],
-          "hybrid_no_floor_ms": 28.87,
+          "hybrid_no_floor_ms": 19.66,
           "full_ranked": [
             "library_membership.md"
           ],
-          "full_ms": 26.25
+          "full_ms": 17.65
         },
         {
           "id": "a63",
@@ -2142,20 +2308,22 @@
             "python_style_guide.md",
             "q3_sales_review.md"
           ],
-          "vector_only_ms": 25.92,
+          "vector_only_ms": 16.84,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.63,
+          "bm25_only_ms": 0.53,
           "hybrid_no_floor_ranked": [
             "library_membership.md",
             "expense_policy.md",
-            "annual_report_2024.md"
+            "python_style_guide.md",
+            "annual_report_2024.md",
+            "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 27.31,
+          "hybrid_no_floor_ms": 20.73,
           "full_ranked": [
             "library_membership.md",
             "expense_policy.md"
           ],
-          "full_ms": 28.97
+          "full_ms": 17.59
         },
         {
           "id": "a64",
@@ -2172,23 +2340,26 @@
             "returns_policy.md",
             "travel_insurance_policy.md"
           ],
-          "vector_only_ms": 25.9,
+          "vector_only_ms": 20.56,
           "bm25_only_ranked": [
             "gym_membership_terms.md"
           ],
-          "bm25_only_ms": 0.79,
+          "bm25_only_ms": 0.56,
           "hybrid_no_floor_ranked": [
             "gym_membership_terms.md",
+            "library_membership.md",
+            "travel_insurance_policy.md",
             "hr_leave_policy.md",
-            "library_membership.md"
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 28.65,
+          "hybrid_no_floor_ms": 20.5,
           "full_ranked": [
             "gym_membership_terms.md",
+            "library_membership.md",
             "hr_leave_policy.md",
-            "library_membership.md"
+            "returns_policy.md"
           ],
-          "full_ms": 30.56
+          "full_ms": 18.47
         },
         {
           "id": "a65",
@@ -2205,23 +2376,26 @@
             "library_membership.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 25.56,
+          "vector_only_ms": 18.03,
           "bm25_only_ranked": [
             "gym_membership_terms.md"
           ],
-          "bm25_only_ms": 0.82,
+          "bm25_only_ms": 0.53,
           "hybrid_no_floor_ranked": [
             "gym_membership_terms.md",
             "travel_insurance_policy.md",
-            "expense_policy.md"
+            "expense_policy.md",
+            "library_membership.md",
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 29.29,
+          "hybrid_no_floor_ms": 20.07,
           "full_ranked": [
             "gym_membership_terms.md",
             "travel_insurance_policy.md",
-            "expense_policy.md"
+            "expense_policy.md",
+            "library_membership.md"
           ],
-          "full_ms": 26.13
+          "full_ms": 21.91
         },
         {
           "id": "a66",
@@ -2238,23 +2412,27 @@
             "travel_insurance_policy.md",
             "onboarding_guide.md"
           ],
-          "vector_only_ms": 25.24,
+          "vector_only_ms": 19.1,
           "bm25_only_ranked": [
             "gym_membership_terms.md"
           ],
-          "bm25_only_ms": 0.72,
+          "bm25_only_ms": 0.53,
           "hybrid_no_floor_ranked": [
             "gym_membership_terms.md",
+            "library_membership.md",
+            "python_style_guide.md",
             "expense_policy.md",
-            "library_membership.md"
+            "travel_insurance_policy.md"
           ],
-          "hybrid_no_floor_ms": 28.13,
+          "hybrid_no_floor_ms": 21.0,
           "full_ranked": [
             "gym_membership_terms.md",
+            "library_membership.md",
             "expense_policy.md",
-            "library_membership.md"
+            "travel_insurance_policy.md",
+            "onboarding_guide.md"
           ],
-          "full_ms": 27.59
+          "full_ms": 18.66
         },
         {
           "id": "a67",
@@ -2271,21 +2449,23 @@
             "hr_leave_policy.md",
             "python_style_guide.md"
           ],
-          "vector_only_ms": 25.28,
+          "vector_only_ms": 16.73,
           "bm25_only_ranked": [
             "travel_insurance_policy.md"
           ],
-          "bm25_only_ms": 0.84,
+          "bm25_only_ms": 0.6,
           "hybrid_no_floor_ranked": [
             "travel_insurance_policy.md",
-            "q3_sales_review.md",
-            "gym_membership_terms.md"
+            "gym_membership_terms.md",
+            "laptop_warranty.md",
+            "returns_policy.md",
+            "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 26.34,
+          "hybrid_no_floor_ms": 19.57,
           "full_ranked": [
             "travel_insurance_policy.md"
           ],
-          "full_ms": 28.46
+          "full_ms": 19.07
         },
         {
           "id": "a68",
@@ -2302,21 +2482,23 @@
             "laptop_warranty.md",
             "gym_membership_terms.md"
           ],
-          "vector_only_ms": 26.52,
+          "vector_only_ms": 18.22,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.93,
+          "bm25_only_ms": 0.59,
           "hybrid_no_floor_ranked": [
             "expense_policy.md",
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
             "returns_policy.md",
-            "travel_insurance_policy.md"
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 31.52,
+          "hybrid_no_floor_ms": 21.95,
           "full_ranked": [
             "expense_policy.md",
-            "returns_policy.md",
-            "travel_insurance_policy.md"
+            "travel_insurance_policy.md",
+            "returns_policy.md"
           ],
-          "full_ms": 25.62
+          "full_ms": 18.71
         },
         {
           "id": "a69",
@@ -2333,22 +2515,24 @@
             "returns_policy.md",
             "laptop_warranty.md"
           ],
-          "vector_only_ms": 24.9,
+          "vector_only_ms": 19.9,
           "bm25_only_ranked": [
             "travel_insurance_policy.md"
           ],
-          "bm25_only_ms": 0.89,
+          "bm25_only_ms": 0.71,
           "hybrid_no_floor_ranked": [
             "travel_insurance_policy.md",
             "expense_policy.md",
-            "gym_membership_terms.md"
+            "laptop_warranty.md",
+            "gym_membership_terms.md",
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 27.6,
+          "hybrid_no_floor_ms": 19.04,
           "full_ranked": [
             "travel_insurance_policy.md",
             "expense_policy.md"
           ],
-          "full_ms": 25.06
+          "full_ms": 23.01
         },
         {
           "id": "a70",
@@ -2365,21 +2549,25 @@
             "library_membership.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 26.21,
+          "vector_only_ms": 19.37,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.8,
+          "bm25_only_ms": 0.55,
           "hybrid_no_floor_ranked": [
             "expense_policy.md",
             "travel_insurance_policy.md",
-            "gym_membership_terms.md"
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 35.48,
+          "hybrid_no_floor_ms": 19.82,
           "full_ranked": [
             "expense_policy.md",
             "travel_insurance_policy.md",
-            "gym_membership_terms.md"
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "returns_policy.md"
           ],
-          "full_ms": 28.98
+          "full_ms": 19.51
         },
         {
           "id": "o01",
@@ -2394,17 +2582,19 @@
             "expense_policy.md",
             "q3_sales_review.md"
           ],
-          "vector_only_ms": 27.55,
+          "vector_only_ms": 17.45,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.7,
+          "bm25_only_ms": 0.49,
           "hybrid_no_floor_ranked": [
             "solar_system_notes.md",
             "annual_report_2024.md",
-            "library_membership.md"
+            "library_membership.md",
+            "expense_policy.md",
+            "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 27.12,
+          "hybrid_no_floor_ms": 18.76,
           "full_ranked": [],
-          "full_ms": 27.16
+          "full_ms": 18.32
         },
         {
           "id": "o02",
@@ -2419,17 +2609,19 @@
             "it_security_guidelines.md",
             "onboarding_guide.md"
           ],
-          "vector_only_ms": 26.54,
+          "vector_only_ms": 17.06,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.57,
+          "bm25_only_ms": 0.46,
           "hybrid_no_floor_ranked": [
             "python_style_guide.md",
             "library_membership.md",
-            "photosynthesis_notes.md"
+            "photosynthesis_notes.md",
+            "it_security_guidelines.md",
+            "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 27.18,
+          "hybrid_no_floor_ms": 21.18,
           "full_ranked": [],
-          "full_ms": 27.81
+          "full_ms": 19.17
         },
         {
           "id": "o03",
@@ -2439,22 +2631,24 @@
           "relevant": [],
           "vector_only_ranked": [
             "bread_recipe.md",
-            "python_style_guide.md",
             "pasta_recipe.md",
+            "python_style_guide.md",
             "deployment_runbook.md",
             "photosynthesis_notes.md"
           ],
-          "vector_only_ms": 27.89,
+          "vector_only_ms": 18.55,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.78,
+          "bm25_only_ms": 0.4,
           "hybrid_no_floor_ranked": [
+            "laptop_warranty.md",
             "bread_recipe.md",
+            "pasta_recipe.md",
             "python_style_guide.md",
-            "pasta_recipe.md"
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 29.83,
+          "hybrid_no_floor_ms": 18.99,
           "full_ranked": [],
-          "full_ms": 26.14
+          "full_ms": 17.62
         },
         {
           "id": "o04",
@@ -2469,17 +2663,19 @@
             "deployment_runbook.md",
             "hr_leave_policy.md"
           ],
-          "vector_only_ms": 26.64,
+          "vector_only_ms": 18.79,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.78,
+          "bm25_only_ms": 0.71,
           "hybrid_no_floor_ranked": [
             "q3_sales_review.md",
-            "solar_system_notes.md",
-            "travel_insurance_policy.md"
+            "photosynthesis_notes.md",
+            "router_manual.md",
+            "pasta_recipe.md",
+            "solar_system_notes.md"
           ],
-          "hybrid_no_floor_ms": 30.26,
+          "hybrid_no_floor_ms": 21.17,
           "full_ranked": [],
-          "full_ms": 28.33
+          "full_ms": 18.65
         },
         {
           "id": "o05",
@@ -2494,19 +2690,21 @@
             "gym_membership_terms.md",
             "coffee_machine_manual.md"
           ],
-          "vector_only_ms": 25.68,
+          "vector_only_ms": 23.73,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.67,
+          "bm25_only_ms": 0.6,
           "hybrid_no_floor_ranked": [
             "onboarding_guide.md",
             "python_style_guide.md",
-            "pasta_recipe.md"
+            "pasta_recipe.md",
+            "gym_membership_terms.md",
+            "coffee_machine_manual.md"
           ],
-          "hybrid_no_floor_ms": 27.15,
+          "hybrid_no_floor_ms": 22.49,
           "full_ranked": [
             "onboarding_guide.md"
           ],
-          "full_ms": 27.65
+          "full_ms": 18.56
         },
         {
           "id": "o06",
@@ -2515,27 +2713,31 @@
           "category": "off_topic",
           "relevant": [],
           "vector_only_ranked": [
-            "photosynthesis_notes.md",
             "pasta_recipe.md",
+            "photosynthesis_notes.md",
             "q3_sales_review.md",
             "solar_system_notes.md",
             "coffee_machine_manual.md"
           ],
-          "vector_only_ms": 25.43,
+          "vector_only_ms": 21.83,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.77,
+          "bm25_only_ms": 0.86,
           "hybrid_no_floor_ranked": [
-            "photosynthesis_notes.md",
             "pasta_recipe.md",
-            "q3_sales_review.md"
+            "photosynthesis_notes.md",
+            "q3_sales_review.md",
+            "solar_system_notes.md",
+            "coffee_machine_manual.md"
           ],
-          "hybrid_no_floor_ms": 29.49,
+          "hybrid_no_floor_ms": 32.11,
           "full_ranked": [
-            "photosynthesis_notes.md",
             "pasta_recipe.md",
-            "q3_sales_review.md"
+            "photosynthesis_notes.md",
+            "q3_sales_review.md",
+            "solar_system_notes.md",
+            "coffee_machine_manual.md"
           ],
-          "full_ms": 25.81
+          "full_ms": 37.56
         },
         {
           "id": "o07",
@@ -2550,17 +2752,19 @@
             "library_membership.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 27.16,
+          "vector_only_ms": 25.64,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.0,
+          "bm25_only_ms": 0.7,
           "hybrid_no_floor_ranked": [
+            "coffee_machine_manual.md",
             "annual_report_2024.md",
             "q3_sales_review.md",
-            "expense_policy.md"
+            "expense_policy.md",
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 27.28,
+          "hybrid_no_floor_ms": 30.94,
           "full_ranked": [],
-          "full_ms": 26.23
+          "full_ms": 27.8
         },
         {
           "id": "o08",
@@ -2570,22 +2774,24 @@
           "relevant": [],
           "vector_only_ranked": [
             "annual_report_2024.md",
-            "q3_sales_review.md",
             "api_rate_limits.md",
-            "deployment_runbook.md",
-            "library_membership.md"
+            "q3_sales_review.md",
+            "library_membership.md",
+            "deployment_runbook.md"
           ],
-          "vector_only_ms": 28.52,
+          "vector_only_ms": 28.2,
           "bm25_only_ranked": [],
           "bm25_only_ms": 0.52,
           "hybrid_no_floor_ranked": [
             "annual_report_2024.md",
+            "api_rate_limits.md",
             "q3_sales_review.md",
-            "api_rate_limits.md"
+            "library_membership.md",
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 30.09,
+          "hybrid_no_floor_ms": 28.19,
           "full_ranked": [],
-          "full_ms": 27.69
+          "full_ms": 24.52
         },
         {
           "id": "o09",
@@ -2600,17 +2806,19 @@
             "it_security_guidelines.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 26.3,
+          "vector_only_ms": 21.76,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.55,
+          "bm25_only_ms": 0.79,
           "hybrid_no_floor_ranked": [
+            "library_membership.md",
             "bread_recipe.md",
             "onboarding_guide.md",
-            "pasta_recipe.md"
+            "pasta_recipe.md",
+            "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 28.05,
+          "hybrid_no_floor_ms": 30.87,
           "full_ranked": [],
-          "full_ms": 28.01
+          "full_ms": 30.44
         },
         {
           "id": "o10",
@@ -2625,17 +2833,19 @@
             "library_membership.md",
             "hr_leave_policy.md"
           ],
-          "vector_only_ms": 28.19,
+          "vector_only_ms": 28.8,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.04,
+          "bm25_only_ms": 0.75,
           "hybrid_no_floor_ranked": [
             "gym_membership_terms.md",
             "expense_policy.md",
-            "solar_system_notes.md"
+            "solar_system_notes.md",
+            "library_membership.md",
+            "hr_leave_policy.md"
           ],
-          "hybrid_no_floor_ms": 30.8,
+          "hybrid_no_floor_ms": 35.55,
           "full_ranked": [],
-          "full_ms": 27.14
+          "full_ms": 32.73
         },
         {
           "id": "o11",
@@ -2650,17 +2860,19 @@
             "router_manual.md",
             "bread_recipe.md"
           ],
-          "vector_only_ms": 24.66,
+          "vector_only_ms": 34.56,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.6,
+          "bm25_only_ms": 1.21,
           "hybrid_no_floor_ranked": [
             "onboarding_guide.md",
+            "gym_membership_terms.md",
             "q3_sales_review.md",
-            "gym_membership_terms.md"
+            "router_manual.md",
+            "bread_recipe.md"
           ],
-          "hybrid_no_floor_ms": 26.81,
+          "hybrid_no_floor_ms": 29.23,
           "full_ranked": [],
-          "full_ms": 26.16
+          "full_ms": 24.94
         },
         {
           "id": "o12",
@@ -2675,17 +2887,19 @@
             "deployment_runbook.md",
             "router_manual.md"
           ],
-          "vector_only_ms": 26.0,
+          "vector_only_ms": 29.44,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.47,
+          "bm25_only_ms": 1.06,
           "hybrid_no_floor_ranked": [
+            "travel_insurance_policy.md",
             "photosynthesis_notes.md",
             "solar_system_notes.md",
-            "travel_insurance_policy.md"
+            "deployment_runbook.md",
+            "router_manual.md"
           ],
-          "hybrid_no_floor_ms": 30.59,
+          "hybrid_no_floor_ms": 31.37,
           "full_ranked": [],
-          "full_ms": 27.14
+          "full_ms": 28.76
         },
         {
           "id": "o13",
@@ -2700,20 +2914,22 @@
             "returns_policy.md",
             "it_security_guidelines.md"
           ],
-          "vector_only_ms": 28.65,
+          "vector_only_ms": 29.44,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.12,
+          "bm25_only_ms": 1.08,
           "hybrid_no_floor_ranked": [
+            "annual_report_2024.md",
             "solar_system_notes.md",
             "library_membership.md",
-            "q3_sales_review.md"
+            "q3_sales_review.md",
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 28.01,
+          "hybrid_no_floor_ms": 34.07,
           "full_ranked": [
             "solar_system_notes.md",
             "library_membership.md"
           ],
-          "full_ms": 27.56
+          "full_ms": 30.98
         },
         {
           "id": "o14",
@@ -2728,17 +2944,19 @@
             "hr_leave_policy.md",
             "travel_insurance_policy.md"
           ],
-          "vector_only_ms": 26.73,
+          "vector_only_ms": 31.87,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.01,
+          "bm25_only_ms": 1.07,
           "hybrid_no_floor_ranked": [
-            "it_security_guidelines.md",
             "onboarding_guide.md",
+            "it_security_guidelines.md",
+            "solar_system_notes.md",
+            "router_manual.md",
             "photosynthesis_notes.md"
           ],
-          "hybrid_no_floor_ms": 29.76,
+          "hybrid_no_floor_ms": 28.68,
           "full_ranked": [],
-          "full_ms": 29.3
+          "full_ms": 27.64
         },
         {
           "id": "o15",
@@ -2747,23 +2965,25 @@
           "category": "off_topic",
           "relevant": [],
           "vector_only_ranked": [
-            "onboarding_guide.md",
             "annual_report_2024.md",
+            "onboarding_guide.md",
             "q3_sales_review.md",
             "photosynthesis_notes.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 25.63,
+          "vector_only_ms": 38.61,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.65,
+          "bm25_only_ms": 0.61,
           "hybrid_no_floor_ranked": [
-            "onboarding_guide.md",
             "annual_report_2024.md",
-            "q3_sales_review.md"
+            "onboarding_guide.md",
+            "q3_sales_review.md",
+            "photosynthesis_notes.md",
+            "expense_policy.md"
           ],
-          "hybrid_no_floor_ms": 29.69,
+          "hybrid_no_floor_ms": 28.44,
           "full_ranked": [],
-          "full_ms": 26.09
+          "full_ms": 27.2
         },
         {
           "id": "o16",
@@ -2778,17 +2998,19 @@
             "library_membership.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 26.52,
+          "vector_only_ms": 27.78,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.68,
+          "bm25_only_ms": 0.5,
           "hybrid_no_floor_ranked": [
             "solar_system_notes.md",
             "travel_insurance_policy.md",
-            "gym_membership_terms.md"
+            "gym_membership_terms.md",
+            "library_membership.md",
+            "annual_report_2024.md"
           ],
-          "hybrid_no_floor_ms": 31.27,
+          "hybrid_no_floor_ms": 28.36,
           "full_ranked": [],
-          "full_ms": 30.02
+          "full_ms": 26.21
         },
         {
           "id": "o17",
@@ -2803,19 +3025,21 @@
             "api_rate_limits.md",
             "it_security_guidelines.md"
           ],
-          "vector_only_ms": 33.59,
+          "vector_only_ms": 24.9,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.1,
+          "bm25_only_ms": 0.89,
           "hybrid_no_floor_ranked": [
             "python_style_guide.md",
             "solar_system_notes.md",
-            "pasta_recipe.md"
+            "pasta_recipe.md",
+            "api_rate_limits.md",
+            "it_security_guidelines.md"
           ],
-          "hybrid_no_floor_ms": 34.06,
+          "hybrid_no_floor_ms": 28.6,
           "full_ranked": [
             "python_style_guide.md"
           ],
-          "full_ms": 29.22
+          "full_ms": 24.24
         },
         {
           "id": "o18",
@@ -2830,17 +3054,19 @@
             "deployment_runbook.md",
             "python_style_guide.md"
           ],
-          "vector_only_ms": 29.49,
+          "vector_only_ms": 23.97,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.9,
+          "bm25_only_ms": 0.76,
           "hybrid_no_floor_ranked": [
+            "deployment_runbook.md",
             "solar_system_notes.md",
             "laptop_warranty.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "python_style_guide.md"
           ],
-          "hybrid_no_floor_ms": 32.09,
+          "hybrid_no_floor_ms": 27.08,
           "full_ranked": [],
-          "full_ms": 26.45
+          "full_ms": 25.54
         },
         {
           "id": "o19",
@@ -2855,19 +3081,21 @@
             "q3_sales_review.md",
             "travel_insurance_policy.md"
           ],
-          "vector_only_ms": 27.46,
+          "vector_only_ms": 25.35,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.71,
+          "bm25_only_ms": 0.85,
           "hybrid_no_floor_ranked": [
             "annual_report_2024.md",
             "expense_policy.md",
-            "solar_system_notes.md"
+            "solar_system_notes.md",
+            "q3_sales_review.md",
+            "travel_insurance_policy.md"
           ],
-          "hybrid_no_floor_ms": 29.73,
+          "hybrid_no_floor_ms": 27.02,
           "full_ranked": [
             "annual_report_2024.md"
           ],
-          "full_ms": 29.23
+          "full_ms": 23.27
         },
         {
           "id": "o20",
@@ -2882,17 +3110,19 @@
             "laptop_warranty.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 27.43,
+          "vector_only_ms": 24.9,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.7,
+          "bm25_only_ms": 0.68,
           "hybrid_no_floor_ranked": [
+            "gym_membership_terms.md",
             "solar_system_notes.md",
             "photosynthesis_notes.md",
-            "library_membership.md"
+            "library_membership.md",
+            "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 29.67,
+          "hybrid_no_floor_ms": 25.52,
           "full_ranked": [],
-          "full_ms": 27.57
+          "full_ms": 23.9
         },
         {
           "id": "o21",
@@ -2907,17 +3137,19 @@
             "gym_membership_terms.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 26.33,
+          "vector_only_ms": 23.78,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.92,
+          "bm25_only_ms": 0.94,
           "hybrid_no_floor_ranked": [
             "library_membership.md",
+            "it_security_guidelines.md",
             "laptop_warranty.md",
-            "hr_leave_policy.md"
+            "hr_leave_policy.md",
+            "gym_membership_terms.md"
           ],
-          "hybrid_no_floor_ms": 32.37,
+          "hybrid_no_floor_ms": 27.64,
           "full_ranked": [],
-          "full_ms": 27.36
+          "full_ms": 23.57
         },
         {
           "id": "o22",
@@ -2927,22 +3159,24 @@
           "relevant": [],
           "vector_only_ranked": [
             "travel_insurance_policy.md",
-            "it_security_guidelines.md",
-            "q3_sales_review.md",
+            "router_manual.md",
             "expense_policy.md",
-            "router_manual.md"
-          ],
-          "vector_only_ms": 30.57,
-          "bm25_only_ranked": [],
-          "bm25_only_ms": 0.76,
-          "hybrid_no_floor_ranked": [
-            "travel_insurance_policy.md",
             "it_security_guidelines.md",
             "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 32.2,
+          "vector_only_ms": 24.1,
+          "bm25_only_ranked": [],
+          "bm25_only_ms": 0.48,
+          "hybrid_no_floor_ranked": [
+            "travel_insurance_policy.md",
+            "router_manual.md",
+            "expense_policy.md",
+            "it_security_guidelines.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 31.83,
           "full_ranked": [],
-          "full_ms": 26.82
+          "full_ms": 26.89
         },
         {
           "id": "o23",
@@ -2951,23 +3185,25 @@
           "category": "off_topic",
           "relevant": [],
           "vector_only_ranked": [
-            "gym_membership_terms.md",
             "python_style_guide.md",
-            "q3_sales_review.md",
+            "gym_membership_terms.md",
             "onboarding_guide.md",
-            "laptop_warranty.md"
+            "q3_sales_review.md",
+            "library_membership.md"
           ],
-          "vector_only_ms": 28.31,
+          "vector_only_ms": 23.51,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.95,
+          "bm25_only_ms": 0.8,
           "hybrid_no_floor_ranked": [
-            "gym_membership_terms.md",
+            "deployment_runbook.md",
+            "router_manual.md",
             "python_style_guide.md",
-            "q3_sales_review.md"
+            "gym_membership_terms.md",
+            "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 29.07,
+          "hybrid_no_floor_ms": 26.23,
           "full_ranked": [],
-          "full_ms": 29.49
+          "full_ms": 26.16
         },
         {
           "id": "o24",
@@ -2978,21 +3214,23 @@
           "vector_only_ranked": [
             "bread_recipe.md",
             "solar_system_notes.md",
-            "photosynthesis_notes.md",
             "gym_membership_terms.md",
+            "photosynthesis_notes.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 28.12,
+          "vector_only_ms": 25.46,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.62,
+          "bm25_only_ms": 0.65,
           "hybrid_no_floor_ranked": [
+            "coffee_machine_manual.md",
             "bread_recipe.md",
             "solar_system_notes.md",
+            "gym_membership_terms.md",
             "photosynthesis_notes.md"
           ],
-          "hybrid_no_floor_ms": 29.82,
+          "hybrid_no_floor_ms": 27.57,
           "full_ranked": [],
-          "full_ms": 32.56
+          "full_ms": 24.54
         },
         {
           "id": "o25",
@@ -3005,19 +3243,21 @@
             "annual_report_2024.md",
             "solar_system_notes.md",
             "gym_membership_terms.md",
-            "travel_insurance_policy.md"
+            "library_membership.md"
           ],
-          "vector_only_ms": 28.4,
+          "vector_only_ms": 29.6,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.56,
+          "bm25_only_ms": 1.05,
           "hybrid_no_floor_ranked": [
             "q3_sales_review.md",
             "annual_report_2024.md",
-            "solar_system_notes.md"
+            "solar_system_notes.md",
+            "gym_membership_terms.md",
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 34.26,
+          "hybrid_no_floor_ms": 30.5,
           "full_ranked": [],
-          "full_ms": 28.78
+          "full_ms": 26.74
         },
         {
           "id": "o26",
@@ -3032,19 +3272,21 @@
             "expense_policy.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 28.36,
+          "vector_only_ms": 27.07,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.88,
+          "bm25_only_ms": 0.79,
           "hybrid_no_floor_ranked": [
+            "library_membership.md",
             "hr_leave_policy.md",
             "q3_sales_review.md",
-            "onboarding_guide.md"
+            "onboarding_guide.md",
+            "expense_policy.md"
           ],
-          "hybrid_no_floor_ms": 30.58,
+          "hybrid_no_floor_ms": 33.06,
           "full_ranked": [
             "hr_leave_policy.md"
           ],
-          "full_ms": 31.36
+          "full_ms": 26.0
         },
         {
           "id": "o27",
@@ -3057,19 +3299,21 @@
             "python_style_guide.md",
             "photosynthesis_notes.md",
             "router_manual.md",
-            "onboarding_guide.md"
+            "pasta_recipe.md"
           ],
-          "vector_only_ms": 30.92,
+          "vector_only_ms": 26.18,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.87,
+          "bm25_only_ms": 0.75,
           "hybrid_no_floor_ranked": [
             "bread_recipe.md",
             "python_style_guide.md",
-            "photosynthesis_notes.md"
+            "photosynthesis_notes.md",
+            "router_manual.md",
+            "pasta_recipe.md"
           ],
-          "hybrid_no_floor_ms": 32.22,
+          "hybrid_no_floor_ms": 33.4,
           "full_ranked": [],
-          "full_ms": 28.05
+          "full_ms": 30.33
         },
         {
           "id": "o28",
@@ -3084,17 +3328,19 @@
             "gym_membership_terms.md",
             "annual_report_2024.md"
           ],
-          "vector_only_ms": 29.33,
+          "vector_only_ms": 26.29,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.94,
+          "bm25_only_ms": 0.64,
           "hybrid_no_floor_ranked": [
-            "deployment_runbook.md",
-            "q3_sales_review.md",
-            "travel_insurance_policy.md"
+            "annual_report_2024.md",
+            "gym_membership_terms.md",
+            "hr_leave_policy.md",
+            "laptop_warranty.md",
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 30.57,
+          "hybrid_no_floor_ms": 35.47,
           "full_ranked": [],
-          "full_ms": 28.8
+          "full_ms": 26.11
         },
         {
           "id": "o29",
@@ -3109,17 +3355,19 @@
             "onboarding_guide.md",
             "solar_system_notes.md"
           ],
-          "vector_only_ms": 30.09,
+          "vector_only_ms": 26.72,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.98,
+          "bm25_only_ms": 0.85,
           "hybrid_no_floor_ranked": [
             "expense_policy.md",
             "annual_report_2024.md",
-            "library_membership.md"
+            "library_membership.md",
+            "onboarding_guide.md",
+            "solar_system_notes.md"
           ],
-          "hybrid_no_floor_ms": 36.55,
+          "hybrid_no_floor_ms": 30.99,
           "full_ranked": [],
-          "full_ms": 34.46
+          "full_ms": 28.06
         },
         {
           "id": "o30",
@@ -3129,27 +3377,29 @@
           "relevant": [],
           "vector_only_ranked": [
             "photosynthesis_notes.md",
-            "solar_system_notes.md",
             "library_membership.md",
             "annual_report_2024.md",
-            "onboarding_guide.md"
+            "solar_system_notes.md",
+            "pasta_recipe.md"
           ],
-          "vector_only_ms": 28.37,
+          "vector_only_ms": 25.67,
           "bm25_only_ranked": [
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 0.93,
+          "bm25_only_ms": 0.88,
           "hybrid_no_floor_ranked": [
-            "photosynthesis_notes.md",
             "laptop_warranty.md",
+            "photosynthesis_notes.md",
+            "library_membership.md",
+            "annual_report_2024.md",
             "solar_system_notes.md"
           ],
-          "hybrid_no_floor_ms": 33.17,
+          "hybrid_no_floor_ms": 29.82,
           "full_ranked": [
-            "photosynthesis_notes.md",
-            "laptop_warranty.md"
+            "laptop_warranty.md",
+            "photosynthesis_notes.md"
           ],
-          "full_ms": 28.3
+          "full_ms": 25.91
         },
         {
           "id": "o31",
@@ -3164,19 +3414,21 @@
             "solar_system_notes.md",
             "gym_membership_terms.md"
           ],
-          "vector_only_ms": 33.09,
+          "vector_only_ms": 26.68,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.63,
+          "bm25_only_ms": 0.92,
           "hybrid_no_floor_ranked": [
-            "api_rate_limits.md",
-            "library_membership.md",
-            "photosynthesis_notes.md"
+            "photosynthesis_notes.md",
+            "coffee_machine_manual.md",
+            "pasta_recipe.md",
+            "bread_recipe.md",
+            "api_rate_limits.md"
           ],
-          "hybrid_no_floor_ms": 33.82,
+          "hybrid_no_floor_ms": 26.84,
           "full_ranked": [
             "api_rate_limits.md"
           ],
-          "full_ms": 30.89
+          "full_ms": 27.59
         },
         {
           "id": "o32",
@@ -3191,17 +3443,19 @@
             "gym_membership_terms.md",
             "library_membership.md"
           ],
-          "vector_only_ms": 31.14,
+          "vector_only_ms": 28.57,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 1.11,
+          "bm25_only_ms": 0.55,
           "hybrid_no_floor_ranked": [
+            "python_style_guide.md",
+            "travel_insurance_policy.md",
             "solar_system_notes.md",
             "q3_sales_review.md",
             "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 36.04,
+          "hybrid_no_floor_ms": 26.86,
           "full_ranked": [],
-          "full_ms": 31.22
+          "full_ms": 26.96
         },
         {
           "id": "n01",
@@ -3216,23 +3470,25 @@
             "library_membership.md",
             "coffee_machine_manual.md"
           ],
-          "vector_only_ms": 32.75,
+          "vector_only_ms": 37.76,
           "bm25_only_ranked": [
             "laptop_warranty.md"
           ],
-          "bm25_only_ms": 0.69,
+          "bm25_only_ms": 1.33,
           "hybrid_no_floor_ranked": [
             "laptop_warranty.md",
             "returns_policy.md",
-            "router_manual.md"
+            "router_manual.md",
+            "library_membership.md",
+            "coffee_machine_manual.md"
           ],
-          "hybrid_no_floor_ms": 37.51,
+          "hybrid_no_floor_ms": 47.65,
           "full_ranked": [
             "laptop_warranty.md",
             "returns_policy.md",
             "router_manual.md"
           ],
-          "full_ms": 33.96
+          "full_ms": 39.04
         },
         {
           "id": "n02",
@@ -3247,25 +3503,29 @@
             "api_rate_limits.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 31.78,
+          "vector_only_ms": 37.98,
           "bm25_only_ranked": [
             "library_membership.md",
             "gym_membership_terms.md",
             "python_style_guide.md"
           ],
-          "bm25_only_ms": 1.21,
+          "bm25_only_ms": 1.37,
           "hybrid_no_floor_ranked": [
             "library_membership.md",
             "gym_membership_terms.md",
-            "python_style_guide.md"
+            "python_style_guide.md",
+            "expense_policy.md",
+            "api_rate_limits.md"
           ],
-          "hybrid_no_floor_ms": 33.27,
+          "hybrid_no_floor_ms": 37.12,
           "full_ranked": [
             "library_membership.md",
             "gym_membership_terms.md",
-            "python_style_guide.md"
+            "python_style_guide.md",
+            "expense_policy.md",
+            "api_rate_limits.md"
           ],
-          "full_ms": 32.32
+          "full_ms": 32.0
         },
         {
           "id": "n03",
@@ -3280,24 +3540,27 @@
             "travel_insurance_policy.md",
             "q3_sales_review.md"
           ],
-          "vector_only_ms": 30.48,
+          "vector_only_ms": 32.11,
           "bm25_only_ranked": [
             "gym_membership_terms.md",
             "library_membership.md"
           ],
-          "bm25_only_ms": 1.04,
+          "bm25_only_ms": 1.12,
           "hybrid_no_floor_ranked": [
             "gym_membership_terms.md",
             "library_membership.md",
-            "expense_policy.md"
+            "expense_policy.md",
+            "returns_policy.md",
+            "travel_insurance_policy.md"
           ],
-          "hybrid_no_floor_ms": 27.48,
+          "hybrid_no_floor_ms": 31.95,
           "full_ranked": [
             "gym_membership_terms.md",
             "library_membership.md",
-            "expense_policy.md"
+            "expense_policy.md",
+            "travel_insurance_policy.md"
           ],
-          "full_ms": 27.82
+          "full_ms": 29.91
         },
         {
           "id": "n04",
@@ -3312,23 +3575,27 @@
             "deployment_runbook.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 27.81,
+          "vector_only_ms": 30.28,
           "bm25_only_ranked": [
             "returns_policy.md"
           ],
-          "bm25_only_ms": 1.43,
+          "bm25_only_ms": 1.12,
           "hybrid_no_floor_ranked": [
             "returns_policy.md",
+            "library_membership.md",
             "laptop_warranty.md",
-            "library_membership.md"
+            "travel_insurance_policy.md",
+            "gym_membership_terms.md"
           ],
-          "hybrid_no_floor_ms": 34.24,
+          "hybrid_no_floor_ms": 39.26,
           "full_ranked": [
             "returns_policy.md",
+            "library_membership.md",
             "laptop_warranty.md",
-            "library_membership.md"
+            "travel_insurance_policy.md",
+            "it_security_guidelines.md"
           ],
-          "full_ms": 29.82
+          "full_ms": 32.07
         },
         {
           "id": "n05",
@@ -3343,19 +3610,21 @@
             "laptop_warranty.md",
             "onboarding_guide.md"
           ],
-          "vector_only_ms": 28.71,
+          "vector_only_ms": 24.89,
           "bm25_only_ranked": [],
-          "bm25_only_ms": 0.96,
+          "bm25_only_ms": 0.62,
           "hybrid_no_floor_ranked": [
             "hr_leave_policy.md",
             "expense_policy.md",
-            "travel_insurance_policy.md"
+            "travel_insurance_policy.md",
+            "laptop_warranty.md",
+            "onboarding_guide.md"
           ],
-          "hybrid_no_floor_ms": 31.22,
+          "hybrid_no_floor_ms": 30.64,
           "full_ranked": [
             "hr_leave_policy.md"
           ],
-          "full_ms": 28.68
+          "full_ms": 27.83
         },
         {
           "id": "n06",
@@ -3368,25 +3637,27 @@
             "q3_sales_review.md",
             "expense_policy.md",
             "returns_policy.md",
-            "travel_insurance_policy.md"
+            "library_membership.md"
           ],
-          "vector_only_ms": 27.82,
+          "vector_only_ms": 26.24,
           "bm25_only_ranked": [
             "annual_report_2024.md"
           ],
-          "bm25_only_ms": 0.93,
+          "bm25_only_ms": 0.83,
           "hybrid_no_floor_ranked": [
             "annual_report_2024.md",
             "q3_sales_review.md",
-            "expense_policy.md"
+            "returns_policy.md",
+            "hr_leave_policy.md",
+            "gym_membership_terms.md"
           ],
-          "hybrid_no_floor_ms": 29.43,
+          "hybrid_no_floor_ms": 26.24,
           "full_ranked": [
             "annual_report_2024.md",
             "q3_sales_review.md",
             "expense_policy.md"
           ],
-          "full_ms": 28.28
+          "full_ms": 30.43
         },
         {
           "id": "n07",
@@ -3401,24 +3672,28 @@
             "deployment_runbook.md",
             "q3_sales_review.md"
           ],
-          "vector_only_ms": 27.68,
+          "vector_only_ms": 31.06,
           "bm25_only_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md"
           ],
-          "bm25_only_ms": 0.97,
+          "bm25_only_ms": 0.84,
           "hybrid_no_floor_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md",
-            "api_rate_limits.md"
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md"
           ],
-          "hybrid_no_floor_ms": 30.96,
+          "hybrid_no_floor_ms": 25.12,
           "full_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md",
-            "api_rate_limits.md"
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md"
           ],
-          "full_ms": 29.81
+          "full_ms": 26.77
         },
         {
           "id": "n08",
@@ -3433,22 +3708,25 @@
             "api_rate_limits.md",
             "q3_sales_review.md"
           ],
-          "vector_only_ms": 30.03,
+          "vector_only_ms": 31.98,
           "bm25_only_ranked": [
             "router_manual.md"
           ],
-          "bm25_only_ms": 1.26,
+          "bm25_only_ms": 0.79,
           "hybrid_no_floor_ranked": [
+            "router_manual.md",
+            "coffee_machine_manual.md",
+            "deployment_runbook.md",
+            "api_rate_limits.md",
+            "q3_sales_review.md"
+          ],
+          "hybrid_no_floor_ms": 43.33,
+          "full_ranked": [
             "router_manual.md",
             "coffee_machine_manual.md",
             "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 32.37,
-          "full_ranked": [
-            "router_manual.md",
-            "coffee_machine_manual.md"
-          ],
-          "full_ms": 30.57
+          "full_ms": 30.8
         },
         {
           "id": "n09",
@@ -3463,23 +3741,25 @@
             "expense_policy.md",
             "deployment_runbook.md"
           ],
-          "vector_only_ms": 28.29,
+          "vector_only_ms": 34.57,
           "bm25_only_ranked": [
             "q3_sales_review.md"
           ],
-          "bm25_only_ms": 0.81,
+          "bm25_only_ms": 1.59,
           "hybrid_no_floor_ranked": [
             "q3_sales_review.md",
             "annual_report_2024.md",
-            "returns_policy.md"
+            "returns_policy.md",
+            "expense_policy.md",
+            "deployment_runbook.md"
           ],
-          "hybrid_no_floor_ms": 32.06,
+          "hybrid_no_floor_ms": 40.1,
           "full_ranked": [
             "q3_sales_review.md",
             "annual_report_2024.md",
             "returns_policy.md"
           ],
-          "full_ms": 30.31
+          "full_ms": 33.83
         },
         {
           "id": "n10",
@@ -3494,21 +3774,23 @@
             "library_membership.md",
             "hr_leave_policy.md"
           ],
-          "vector_only_ms": 29.31,
+          "vector_only_ms": 30.47,
           "bm25_only_ranked": [
             "travel_insurance_policy.md"
           ],
-          "bm25_only_ms": 0.78,
+          "bm25_only_ms": 1.25,
           "hybrid_no_floor_ranked": [
             "travel_insurance_policy.md",
             "gym_membership_terms.md",
-            "expense_policy.md"
+            "laptop_warranty.md",
+            "expense_policy.md",
+            "library_membership.md"
           ],
-          "hybrid_no_floor_ms": 30.03,
+          "hybrid_no_floor_ms": 30.72,
           "full_ranked": [
             "travel_insurance_policy.md"
           ],
-          "full_ms": 28.68
+          "full_ms": 28.19
         },
         {
           "id": "n11",
@@ -3519,25 +3801,27 @@
           "vector_only_ranked": [
             "solar_system_notes.md",
             "photosynthesis_notes.md",
-            "q3_sales_review.md",
             "laptop_warranty.md",
+            "q3_sales_review.md",
             "returns_policy.md"
           ],
-          "vector_only_ms": 30.77,
+          "vector_only_ms": 27.04,
           "bm25_only_ranked": [
             "solar_system_notes.md"
           ],
-          "bm25_only_ms": 0.72,
+          "bm25_only_ms": 1.12,
           "hybrid_no_floor_ranked": [
             "solar_system_notes.md",
             "photosynthesis_notes.md",
-            "q3_sales_review.md"
+            "laptop_warranty.md",
+            "q3_sales_review.md",
+            "returns_policy.md"
           ],
-          "hybrid_no_floor_ms": 31.57,
+          "hybrid_no_floor_ms": 34.97,
           "full_ranked": [
             "solar_system_notes.md"
           ],
-          "full_ms": 28.68
+          "full_ms": 29.74
         },
         {
           "id": "n12",
@@ -3548,27 +3832,31 @@
           "vector_only_ranked": [
             "api_rate_limits.md",
             "annual_report_2024.md",
-            "it_security_guidelines.md",
             "library_membership.md",
+            "it_security_guidelines.md",
             "expense_policy.md"
           ],
-          "vector_only_ms": 29.73,
+          "vector_only_ms": 31.42,
           "bm25_only_ranked": [
             "api_rate_limits.md"
           ],
-          "bm25_only_ms": 0.97,
+          "bm25_only_ms": 0.98,
           "hybrid_no_floor_ranked": [
             "api_rate_limits.md",
-            "annual_report_2024.md",
-            "it_security_guidelines.md"
+            "deployment_runbook.md",
+            "expense_policy.md",
+            "it_security_guidelines.md",
+            "laptop_warranty.md"
           ],
-          "hybrid_no_floor_ms": 30.66,
+          "hybrid_no_floor_ms": 36.68,
           "full_ranked": [
             "api_rate_limits.md",
-            "annual_report_2024.md",
-            "it_security_guidelines.md"
+            "deployment_runbook.md",
+            "expense_policy.md",
+            "it_security_guidelines.md",
+            "annual_report_2024.md"
           ],
-          "full_ms": 31.3
+          "full_ms": 30.82
         }
       ]
     }

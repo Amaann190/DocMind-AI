@@ -4,6 +4,7 @@ import tempfile
 from pathlib import Path
 
 from evaluation.common import summarize_results
+from utils import runtime
 
 
 def suite_benchmark(mock: bool, endpoint="http://localhost:11434", model="nomic-embed-text:latest"):
@@ -52,6 +53,9 @@ def suite_benchmark(mock: bool, endpoint="http://localhost:11434", model="nomic-
             retriever.retrieve("warm up")
         # Rank up to Top K files. The answer-time context budget would otherwise cut
         # hybrid lists short and make Recall@5 incomparable with the vector baseline.
+        # HybridRetriever reads Top K and the cutoff from live session settings on every query;
+        # pin them so every configuration returns the same number of results.
+        runtime.st.session_state.update(top_k=k, similarity_cutoff=0.3)
         with patch("utils.llama_index.retrieval._context_char_budget", return_value=10**9):
             summary, rows = evaluate(retrievers, queries, k_max=k)
         summary["embedding"] = "hash-mock" if mock else model
