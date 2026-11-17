@@ -1,5 +1,6 @@
 import re
 import time
+from typing import cast
 
 import httpx
 import ollama
@@ -22,6 +23,8 @@ CHAT_HISTORY_TOKEN_BUDGET = 1200
 
 DEFAULT_TEMPERATURE = 0.4
 DEFAULT_OPENAI_BASE_URL = "http://localhost:1234/v1"
+DEFAULT_OLLAMA_ENDPOINT = "http://localhost:11434"
+DEFAULT_OLLAMA_EMBEDDING_MODEL = "nomic-embed-text:latest"
 
 
 def is_openai_backend(backend):
@@ -37,10 +40,8 @@ def _active_backend() -> str:
 def _active_chat_model() -> str:
     """Return the chat model for the active backend."""
     if _active_backend() == "OpenAI":
-        return st.session_state.get("openai_model") or st.session_state.get(
-            "selected_model"
-        )
-    return st.session_state.get("selected_model")
+        return st.session_state.get("openai_model") or st.session_state.get("selected_model") or ""
+    return st.session_state.get("selected_model") or ""
 
 
 def _active_embedding_model() -> str:
@@ -49,21 +50,21 @@ def _active_embedding_model() -> str:
         return st.session_state.get(
             "openai_embedding_model"
         ) or "text-embedding-3-small"
-    return st.session_state.get("ollama_embedding_model")
+    return st.session_state.get("ollama_embedding_model") or DEFAULT_OLLAMA_EMBEDDING_MODEL
 
 
 def _active_base_url() -> str:
     """Return the server base URL for the active backend."""
     if _active_backend() == "OpenAI":
         return st.session_state.get("openai_base_url") or DEFAULT_OPENAI_BASE_URL
-    return st.session_state.get("ollama_endpoint")
+    return st.session_state.get("ollama_endpoint") or DEFAULT_OLLAMA_ENDPOINT
 
 
 def _active_embedding_base_url() -> str:
     """Return the embedding server base URL for the active backend."""
     if _active_backend() == "OpenAI":
         return st.session_state.get("openai_base_url") or DEFAULT_OPENAI_BASE_URL
-    return st.session_state.get("ollama_endpoint")
+    return st.session_state.get("ollama_endpoint") or DEFAULT_OLLAMA_ENDPOINT
 
 
 def _active_api_key() -> str:
@@ -86,21 +87,22 @@ def _trim_history(messages, budget_tokens: int = CHAT_HISTORY_TOKEN_BUDGET):
     used = 0
     for message in reversed(messages):
         remaining = budget_tokens - used
-        estimated = _estimate_tokens(message.content) + 8
+        text = message.content or ""
+        estimated = _estimate_tokens(text) + 8
         if message.role == MessageRole.ASSISTANT and estimated > remaining // 2:
             # Reserve room for the user turn that gives this answer its subject.
             allowance = remaining // 2 - 8
             if allowance < 1:
                 continue
-            low, high = 0, len(message.content)
+            low, high = 0, len(text)
             while low < high:
                 middle = (low + high + 1) // 2
-                if _estimate_tokens(message.content[:middle] + "…") <= allowance:
+                if _estimate_tokens(text[:middle] + "…") <= allowance:
                     low = middle
                 else:
                     high = middle - 1
-            message = ChatMessage(role=message.role, content=message.content[:low] + "…")
-            estimated = _estimate_tokens(message.content) + 8
+            message = ChatMessage(role=message.role, content=text[:low] + "…")
+            estimated = _estimate_tokens(message.content or "") + 8
         if used + estimated > budget_tokens:
             break
         recent.append(message)
@@ -169,7 +171,7 @@ def _quoted_source(number, name, text):
 
 
 def _build_rag_messages(
-    prompt: str, context: str, history: list, system_prompt: str
+    prompt: str, context: str, history: list, system_prompt: str | None
 ) -> list:
     """Build the chat messages for a grounded RAG answer.
 
@@ -254,7 +256,7 @@ def create_client(host: str):
         return client
     except (ValueError, TypeError, httpx.InvalidURL) as err:
         logs.log.error(f"Failed to create Ollama client: {err}")
-        return False
+        raise ValueError(f"Invalid Ollama endpoint: {host}") from err
 
 
 ###################################
@@ -532,12 +534,15 @@ def create_llm(
 def conversation_title(question, answer, *, model, base_url, api_key="", backend="Ollama"):
     """Summarize one exchange using the selected provider; never alter chat history."""
     llm = create_llm(model, base_url, api_key, temperature=0, backend=backend)
+    # create_llm returns the OpenAI-compatible client for OpenAI-style backends, Ollama otherwise.
     if is_openai_backend(backend):
-        llm.timeout = 15.0
-        llm.max_tokens = 40
+        openai_llm = cast(OpenAI, llm)
+        openai_llm.timeout = 15.0
+        openai_llm.max_tokens = 40
     else:
-        llm.request_timeout = 15.0
-        llm.additional_kwargs = {**llm.additional_kwargs, "num_predict": 40}
+        ollama_llm = cast(Ollama, llm)
+        ollama_llm.request_timeout = 15.0
+        ollama_llm.additional_kwargs = {**ollama_llm.additional_kwargs, "num_predict": 40}
     result = llm.chat([
         ChatMessage(role=MessageRole.SYSTEM, content=(
             "Name this conversation by its main topic or goal. Return only a specific, recognizable "
@@ -629,7 +634,7 @@ def chat(prompt: str):
 ###################################
 
 
-def context_chat(prompt: str, query_engine: RetrieverQueryEngine):
+def context_chat(prompt: str, query_engine: RetrieverQueryEngine | None):
     """
     Initiates a chat with context using the active LLM backend.
 

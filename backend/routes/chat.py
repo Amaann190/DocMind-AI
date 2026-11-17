@@ -75,7 +75,7 @@ async def chat(question: Question, request: Request):
                 if cfg.r2r and not question.without_documents:
                     if not session.get("r2r_document_ids") or session.get("r2r_ingestion_failed"):
                         raise ValueError("Upload documents to R2R before asking a question.")
-                    chunks = [R2RClient(cfg.r2r_url, cfg.r2r_key).rag(question.text, session["r2r_document_ids"])]
+                    chunks = [R2RClient(cfg.r2r_url, cfg.r2r_key).rag(question.text, session["r2r_document_ids"]) or ""]
                 elif session.get("query_engine") and not question.without_documents:
                     chunks = ollama.context_chat(question.text, session["query_engine"])
                 else:
@@ -83,6 +83,8 @@ async def chat(question: Question, request: Request):
                 for chunk in chunks:
                     if session["cancel"].is_set():
                         break
+                    if not chunk:
+                        continue
                     content += chunk
                     emit({"type": "token", "text": chunk})
                 sources = session.get("last_doc_passages", [])
@@ -99,8 +101,9 @@ async def chat(question: Question, request: Request):
             emit({"type": "error", "message": message})
         finally:
             try:
-                if hasattr(chunks, "close"):
-                    chunks.close()
+                close = getattr(chunks, "close", None)
+                if callable(close):
+                    close()
                 save_conversation(session)
                 if completed:
                     workspace.start_title(session)

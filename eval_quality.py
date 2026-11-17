@@ -117,6 +117,8 @@ def _evaluate_answers(mock, endpoint, embedding_model, chat_model):
         # Reuse the same real-format fixtures as the reader regression tests.
         fixture_path = Path(__file__).parent / "tests/test_document_readers.py"
         spec = importlib.util.spec_from_file_location("docmind_format_fixtures", fixture_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError(f"Cannot load format fixtures from {fixture_path}")
         fixtures = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(fixtures)
         folder = root / "formats"

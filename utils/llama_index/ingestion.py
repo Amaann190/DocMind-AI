@@ -148,8 +148,9 @@ def create_index(documents, progress_callback=None, *, embed_model=None, chunk_s
             sections = []
             for section in MarkdownNodeParser().get_nodes_from_documents([document]):
                 parent = section.metadata.pop("header_path", "").strip("/")
-                heading = re.match(r"^#{1,6}\s+(.+)", section.text)
-                if heading and not section.text[heading.end():].strip():
+                section_text = section.get_content()
+                heading = re.match(r"^#{1,6}\s+(.+)", section_text)
+                if heading and not section_text[heading.end():].strip():
                     continue  # The heading is carried by its child sections.
                 label = " / ".join(part for part in (parent, heading[1] if heading else "") if part)
                 if label:

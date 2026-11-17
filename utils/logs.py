@@ -1,4 +1,5 @@
 import contextlib
+import io
 import logging
 import sys
 
@@ -17,7 +18,7 @@ def setup_logger(log_file: str | None = None, level: int | str = logging.INFO):
     # Uploaded filenames are often non-ASCII. A Windows console using a legacy
     # code page cannot encode them, so replace unencodable characters instead
     # of raising a logging error on every such upload.
-    if hasattr(sys.stdout, "reconfigure"):
+    if isinstance(sys.stdout, io.TextIOWrapper):
         with contextlib.suppress(ValueError, OSError):
             sys.stdout.reconfigure(errors="replace")
     console = logging.StreamHandler(sys.stdout)

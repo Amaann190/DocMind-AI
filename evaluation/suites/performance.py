@@ -128,7 +128,7 @@ def suite_performance(mock: bool, endpoint="http://localhost:11434", model="nomi
                 return SimpleNamespace(embeddings=[[0.1]*4 for _ in input])
         emb = OllamaEmbedding(model_name="nomic-embed-text:latest", base_url="http://localhost:11434")
         emb.embed_batch_size = 8
-        emb._client = FakeOOM()
+        emb._client = FakeOOM()  # pyright: ignore[reportAttributeAccessIssue]  (test double for the private client)
         res = emb.get_text_embedding_batch([f"t{i}" for i in range(12)])
         ok = len(res) == 12 and emb.embed_batch_size == 4
         return ok, f"shrunk to {emb.embed_batch_size} after OOM"

@@ -146,14 +146,17 @@ class DocumentTextReader(BaseReader):
             text = email_text(BytesParser(policy=policy.default).parsebytes(file.read_bytes()))
         elif suffix == ".mbox":
             parser = BytesParser(policy=policy.default)
-            with closing(mailbox.mbox(str(file), factory=parser.parse, create=False)) as box:
+            # typeshed types mbox's factory narrowly; BytesParser.parse accepts the binary file it is given.
+            with closing(mailbox.mbox(str(file), factory=parser.parse, create=False)) as box:  # pyright: ignore[reportArgumentType]
                 return [Document(text=email_text(message), metadata=metadata) for message in box]
         elif suffix == ".msg":
             import extract_msg
 
             with extract_msg.openMsg(str(file), delayAttachments=True) as message:
-                text = message.body or html_text(message.htmlBody or b"")
-                text = f"Subject: {message.subject or ''}\n\n{text}"
+                # openMsg returns the specific class for the item; only mail-like items have these fields.
+                body, html, subject = (getattr(message, name, None) for name in ("body", "htmlBody", "subject"))
+                text = body or html_text(html or b"")
+                text = f"Subject: {subject or ''}\n\n{text}"
         elif suffix == ".ipynb":
             notebook = json.loads(read_text(file))
             parts = []
@@ -224,7 +227,7 @@ def document_file_extractors():
     from llama_index.readers.file import DocxReader, EpubReader, PDFReader, PptxReader
 
     text_reader = DocumentTextReader()
-    readers = dict.fromkeys(ALLOWED_UPLOAD_EXTENSIONS, text_reader)
+    readers: dict[str, BaseReader] = dict.fromkeys(ALLOWED_UPLOAD_EXTENSIONS, text_reader)
     readers.update({
         ".pdf": PDFReader(),
         ".docx": DocxReader(),

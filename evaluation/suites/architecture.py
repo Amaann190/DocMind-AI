@@ -26,7 +26,8 @@ def suite_architecture(mock: bool):
         from backend.routes.conversations import export
         with patch("backend.routes.conversations.get_session", return_value={"messages": [
             {"role": "user", "content": "hello"}, {"role": "assistant", "content": "hi there"}]}):
-            data = export(None).body
+            # get_session is patched, so no request object is needed.
+            data = export(None).body  # pyright: ignore[reportArgumentType]
         ok = len(data) > 1000 and data[:2] == b"PK"  # docx is zip
         return ok, f"docx {len(data)} bytes"
     check("export_docx", t_export)
