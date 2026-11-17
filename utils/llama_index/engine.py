@@ -73,6 +73,6 @@ def create_query_engine(documents, progress_callback=None):
         logs.log.info("Query Engine created successfully")
 
         return query_engine
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - logged and re-raised with context
         logs.log.error(f"Error when creating Query Engine: {e}")
-        raise Exception(f"Error when creating Query Engine: {e}")
+        raise RuntimeError(f"Error when creating Query Engine: {e}") from e

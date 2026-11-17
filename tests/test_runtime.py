@@ -1,11 +1,11 @@
 import io
 import logging
 import os
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from utils.logs import setup_logger
@@ -13,7 +13,7 @@ from utils.logs import setup_logger
 
 class RuntimeTests(unittest.TestCase):
     def test_request_context_is_explicit_and_restored_after_nested_failure(self):
-        from utils.runtime import st, request_state
+        from utils.runtime import request_state, st
         with self.assertRaises(RuntimeError):
             _ = st.session_state
         first = {"owner": "first"}
@@ -104,7 +104,7 @@ class RuntimeTests(unittest.TestCase):
                            "LAUNCH_RESULT": str(result_file), "OCCUPIED": "0"}
             result = subprocess.run(
                 ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(harness)],
-                cwd=root.parent, env=environment, capture_output=True, text=True, timeout=30,
+                cwd=root.parent, env=environment, capture_output=True, text=True, timeout=30, check=False,
             )
             self.assertEqual(result.returncode, 0, result.stderr)
             import json
@@ -117,7 +117,7 @@ class RuntimeTests(unittest.TestCase):
             result_file.unlink()
             result = subprocess.run(
                 ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(harness)],
-                cwd=root.parent, env={**environment, "OCCUPIED": "1"},
+                cwd=root.parent, env={**environment, "OCCUPIED": "1"}, check=False,
                 capture_output=True, text=True, timeout=30,
             )
             self.assertNotEqual(result.returncode, 0)

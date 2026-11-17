@@ -7,7 +7,8 @@ from unittest.mock import Mock, patch
 from llama_index.core.embeddings import MockEmbedding
 from llama_index.core.schema import TextNode
 
-from utils import helpers, llama_index as rag, ollama
+from utils import helpers, ollama
+from utils import llama_index as rag
 from utils.runtime import request_state
 
 

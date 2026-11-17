@@ -1,6 +1,5 @@
 """Embedding model clients, validation, batching and progress reporting."""
 import hashlib
-from typing import Optional
 
 import ollama
 from pydantic import Field, PrivateAttr
@@ -8,6 +7,7 @@ from pydantic import Field, PrivateAttr
 import utils.logs as logs
 from llama_index.core.embeddings import BaseEmbedding
 from utils import runtime
+from utils.errors import MODEL_SERVER_ERRORS
 
 
 class ProgressReportingEmbedding(BaseEmbedding):
@@ -54,7 +54,7 @@ class OllamaEmbedding(BaseEmbedding):
     base_url: str = Field(description="Ollama server base URL")
     embed_batch_size: int = Field(default=16, description="Chunks per embed request")
 
-    _client: Optional[ollama.Client] = PrivateAttr(default=None)
+    _client: ollama.Client | None = PrivateAttr(default=None)
 
     def _client_inst(self):
         # Reuse a single persistent client. Creating a fresh client per call
@@ -120,7 +120,7 @@ def _ollama_model_names(client) -> list[str]:
     """
     try:
         data = client.list()
-    except Exception:
+    except MODEL_SERVER_ERRORS:
         return []
     models = data.get("models", []) if isinstance(data, dict) else getattr(data, "models", [])
     names = []
@@ -148,17 +148,17 @@ def verify_embedding_model(model: str, base_url: str) -> bool:
         details = client.show(model)
         capabilities = getattr(details, "capabilities", None) or details.get("capabilities", [])
         return "embedding" in capabilities
-    except Exception:
+    except MODEL_SERVER_ERRORS:
         return False
 
 
 # Model instances and chunk settings belong only to the calling session.
 def setup_embedding_model(
     model: str,
-    chunk_size: Optional[int] = None,
-    chunk_overlap: Optional[int] = None,
+    chunk_size: int | None = None,
+    chunk_overlap: int | None = None,
     backend: str = "Ollama",
-    ollama_endpoint: Optional[str] = None,
+    ollama_endpoint: str | None = None,
     api_key: str = "",
 ):
     """

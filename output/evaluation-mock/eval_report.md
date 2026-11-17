@@ -1,6 +1,6 @@
 # DocMind evaluation report
 
-Generated 2026-11-17 19:50 · Mode: **mock**
+Generated 2026-11-17 19:56 · Mode: **mock**
 Chat model: not used · Embeddings: hash-mock
 
 **47 passed · 0 failed · 34 skipped**
@@ -24,10 +24,10 @@ Scores describe these checks only, not general answer accuracy. Mock checks do n
 
 | Configuration | Answerable hit rate | Correct rejection | Mean retrieval ms |
 |---|---:|---:|---:|
-| vector_only | 82% | 67% | 0.6 |
-| bm25_only | 100% | 100% | 0.3 |
-| hybrid_no_floor | 100% | 67% | 0.9 |
-| full | 100% | 100% | 0.9 |
+| vector_only | 82% | 67% | 0.4 |
+| bm25_only | 100% | 100% | 0.2 |
+| hybrid_no_floor | 100% | 67% | 0.7 |
+| full | 100% | 100% | 0.7 |
 
 ## ingestion
 
@@ -129,7 +129,7 @@ empty.txt: No readable text found. The file may be emp
 - **PASSED — r2r_health**: health mocked
 - **PASSED — no_torch_at_import**: Fresh-process import checks: .
 ----------------------------------------------------------------------
-Ran 1 test in 5.797s
+Ran 1 test in 5.926s
 
 OK
 

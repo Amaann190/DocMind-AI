@@ -189,6 +189,7 @@ class DocumentFormatTests(unittest.TestCase):
 class ReaderSafetyTests(unittest.TestCase):
     def test_excel_preserves_formulas_cached_zero_and_sheet_identity(self):
         from openpyxl import Workbook
+
         from utils.document_readers import ExcelReader
 
         with tempfile.TemporaryDirectory() as directory:

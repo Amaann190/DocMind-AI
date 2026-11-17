@@ -121,7 +121,7 @@ See [docs/usage.md](docs/usage.md) and [docs/troubleshooting.md](docs/troublesho
 
 ```bash
 pipenv run python -m unittest discover -s tests          # backend tests
-pipenv run ruff check . --select E9,F63,F7,F82            # static checks
+pipenv run ruff check .            # static checks
 pipenv run python eval_harness.py --mock --out output/evaluation-mock
 pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live

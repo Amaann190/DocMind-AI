@@ -62,7 +62,7 @@ def _is_eco_mode() -> bool:
     """Return whether Eco Mode is enabled (light load / weak hardware)."""
     try:
         return bool(runtime.st.session_state.get("eco_mode"))
-    except Exception:
+    except (RuntimeError, AttributeError):  # no request state
         return False
 
 

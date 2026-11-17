@@ -1,5 +1,4 @@
 import unittest
-from utils.runtime import request_state
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -19,6 +18,7 @@ from utils.llama_index import (
     setup_embedding_model,
     verify_embedding_model,
 )
+from utils.runtime import request_state
 
 
 class _FakeOpenAIEmbedding(BaseEmbedding):
@@ -82,7 +82,7 @@ class EmbeddingModelValidationTests(unittest.TestCase):
 
     def test_verify_embedding_model_false_when_server_down(self):
         with patch(
-            "utils.llama_index.embeddings.ollama.Client", side_effect=RuntimeError("boom")
+            "utils.llama_index.embeddings.ollama.Client", side_effect=ConnectionError("Failed to connect to Ollama")
         ):
             self.assertFalse(
                 verify_embedding_model("nomic-embed-text:latest", "http://localhost:11434")
