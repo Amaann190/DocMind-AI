@@ -48,8 +48,8 @@ including **34 of 34 live answers** and **25 of 25 format questions**. The previ
 document-instruction failure passed with the final reminder. This one attack's
 passing result is not a security guarantee.
 
-The repository-root [report](../eval_report.md) and [JSON](../eval_results.json)
-record that full live run. Offline verification passed **42 checks** and explicitly
+The [report](../output/evaluation-live-boundary/eval_report.md) and
+[JSON](../output/evaluation-live-boundary/eval_results.json) record that full live run. Offline verification passed **42 checks** and explicitly
 skipped **34 live answers**. The final regression suite passed **170 tests**;
 compilation and Ruff's configured error checks passed at that evaluation checkpoint.
 The temporary smoke-test server was stopped afterward.
@@ -69,6 +69,34 @@ instruction case and failed the follow-up. Its zero complete format passes does
 [smaller-model answers](../output/evaluation-qwen-final/eval_report.md) and
 [grading details](../output/evaluation-qwen-final/eval_results.json).
 
+Since 2026-11-17, sentences in retrieved text that address the model ("ignore all
+previous instructions", "answer X instead", "you are now ...") are withheld from the
+prompt before generation (`utils/ollama.py`, `_withhold_instructions`); the source
+preview still shows the original passage. With that change `qwen2.5:0.5b` answers
+`ANCHOR-5317` for the injection case instead of `PWNED`; it still fails that check
+because it omits the citation. This is a heuristic filter for common phrasings, not
+a guarantee against prompt injection.
+
+## Retrieval ablation
+
+The retrieval suite compares four configurations on the same index: dense vectors
+only, BM25 only, hybrid fusion without the evidence floor, and the full pipeline.
+On 2026-11-17 with `nomic-embed-text:latest` (11 answerable, 6 unanswerable queries):
+
+| Configuration | Answerable hit rate | Correct rejection |
+|---|---:|---:|
+| Vector only | 11/11 | 0/6 |
+| BM25 only | 11/11 | 6/6 |
+| Hybrid RRF, no evidence floor | 11/11 | 0/6 |
+| Full DocMind (hybrid + floor) | 11/11 | 6/6 |
+
+See the [ablation report](../output/evaluation-retrieval-ablation/eval_report.md).
+The fixture corpus is five short documents, so every configuration finds the
+answerable sources; the measurable difference is rejection. Dense similarity alone
+never returns an empty result on these probes, and the evidence floor is what
+restores correct rejection after fusion. A larger, harder query set is needed to
+show where hybrid fusion beats BM25 alone.
+
 For this installation, use `llama3:latest` for document questions based on these
 observed results. If a previous session saved `qwen2.5:0.5b`, select `llama3:latest`
 in Settings; the application deliberately preserves valid saved choices. This
@@ -86,6 +114,7 @@ pipenv run python -m unittest discover -s tests
 pipenv run python eval_harness.py --mock --out output/evaluation-mock
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live-boundary
 pipenv run python eval_harness.py --suite generation --chat-model qwen2.5:0.5b --out output/evaluation-qwen-final
+pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
 ```
 
 Legacy DOC, PPT and XLS fixture generation and extraction require LibreOffice.

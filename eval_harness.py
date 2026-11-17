@@ -84,7 +84,15 @@ QUERIES = [
     {"query": "quantum physics equations", "expected": None, "feature": "no-match"},
     {"query": "refunded purchases", "expected": "refund_policy.txt", "feature": "stemming"},
     {"query": "tell me about the annual report", "expected": "annual_report.txt", "feature": "filler-filter"},
+    {"query": "what about purchases?", "expected": "refund_policy.txt", "feature": "stemming"},
+    {"query": "Who painted the Mona Lisa?", "expected": None, "feature": "no-match"},
+    {"query": "How do I repot an orchid?", "expected": None, "feature": "no-match"},
+    {"query": "Explain the plot of Hamlet", "expected": None, "feature": "no-match"},
+    {"query": "melting point of tungsten", "expected": None, "feature": "no-match"},
 ]
+
+# Retrieval ablation: the four configurations compared in the results paper.
+RETRIEVAL_CONFIGS = ("vector_only", "bm25_only", "hybrid_no_floor", "full")
 
 ALL_SUITES = ["ingestion", "retrieval", "generation", "performance", "robustness", "architecture"]
 
@@ -374,50 +382,74 @@ def suite_retrieval(mock: bool, endpoint="http://localhost:11434", model="nomic-
     try:
         from utils.llama_index import build_hybrid_retriever, HybridRetriever
         index = _create_index_from_docs(tmpdir)
-        vector_retriever = index.as_retriever(similarity_top_k=3)
+
         class PlainWrapper:
+            """Vector-only baseline: dense top-k with the similarity cutoff only."""
             def __init__(self, inner, cutoff=0.3):
                 self.inner = inner
                 self.cutoff = cutoff
             def retrieve(self, query):
                 nodes = self.inner.retrieve(query)
                 return [n for n in nodes if n.score >= self.cutoff]
-        plain = PlainWrapper(vector_retriever, cutoff=0.3)
-        hybrid = build_hybrid_retriever(vector_retriever, index, top_k=3, similarity_cutoff=0.3)
-        is_hybrid = isinstance(hybrid, HybridRetriever)
+
+        # Each configuration gets its own vector retriever: HybridRetriever widens
+        # its dense candidate pool, which must not leak into the vector-only baseline.
+        retrievers = {
+            "vector_only": PlainWrapper(index.as_retriever(similarity_top_k=3), cutoff=0.3),
+            "bm25_only": build_hybrid_retriever(index.as_retriever(similarity_top_k=3), index, top_k=3,
+                                                similarity_cutoff=0.3, use_vector=False),
+            "hybrid_no_floor": build_hybrid_retriever(index.as_retriever(similarity_top_k=3), index, top_k=3,
+                                                      similarity_cutoff=0.3, evidence_floor=None),
+            "full": build_hybrid_retriever(index.as_retriever(similarity_top_k=3), index, top_k=3,
+                                           similarity_cutoff=0.3),
+        }
+        is_hybrid = isinstance(retrievers["full"], HybridRetriever)
+        # Warm every retriever once so the first timed query does not carry
+        # model-load or cache-fill cost (that skewed earlier latency numbers).
+        for retriever in retrievers.values():
+            retriever.retrieve("warm up")
 
         results = []
         for item in QUERIES:
             q = item["query"]
             exp = item["expected"]
-            pr = _evaluate_retriever(plain, q, exp)
-            hr = _evaluate_retriever(hybrid, q, exp)
-            p_mark = "PASS" if pr["hit"] else "FAIL"
-            h_mark = "PASS" if hr["hit"] else "FAIL"
-            print(f"  {h_mark if hr['hit'] else 'FAIL'}  [{item['feature']:12s}] {q[:42]:42s}  plain:{p_mark} hybrid:{h_mark} ({pr['top_file'] or '-'} -> {hr['top_file'] or '-'})")
-            results.append({"query": q, "expected": exp, "feature": item["feature"], "plain_hit": pr["hit"], "hybrid_hit": hr["hit"], "plain_top": pr["top_file"], "hybrid_top": hr["top_file"], "plain_score": pr["top_score"], "hybrid_score": hr["top_score"], "plain_latency": round(pr["latency"], 4), "hybrid_latency": round(hr["latency"], 4)})
+            row = {"query": q, "expected": exp, "feature": item["feature"]}
+            # Rotate which configuration runs first: the first dense call for a
+            # query pays the embedding cost and later ones can hit caches.
+            names = list(retrievers)
+            shift = len(results) % len(names)
+            for name in names[shift:] + names[:shift]:
+                retriever = retrievers[name]
+                outcome = _evaluate_retriever(retriever, q, exp)
+                row[f"{name}_hit"] = outcome["hit"]
+                row[f"{name}_top"] = outcome["top_file"]
+                row[f"{name}_score"] = outcome["top_score"]
+                row[f"{name}_latency"] = round(outcome["latency"], 4)
+            marks = " ".join(f"{name}:{'PASS' if row[name + '_hit'] else 'FAIL'}" for name in retrievers)
+            print(f"  {'PASS' if row['full_hit'] else 'FAIL'}  [{item['feature']:12s}] {q[:42]:42s}  {marks}")
+            results.append(row)
 
         factual = [r for r in results if r["feature"] != "no-match"]
         no_match = [r for r in results if r["feature"] == "no-match"]
-        def hr(rows, key): return sum(1 for r in rows if r[key]) / len(rows) if rows else 0
-        summary = {
-            "plain_hit_rate": round(hr(factual, "plain_hit"), 3),
-            "hybrid_hit_rate": round(hr(factual, "hybrid_hit"), 3),
-            "plain_rejection": round(hr(no_match, "plain_hit"), 3),
-            "hybrid_rejection": round(hr(no_match, "hybrid_hit"), 3),
-            "plain_avg_ms": round(sum(r["plain_latency"] for r in results) / len(results) * 1000, 1) if results else 0,
-            "hybrid_avg_ms": round(sum(r["hybrid_latency"] for r in results) / len(results) * 1000, 1) if results else 0,
-            "is_hybrid": is_hybrid,
-            "embedding": "hash-mock" if mock else model,
-        }
-        # feature breakdown
+        def rate(rows, key): return sum(1 for r in rows if r[key]) / len(rows) if rows else 0
+        summary = {"answerable_queries": len(factual), "no_match_queries": len(no_match),
+                   "is_hybrid": is_hybrid, "embedding": "hash-mock" if mock else model}
+        for name in retrievers:
+            summary[f"{name}_hit_rate"] = round(rate(factual, f"{name}_hit"), 3)
+            summary[f"{name}_rejection"] = round(rate(no_match, f"{name}_hit"), 3)
+            summary[f"{name}_avg_ms"] = round(sum(r[f"{name}_latency"] for r in results) / len(results) * 1000, 1)
+        # Backward-compatible keys used by earlier reports.
+        summary.update(plain_hit_rate=summary["vector_only_hit_rate"], hybrid_hit_rate=summary["full_hit_rate"],
+                       plain_rejection=summary["vector_only_rejection"], hybrid_rejection=summary["full_rejection"],
+                       plain_avg_ms=summary["vector_only_avg_ms"], hybrid_avg_ms=summary["full_avg_ms"])
         for feat in sorted(set(r["feature"] for r in results)):
             rows = [r for r in results if r["feature"] == feat]
-            summary[f"hybrid_{feat}_rate"] = round(hr(rows, "hybrid_hit"), 3)
+            summary[f"hybrid_{feat}_rate"] = round(rate(rows, "full_hit"), 3)
 
-        print(f"  Summary: hit plain {summary['plain_hit_rate']:.0%} hybrid {summary['hybrid_hit_rate']:.0%} | reject plain {summary['plain_rejection']:.0%} hybrid {summary['hybrid_rejection']:.0%} | latency plain {summary['plain_avg_ms']}ms hybrid {summary['hybrid_avg_ms']}ms")
-        score = round((summary["hybrid_hit_rate"] + summary["hybrid_rejection"]) / 2, 3)
-        return summarize_results("retrieval", [{**r, "pass": bool(r["hybrid_hit"]), "status": "passed" if r["hybrid_hit"] else "failed"} for r in results], summary=summary)
+        for name in retrievers:
+            print(f"  {name:16s} hit {summary[name + '_hit_rate']:.0%} ({len(factual)}) | "
+                  f"reject {summary[name + '_rejection']:.0%} ({len(no_match)}) | {summary[name + '_avg_ms']} ms")
+        return summarize_results("retrieval", [{**r, "pass": bool(r["full_hit"]), "status": "passed" if r["full_hit"] else "failed"} for r in results], summary=summary)
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
 
@@ -852,7 +884,9 @@ def _run_full_eval(endpoint="http://localhost:11434", model="nomic-embed-text:la
                "overall_score": round(passed / executed, 3) if executed else None,
                "suites": list(target), "mode": "mock" if use_mock else "live",
                "embedding_model": "hash-mock" if use_mock else model,
-               "chat_model": None if use_mock else chat_model, "endpoint": endpoint}
+               # Only the generation suite calls a chat model; do not attribute others to one.
+               "chat_model": None if use_mock or "generation" not in target else chat_model,
+               "endpoint": endpoint}
     answers = [item for result in all_results.values() for item in result["results"]
                if item.get("kind") == "live_answer"]
     overall["answer_checks"] = {
@@ -872,23 +906,39 @@ def _write_outputs(all_results, overall, out_dir="."):
     (out_dir / "eval_results.json").write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
     md = ["# DocMind evaluation report", "",
           f"Generated {time.strftime('%Y-%m-%d %H:%M')} · Mode: **{overall['mode']}**",
-          f"Chat model: {overall['chat_model']} · Embeddings: {overall['embedding_model']}", "",
+          f"Chat model: {overall['chat_model'] or 'not used'} · Embeddings: {overall['embedding_model']}", "",
           f"**{overall['passed']} passed · {overall['failed']} failed · {overall['skipped']} skipped**", "",
           "Scores describe these checks only, not general answer accuracy. Mock checks do not "
           "measure model quality. Skips are not passes. Rule-based answer checks require human "
           "review; valid citation numbers alone do not prove every claim is supported.", "",
           "| Suite | Passed | Failed | Skipped |", "|---|---:|---:|---:|"]
-    if overall.get("answer_checks"):
-        counts = overall["answer_checks"]
+    counts = overall.get("answer_checks")
+    if counts and any(counts.values()):
         md[6:6] = [f"Live-answer checks separately: **{counts['passed']} passed · {counts['failed']} failed · {counts['skipped']} skipped**", ""]
     for name, result in all_results.items():
         md.append(f"| {name} | {result['passed']} | {result['failed']} | {result['skipped']} |")
+    summary = all_results.get("retrieval", {}).get("summary") or {}
+    if "full_hit_rate" in summary:
+        md.extend(["", "## Retrieval ablation", "",
+                   f"{summary['answerable_queries']} answerable and {summary['no_match_queries']} unanswerable "
+                   f"queries · embeddings: {summary['embedding']}. Hit = an expected source is retrieved; "
+                   "rejection = nothing is retrieved for an unanswerable query. "
+                   "Latency excludes generation; configuration order is rotated per query.", "",
+                   "| Configuration | Answerable hit rate | Correct rejection | Mean retrieval ms |",
+                   "|---|---:|---:|---:|"])
+        for config in RETRIEVAL_CONFIGS:
+            md.append(f"| {config} | {summary[config + '_hit_rate']:.0%} | {summary[config + '_rejection']:.0%} | "
+                      f"{summary[config + '_avg_ms']} |")
     for name, result in all_results.items():
         md.extend(["", f"## {name}", ""])
         for item in result["results"]:
             label = item.get("test", item.get("query", "check"))
             status = item.get("status", "passed" if item.get("pass") else "failed")
-            md.append(f"- **{status.upper()} — {label}**: {item.get('detail', '')}")
+            detail = item.get("detail", "")
+            if not detail and "full_hit" in item:
+                detail = " · ".join(f"{config}: {'hit' if item[config + '_hit'] else 'miss'}"
+                                    for config in RETRIEVAL_CONFIGS)
+            md.append(f"- **{status.upper()} — {label}**: {detail}")
             if "answer" in item:
                 md.append("  Answer: " + item["answer"].replace("\n", " "))
                 md.append("  Sources: " + json.dumps(item.get("sources", [])))
