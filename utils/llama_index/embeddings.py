@@ -1,5 +1,6 @@
 """Embedding model clients, validation, batching and progress reporting."""
 import hashlib
+from collections.abc import Callable
 
 import ollama
 from pydantic import Field, PrivateAttr
@@ -14,7 +15,7 @@ class ProgressReportingEmbedding(BaseEmbedding):
     """Delegate embeddings while reporting exact batch progress."""
 
     wrapped_model: BaseEmbedding
-    progress_callback: object = Field(exclude=True)
+    progress_callback: Callable[[int, int], None] = Field(exclude=True)
     total_texts: int = Field(default=0)
     completed_texts: int = Field(default=0)
 

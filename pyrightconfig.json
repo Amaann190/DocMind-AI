@@ -1,0 +1,7 @@
+{
+  "include": ["backend", "utils", "evaluation", "eval_harness.py", "eval_quality.py"],
+  "exclude": ["**/__pycache__", "frontend", "output", "tests"],
+  "pythonVersion": "3.13",
+  "typeCheckingMode": "basic",
+  "reportMissingModuleSource": "none"
+}

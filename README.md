@@ -123,12 +123,18 @@ See [docs/usage.md](docs/usage.md) and [docs/troubleshooting.md](docs/troublesho
 
 ```bash
 pipenv run python -m unittest discover -s tests          # backend tests
-pipenv run ruff check .            # static checks
+pipenv run ruff check .                                   # lint
+pipenv run pyright                                        # type check (basic mode)
+pipenv run coverage run -m unittest discover -s tests && pipenv run coverage report
 pipenv run python eval_harness.py --mock --out output/evaluation-mock
 pipenv run python eval_harness.py --suite retrieval --out output/evaluation-retrieval-ablation
 pipenv run python eval_harness.py --suite benchmark --out output/evaluation-benchmark
 pipenv run python eval_harness.py --chat-model llama3:latest --out output/evaluation-live
 ```
+
+CI also runs the mock evaluation under coverage and fails below 85% statement and branch
+coverage (87% at the time of writing). Pyright and coverage are installed with
+`pipenv run pip install pyright coverage`.
 
 Frontend: `cd frontend && npm run lint && npm test` (ESLint and Vitest unit tests).
 Browser tests (Playwright) run against a started server: `npx playwright test`.

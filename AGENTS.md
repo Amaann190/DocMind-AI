@@ -32,6 +32,7 @@ Run focused tests while iterating, then the retained full suite:
 pipenv run python -m unittest discover -s tests
 pipenv run python -m compileall -q backend utils
 pipenv run ruff check .
+pipenv run pyright
 pipenv run python eval_harness.py --mock --out output/react-evaluation
 ```
 

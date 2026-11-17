@@ -1,0 +1,10 @@
+[run]
+source = backend, utils, evaluation
+branch = True
+# Background threads (title naming, source restore) and the streaming chat worker.
+concurrency = thread
+
+[report]
+show_missing = False
+skip_covered = False
+precision = 1

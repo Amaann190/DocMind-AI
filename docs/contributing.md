@@ -10,6 +10,7 @@ Run focused regressions, then:
 pipenv run python -m unittest discover -s tests
 pipenv run python -m compileall -q backend utils
 pipenv run ruff check .
+pipenv run pyright
 pipenv run python eval_harness.py --mock --out output/react-evaluation
 cd frontend
 npm ci

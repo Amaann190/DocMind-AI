@@ -47,7 +47,7 @@ def init(request: Request, response: Response):
                 raise HTTPException(503, "Too many workspaces. Restart the local server to release them.")
             owner = hashlib.sha256(token.encode()).hexdigest() if token and re.fullmatch(r"[\w-]{43}", token) else ""
             saved = history.listing(owner) if owner else []
-            if not saved:
+            if not saved or not token:
                 token = secrets.token_urlsafe(32)
                 owner = hashlib.sha256(token.encode()).hexdigest()
             sessions[token] = new_session()
@@ -58,6 +58,7 @@ def init(request: Request, response: Response):
             else:
                 save_conversation(sessions[token])
         session = sessions[token]
+    assert token is not None  # every branch above finds or creates a token
     response.set_cookie(COOKIE, token, httponly=True, samesite="strict", max_age=365 * 86400)
     return snapshot(session)
 
