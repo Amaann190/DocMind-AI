@@ -1,16 +1,9 @@
 import React from "react";
 import { ArrowUpRight, Plus, FileText, Search, FolderOpen } from "lucide-react";
+import { useWorkspace } from "../state/WorkspaceContext.jsx";
 
-export function LibraryPage({
-  disabled,
-  input,
-  search,
-  setModal,
-  setPreview,
-  setSearch,
-  sources,
-  workspace,
-}) {
+export function LibraryPage() {
+  const { disabled, search, setModal, setPreview, setSearch, sources } = useWorkspace();
   return (
     <section className="library-page">
       <span className="eyebrow">YOUR KNOWLEDGE, TOGETHER</span>
