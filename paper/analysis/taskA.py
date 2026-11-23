@@ -18,7 +18,7 @@ manual.update(oldman)
 out={}
 idsets=set()
 for m in models:
-    d=json.load(open(f'output/research/answers-{m}-full.json',encoding='utf8'))
+    d=json.load(open(f'paper/results/answers-{m}-full.json',encoding='utf8'))
     recs=d['records']; idsets.add(tuple(r['id'] for r in recs))
     # verify grading reproducible
     item=lambda r:{'unanswerable':r['unanswerable'],'answers':r['answers']}
@@ -32,7 +32,7 @@ for m in models:
                 temp=d['temperature'],emb=d['embedding'],f1=d['summary'].get('answerable_mean_f1'),
                 gold_ret=d['summary']['answerable_retrieved_gold']['k'])
 print('same ids/order across models:',len(idsets)==1)
-unaset={r['id'] for r in json.load(open('output/research/answers-llama3.1-8b-full.json',encoding='utf8'))['records'] if r['unanswerable']}
+unaset={r['id'] for r in json.load(open('paper/results/answers-llama3.1-8b-full.json',encoding='utf8'))['records'] if r['unanswerable']}
 ansset=None
 def W(k,n):
     lo,hi=stats.wilson(k,n); return f'{k/n:.3f} [{lo:.3f},{hi:.3f}] ({k}/{n})'

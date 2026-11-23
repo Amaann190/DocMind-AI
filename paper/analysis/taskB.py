@@ -7,7 +7,7 @@ def boot(d,seed=0,B=10000):
     d=np.asarray(d,float); rng=np.random.default_rng(seed); m=d[rng.integers(0,len(d),(B,len(d)))].mean(1)
     return d.mean(),*np.percentile(m,[2.5,97.5])
 for m in ['llama3-latest','qwen2.5-7b']:
-    d=json.load(open(f'output/research/endtoend-{m}.json',encoding='utf8'))
+    d=json.load(open(f'paper/results/endtoend-{m}.json',encoding='utf8'))
     G={g:{(r['kind'],r['id']):r for r in v['records']} for g,v in d['gates'].items()}
     print('=======',m)
     for g in G:

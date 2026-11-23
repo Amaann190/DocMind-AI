@@ -9,7 +9,7 @@ Wl=lambda k,n:'%.3f (%d/%d)'%(k/n,k,n)
 def mc(x,y,ids):
     w=sum(1 for i in ids if x[i] and not y[i]); l=sum(1 for i in ids if y[i] and not x[i]); return w,l,stats.mcnemar_exact(w,l)
 for m in ['llama3.2-3b','qwen2.5-7b','llama3-latest','qwen2.5-3b']:
-    D=json.load(open(f'output/research/answers-{m}-full.json',encoding='utf8')); E=json.load(open(f'output/research/answers-{m}-full-alt.json',encoding='utf8'))
+    D=json.load(open(f'paper/results/answers-{m}-full.json',encoding='utf8')); E=json.load(open(f'paper/results/answers-{m}-full-alt.json',encoding='utf8'))
     Dr={r['id']:r for r in D['records']}; Er={r['id']:r for r in E['records']}
     assert list(Dr)==list(Er)
     una={i for i,r in Dr.items() if r['unanswerable']}; ans=[i for i in Dr if i not in una]; un=[i for i in Dr if i in una]

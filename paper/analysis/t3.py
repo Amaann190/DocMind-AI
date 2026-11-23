@@ -4,7 +4,7 @@ SP=r"paper/analysis/"
 A=json.load(open(SP+'taskA.json'))
 import csv
 adj=list(csv.DictReader(open(SP+"squad_adjudication.csv",encoding="utf-8-sig"))); rel={x['id'] for x in adj if x['label'].startswith('answerable')}
-d=json.load(open('output/research/answers-llama3.1-8b-full.json',encoding='utf8'))['records']
+d=json.load(open('paper/results/answers-llama3.1-8b-full.json',encoding='utf8'))['records']
 title={r['id']:r['title'] for r in d}; una={r['id'] for r in d if r['unanswerable']}
 arts=sorted(set(title.values())); print('articles',len(arts)); aidx={a:i for i,a in enumerate(arts)}
 cl=np.array([aidx[title[r['id']]] for r in d]); ids=[r['id'] for r in d]

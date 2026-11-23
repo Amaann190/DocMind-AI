@@ -1,6 +1,6 @@
 import json,itertools,numpy as np
 for m in ['llama3.2-3b','qwen2.5-7b','llama3-latest','qwen2.5-3b']:
-    runs=[json.load(open(f'output/research/answers-{m}-full{s}.json',encoding='utf8')) for s in ('','-r1','-r2')]
+    runs=[json.load(open(f'paper/results/answers-{m}-full{s}.json',encoding='utf8')) for s in ('','-r1','-r2')]
     R=[{r['id']:r for r in d['records']} for d in runs]
     ids=list(R[0]); assert all(list(x)==ids for x in R)
     print('==',m,'| meta',[(d.get('temperature'),d.get('seed'),d.get('repeat'),d['generated']) for d in runs])

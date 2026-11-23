@@ -28,7 +28,7 @@ if __name__=='__main__':
     models=['qwen2.5-0.5b','qwen2.5-1.5b','qwen2.5-3b','qwen2.5-7b','llama3.2-1b','llama3.2-3b','llama3.1-8b','llama3-latest']
     print('patterns:',len(PAT))
     for m in models:
-        d=json.load(open(f'output/research/answers-{m}-full.json',encoding='utf8')); R=d['records']
+        d=json.load(open(f'paper/results/answers-{m}-full.json',encoding='utf8')); R=d['records']
         una=[r for r in R if r['unanswerable']]; ans=[r for r in R if not r['unanswerable']]
         una_c=[r for r in una if r['id'] not in rel]; ans_c=ans+[r for r in una if r['id'] in rel]
         S=lambda L:sum(squad.is_refusal(r['answer']) for r in L); Lc=lambda L:sum(lenient(r['answer']) for r in L)

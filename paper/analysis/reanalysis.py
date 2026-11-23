@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0, '.')
 from evaluation import beir, stats
 from evaluation.public import ndcg_at_k
-R = Path('output/research'); OUT = Path(sys.argv[1])
+R = Path('paper/results'); OUT = Path(sys.argv[1])
 EMB = {'nomic': 'nomic-embed-text-latest', 'minilm': 'all-minilm-latest'}
 CORP = ['scifact', 'nfcorpus', 'labelled']
 B = 10000

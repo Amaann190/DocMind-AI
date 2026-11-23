@@ -2,8 +2,8 @@ import json,sys
 sys.path.insert(0,'.')
 from evaluation import stats
 for m in ['llama3.2-3b','qwen2.5-7b','llama3-latest','qwen2.5-3b']:
-    R={r['id']:r for r in json.load(open(f'output/research/answers-{m}-full-r1.json',encoding='utf8'))['records']}
-    E={r['id']:r for r in json.load(open(f'output/research/answers-{m}-full-alt.json',encoding='utf8'))['records']}
+    R={r['id']:r for r in json.load(open(f'paper/results/answers-{m}-full-r1.json',encoding='utf8'))['records']}
+    E={r['id']:r for r in json.load(open(f'paper/results/answers-{m}-full-alt.json',encoding='utf8'))['records']}
     s=[]
     for nm,flag in (('ans',False),('una',True)):
         ids=[i for i in R if R[i]['unanswerable']==flag]

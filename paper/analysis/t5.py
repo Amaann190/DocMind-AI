@@ -1,6 +1,6 @@
 import json,numpy as np
 for m in ['qwen2.5-1.5b','llama3.2-3b','llama3-latest']:
-    on=json.load(open(f'output/research/resources-{m}-eco-on.json',encoding='utf8')); off=json.load(open(f'output/research/resources-{m}-eco-off.json',encoding='utf8'))
+    on=json.load(open(f'paper/results/resources-{m}-eco-on.json',encoding='utf8')); off=json.load(open(f'paper/results/resources-{m}-eco-off.json',encoding='utf8'))
     A={r['id']:r for r in on['records']}; B={r['id']:r for r in off['records']}
     assert list(A)==list(B)
     ids=list(A); n=len(ids)

@@ -4,10 +4,10 @@ from evaluation import beir
 # subset check
 off300=beir.sample(beir.load_split(beir.ensure_beir('fiqa'),'test')[0],300)
 off100=beir.sample(beir.load_split(beir.ensure_beir('fiqa'),'test')[0],100,13)
-sw=json.load(open('output/research/sweep-scifact-nomic-embed-text-latest.json',encoding='utf8'))['rows']['offtopic']
+sw=json.load(open('paper/results/sweep-scifact-nomic-embed-text-latest.json',encoding='utf8'))['rows']['offtopic']
 print('sweep offtopic keys == sample300:',list(sw)==list(off300),len(sw),'| endtoend100 subset of sweep300:',set(off100)<=set(sw),'| first100 of sweep order equal:',list(off100)==list(sw)[:100])
 for m in ['llama3-latest','qwen2.5-7b']:
-    d=json.load(open(f'output/research/endtoend-{m}.json',encoding='utf8'))
+    d=json.load(open(f'paper/results/endtoend-{m}.json',encoding='utf8'))
     print('=====',m,{k:d[k] for k in d if k not in('gates',)},'gate order',list(d['gates']))
     ids=[r['id'] for r in d['gates']['no_floor']['records']]; 
     for g in d['gates']: assert [r['id'] for r in d['gates'][g]['records']]==ids

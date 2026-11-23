@@ -4,7 +4,7 @@ sys.path.insert(0,'.')
 from evaluation import beir, stats
 from evaluation.public import ndcg_at_k
 from evaluation import retrieval_ext
-R=Path('output/research')
+R=Path('paper/results')
 FOLDER={}
 def qrels_for(ds,split):
     f=beir.ensure_beir(ds); return beir.load_split(f,split)[1]
