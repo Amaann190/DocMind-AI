@@ -1,0 +1,8875 @@
+{
+ "experiment": "sweep",
+ "dataset": "labelled",
+ "embedding": "all-minilm:latest",
+ "k": 5,
+ "cutoff": 0.3,
+ "floors": [
+  0.35,
+  0.4,
+  0.45,
+  0.5,
+  0.55,
+  0.6,
+  0.65,
+  0.7
+ ],
+ "test_queries": 70,
+ "offtopic_queries": 332,
+ "calibration_queries": 0,
+ "index_seconds": 11.6,
+ "seconds": 53.3,
+ "summary": {
+  "configurations": {
+   "bm25_only": {
+    "ndcg@10": 0.8,
+    "ndcg@10_ci": [
+     0.7,
+     0.8857142857142857
+    ],
+    "recall@1": 0.8,
+    "recall@5": 0.8,
+    "mrr@10": 0.8,
+    "no_result": 0.18571428571428572,
+    "rejection": 0.9367469879518072,
+    "rejection_ci": [
+     0.9052421702641064,
+     0.9582601474952183
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "hybrid_no_floor": {
+    "ndcg@10": 0.8804418536224494,
+    "ndcg@10_ci": [
+     0.8,
+     0.9518704250510207
+    ],
+    "recall@1": 0.8714285714285714,
+    "recall@5": 0.8857142857142857,
+    "mrr@10": 0.8785714285714286,
+    "no_result": 0.08571428571428572,
+    "rejection": 0.8463855421686747,
+    "rejection_ci": [
+     0.8036557102408034,
+     0.8811909555683161
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "vector_only": {
+    "ndcg@10": 0.7518704250510209,
+    "ndcg@10_ci": [
+     0.6465979929591845,
+     0.8518704250510208
+    ],
+    "recall@1": 0.7428571428571429,
+    "recall@5": 0.7571428571428571,
+    "mrr@10": 0.75,
+    "no_result": 0.2,
+    "rejection": 0.8945783132530121,
+    "rejection_ci": [
+     0.8569116459495987,
+     0.9232180342329637
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.35": {
+    "ndcg@10": 0.8857142857142857,
+    "ndcg@10_ci": [
+     0.8,
+     0.9571428571428572
+    ],
+    "recall@1": 0.8857142857142857,
+    "recall@5": 0.8857142857142857,
+    "mrr@10": 0.8857142857142857,
+    "no_result": 0.08571428571428572,
+    "rejection": 0.9066265060240963,
+    "rejection_ci": [
+     0.8705112929499575,
+     0.9334391408259654
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.40": {
+    "ndcg@10": 0.8857142857142857,
+    "ndcg@10_ci": [
+     0.8,
+     0.9571428571428572
+    ],
+    "recall@1": 0.8857142857142857,
+    "recall@5": 0.8857142857142857,
+    "mrr@10": 0.8857142857142857,
+    "no_result": 0.1,
+    "rejection": 0.927710843373494,
+    "rejection_ci": [
+     0.8946926500282774,
+     0.9509441025360269
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.45": {
+    "ndcg@10": 0.8428571428571429,
+    "ndcg@10_ci": [
+     0.7571428571428571,
+     0.9285714285714286
+    ],
+    "recall@1": 0.8428571428571429,
+    "recall@5": 0.8428571428571429,
+    "mrr@10": 0.8428571428571429,
+    "no_result": 0.14285714285714285,
+    "rejection": 0.9337349397590361,
+    "rejection_ci": [
+     0.9017111370225988,
+     0.9558359923383857
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.50": {
+    "ndcg@10": 0.8285714285714286,
+    "ndcg@10_ci": [
+     0.7285714285714285,
+     0.9142857142857143
+    ],
+    "recall@1": 0.8285714285714286,
+    "recall@5": 0.8285714285714286,
+    "mrr@10": 0.8285714285714286,
+    "no_result": 0.15714285714285714,
+    "rejection": 0.9337349397590361,
+    "rejection_ci": [
+     0.9017111370225988,
+     0.9558359923383857
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.55": {
+    "ndcg@10": 0.8142857142857143,
+    "ndcg@10_ci": [
+     0.7142857142857143,
+     0.9
+    ],
+    "recall@1": 0.8142857142857143,
+    "recall@5": 0.8142857142857143,
+    "mrr@10": 0.8142857142857143,
+    "no_result": 0.17142857142857143,
+    "rejection": 0.9367469879518072,
+    "rejection_ci": [
+     0.9052421702641064,
+     0.9582601474952183
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.60": {
+    "ndcg@10": 0.8,
+    "ndcg@10_ci": [
+     0.7,
+     0.8857142857142857
+    ],
+    "recall@1": 0.8,
+    "recall@5": 0.8,
+    "mrr@10": 0.8,
+    "no_result": 0.18571428571428572,
+    "rejection": 0.9367469879518072,
+    "rejection_ci": [
+     0.9052421702641064,
+     0.9582601474952183
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.65": {
+    "ndcg@10": 0.8,
+    "ndcg@10_ci": [
+     0.7,
+     0.8857142857142857
+    ],
+    "recall@1": 0.8,
+    "recall@5": 0.8,
+    "mrr@10": 0.8,
+    "no_result": 0.18571428571428572,
+    "rejection": 0.9367469879518072,
+    "rejection_ci": [
+     0.9052421702641064,
+     0.9582601474952183
+    ],
+    "own_offtopic_rejection": 0.96875
+   },
+   "floor_0.70": {
+    "ndcg@10": 0.8,
+    "ndcg@10_ci": [
+     0.7,
+     0.8857142857142857
+    ],
+    "recall@1": 0.8,
+    "recall@5": 0.8,
+    "mrr@10": 0.8,
+    "no_result": 0.18571428571428572,
+    "rejection": 0.9367469879518072,
+    "rejection_ci": [
+     0.9052421702641064,
+     0.9582601474952183
+    ],
+    "own_offtopic_rejection": 0.96875
+   }
+  },
+  "per_query_ndcg": {
+   "bm25_only": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "hybrid_no_floor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.6309297535714575,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "vector_only": [
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    0.6309297535714575,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.35": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.40": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.45": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.50": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.55": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.60": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.65": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ],
+   "floor_0.70": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0
+   ]
+  },
+  "paired": {
+   "hybrid_no_floor vs vector_only": {
+    "diff": 0.12857142857142856,
+    "low": 0.05714285714285714,
+    "high": 0.21054486418367263,
+    "p": 0.0
+   },
+   "hybrid_no_floor vs bm25_only": {
+    "diff": 0.08044185362244939,
+    "low": 0.021767414489797573,
+    "high": 0.15187042505102083,
+    "p": 0.0064
+   },
+   "floor_0.50 vs hybrid_no_floor": {
+    "diff": -0.051870425051020824,
+    "low": -0.11428571428571428,
+    "high": -0.003740850102041644,
+    "p": 0.0418
+   }
+  }
+ },
+ "rows": {
+  "test": {
+   "a01": {
+    "query": "How many days do I have to return a purchase?",
+    "vector_only": [
+     "returns_policy.md",
+     "laptop_warranty.md"
+    ],
+    "bm25_only": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.45": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.50": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.55": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.60": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.65": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.70": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ]
+   },
+   "a02": {
+    "query": "Can I send back headphones I already unboxed, and how long do I have?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md"
+    ],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a03": {
+    "query": "What does an RMA number start with?",
+    "vector_only": [],
+    "bm25_only": [
+     "returns_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md"
+    ],
+    "floor_0.45": [
+     "returns_policy.md"
+    ],
+    "floor_0.50": [
+     "returns_policy.md"
+    ],
+    "floor_0.55": [
+     "returns_policy.md"
+    ],
+    "floor_0.60": [
+     "returns_policy.md"
+    ],
+    "floor_0.65": [
+     "returns_policy.md"
+    ],
+    "floor_0.70": [
+     "returns_policy.md"
+    ]
+   },
+   "a04": {
+    "query": "Is there a charge for sending back a drone?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [
+     "returns_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md"
+    ],
+    "floor_0.45": [
+     "returns_policy.md"
+    ],
+    "floor_0.50": [
+     "returns_policy.md"
+    ],
+    "floor_0.55": [
+     "returns_policy.md"
+    ],
+    "floor_0.60": [
+     "returns_policy.md"
+    ],
+    "floor_0.65": [
+     "returns_policy.md"
+    ],
+    "floor_0.70": [
+     "returns_policy.md"
+    ]
+   },
+   "a05": {
+    "query": "How long is the Nimbus X14 warranty?",
+    "vector_only": [
+     "laptop_warranty.md",
+     "returns_policy.md"
+    ],
+    "bm25_only": [
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "laptop_warranty.md",
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "laptop_warranty.md",
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "laptop_warranty.md"
+    ]
+   },
+   "a06": {
+    "query": "What is CP-220?",
+    "vector_only": [],
+    "bm25_only": [
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.35": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "laptop_warranty.md"
+    ]
+   },
+   "a07": {
+    "query": "My laptop screen cracked after I dropped it, will they fix it for free?",
+    "vector_only": [
+     "laptop_warranty.md"
+    ],
+    "bm25_only": [
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.35": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "laptop_warranty.md"
+    ]
+   },
+   "a08": {
+    "query": "What do I need to attach to form W-17?",
+    "vector_only": [],
+    "bm25_only": [
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.35": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "laptop_warranty.md"
+    ]
+   },
+   "a09": {
+    "query": "How many days of annual leave do employees get?",
+    "vector_only": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md"
+    ],
+    "bm25_only": [
+     "hr_leave_policy.md",
+     "annual_report_2024.md",
+     "library_membership.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.35": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.40": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.45": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.50": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.55": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.60": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.65": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ],
+    "floor_0.70": [
+     "hr_leave_policy.md",
+     "onboarding_guide.md",
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "library_membership.md"
+    ]
+   },
+   "a10": {
+    "query": "How much time off can a new mother take after the baby arrives?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a11": {
+    "query": "Can I carry over five unused holiday days?",
+    "vector_only": [
+     "expense_policy.md",
+     "hr_leave_policy.md"
+    ],
+    "bm25_only": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "hr_leave_policy.md",
+     "returns_policy.md",
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.45": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.50": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.55": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.60": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.65": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.70": [
+     "hr_leave_policy.md",
+     "returns_policy.md"
+    ]
+   },
+   "a12": {
+    "query": "sick leave kitne din milti hai batao",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a13": {
+    "query": "What is the daily meal allowance for domestic travel?",
+    "vector_only": [
+     "expense_policy.md"
+    ],
+    "bm25_only": [
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md"
+    ]
+   },
+   "a14": {
+    "query": "Can I fly business class on a four hour work trip?",
+    "vector_only": [
+     "expense_policy.md"
+    ],
+    "bm25_only": [
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md"
+    ]
+   },
+   "a15": {
+    "query": "Where do I submit claims in ExpenseHub?",
+    "vector_only": [
+     "expense_policy.md",
+     "returns_policy.md"
+    ],
+    "bm25_only": [
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md"
+    ]
+   },
+   "a16": {
+    "query": "How much do I get paid for driving my own car for work?",
+    "vector_only": [],
+    "bm25_only": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ]
+   },
+   "a17": {
+    "query": "What is the minimum password length?",
+    "vector_only": [
+     "it_security_guidelines.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.35": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.40": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a18": {
+    "query": "Which VPN client is SecureLink used for?",
+    "vector_only": [
+     "it_security_guidelines.md"
+    ],
+    "bm25_only": [
+     "it_security_guidelines.md"
+    ],
+    "hybrid_no_floor": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.35": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.40": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.45": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.50": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.55": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.60": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.65": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.70": [
+     "it_security_guidelines.md"
+    ]
+   },
+   "a19": {
+    "query": "I left my work computer on the train, what should I do?",
+    "vector_only": [],
+    "bm25_only": [
+     "onboarding_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.35": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.40": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.45": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.50": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.55": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.60": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.65": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.70": [
+     "onboarding_guide.md"
+    ]
+   },
+   "a20": {
+    "query": "phishing email aaye to kya karna hai",
+    "vector_only": [
+     "it_security_guidelines.md"
+    ],
+    "bm25_only": [
+     "it_security_guidelines.md"
+    ],
+    "hybrid_no_floor": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.35": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.40": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.45": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.50": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.55": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.60": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.65": [
+     "it_security_guidelines.md"
+    ],
+    "floor_0.70": [
+     "it_security_guidelines.md"
+    ]
+   },
+   "a21": {
+    "query": "How do I factory reset the router?",
+    "vector_only": [
+     "router_manual.md"
+    ],
+    "bm25_only": [
+     "router_manual.md"
+    ],
+    "hybrid_no_floor": [
+     "router_manual.md"
+    ],
+    "floor_0.35": [
+     "router_manual.md"
+    ],
+    "floor_0.40": [
+     "router_manual.md"
+    ],
+    "floor_0.45": [
+     "router_manual.md"
+    ],
+    "floor_0.50": [
+     "router_manual.md"
+    ],
+    "floor_0.55": [
+     "router_manual.md"
+    ],
+    "floor_0.60": [
+     "router_manual.md"
+    ],
+    "floor_0.65": [
+     "router_manual.md"
+    ],
+    "floor_0.70": [
+     "router_manual.md"
+    ]
+   },
+   "a22": {
+    "query": "What does error E-219 mean?",
+    "vector_only": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "bm25_only": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "hybrid_no_floor": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.35": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.40": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.45": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.50": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.55": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.60": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.65": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.70": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ]
+   },
+   "a23": {
+    "query": "What is at 192.168.8.1?",
+    "vector_only": [
+     "router_manual.md"
+    ],
+    "bm25_only": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "hybrid_no_floor": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.35": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.40": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.45": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.50": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.55": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.60": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.65": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.70": [
+     "router_manual.md",
+     "coffee_machine_manual.md"
+    ]
+   },
+   "a24": {
+    "query": "The light on my wifi box is solid red, what is wrong?",
+    "vector_only": [
+     "router_manual.md"
+    ],
+    "bm25_only": [
+     "router_manual.md"
+    ],
+    "hybrid_no_floor": [
+     "router_manual.md"
+    ],
+    "floor_0.35": [
+     "router_manual.md"
+    ],
+    "floor_0.40": [
+     "router_manual.md"
+    ],
+    "floor_0.45": [
+     "router_manual.md"
+    ],
+    "floor_0.50": [
+     "router_manual.md"
+    ],
+    "floor_0.55": [
+     "router_manual.md"
+    ],
+    "floor_0.60": [
+     "router_manual.md"
+    ],
+    "floor_0.65": [
+     "router_manual.md"
+    ],
+    "floor_0.70": [
+     "router_manual.md"
+    ]
+   },
+   "a25": {
+    "query": "How often should the espresso machine be descaled?",
+    "vector_only": [
+     "coffee_machine_manual.md"
+    ],
+    "bm25_only": [
+     "coffee_machine_manual.md"
+    ],
+    "hybrid_no_floor": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.35": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.40": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.45": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.50": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.55": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.60": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.65": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.70": [
+     "coffee_machine_manual.md"
+    ]
+   },
+   "a26": {
+    "query": "BrewMaster error E04",
+    "vector_only": [
+     "coffee_machine_manual.md"
+    ],
+    "bm25_only": [
+     "coffee_machine_manual.md"
+    ],
+    "hybrid_no_floor": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.35": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.40": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.45": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.50": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.55": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.60": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.65": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.70": [
+     "coffee_machine_manual.md"
+    ]
+   },
+   "a27": {
+    "query": "How much water fits in the coffee maker?",
+    "vector_only": [
+     "coffee_machine_manual.md"
+    ],
+    "bm25_only": [
+     "coffee_machine_manual.md"
+    ],
+    "hybrid_no_floor": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.35": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.40": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.45": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.50": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.55": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.60": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.65": [
+     "coffee_machine_manual.md"
+    ],
+    "floor_0.70": [
+     "coffee_machine_manual.md"
+    ]
+   },
+   "a28": {
+    "query": "What was the revenue in fiscal year 2024?",
+    "vector_only": [
+     "annual_report_2024.md",
+     "expense_policy.md"
+    ],
+    "bm25_only": [
+     "annual_report_2024.md"
+    ],
+    "hybrid_no_floor": [
+     "annual_report_2024.md",
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.45": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.50": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.55": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.60": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.65": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.70": [
+     "annual_report_2024.md"
+    ]
+   },
+   "a29": {
+    "query": "In which cities did the company open new offices last year?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "hybrid_no_floor": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.45": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.50": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.55": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.60": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.65": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.70": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ]
+   },
+   "a30": {
+    "query": "How many employees did the company have at the end of 2024?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ]
+   },
+   "a31": {
+    "query": "What dividend did the board recommend?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [
+     "annual_report_2024.md"
+    ],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.45": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.50": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.55": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.60": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.65": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.70": [
+     "annual_report_2024.md"
+    ]
+   },
+   "a32": {
+    "query": "Which region had the most sales in Q3?",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [
+     "q3_sales_review.md"
+    ],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.45": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.50": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.55": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.60": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.65": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.70": [
+     "q3_sales_review.md"
+    ]
+   },
+   "a33": {
+    "query": "What share of customers stopped buying last quarter?",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.45": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a34": {
+    "query": "How did the Lumen lamp sell?",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [
+     "q3_sales_review.md"
+    ],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.45": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.50": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.55": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.60": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.65": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.70": [
+     "q3_sales_review.md"
+    ]
+   },
+   "a35": {
+    "query": "East region ka target kyun miss hua",
+    "vector_only": [],
+    "bm25_only": [
+     "q3_sales_review.md"
+    ],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.45": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.50": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.55": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.60": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.65": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.70": [
+     "q3_sales_review.md"
+    ]
+   },
+   "a36": {
+    "query": "Where do new employees collect their laptop on the first day?",
+    "vector_only": [
+     "onboarding_guide.md",
+     "laptop_warranty.md",
+     "it_security_guidelines.md"
+    ],
+    "bm25_only": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "onboarding_guide.md",
+     "laptop_warranty.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.35": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "onboarding_guide.md",
+     "laptop_warranty.md"
+    ]
+   },
+   "a37": {
+    "query": "How long is the probation period?",
+    "vector_only": [
+     "onboarding_guide.md",
+     "gym_membership_terms.md",
+     "hr_leave_policy.md"
+    ],
+    "bm25_only": [
+     "onboarding_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "onboarding_guide.md",
+     "gym_membership_terms.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.35": [
+     "onboarding_guide.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.40": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.45": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.50": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.55": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.60": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.65": [
+     "onboarding_guide.md"
+    ],
+    "floor_0.70": [
+     "onboarding_guide.md"
+    ]
+   },
+   "a38": {
+    "query": "When does salary get credited each month?",
+    "vector_only": [
+     "onboarding_guide.md"
+    ],
+    "bm25_only": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.35": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.40": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.45": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.50": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.55": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.60": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.65": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.70": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ]
+   },
+   "a39": {
+    "query": "What is the maximum line length in the Python style guide?",
+    "vector_only": [
+     "python_style_guide.md"
+    ],
+    "bm25_only": [
+     "python_style_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "python_style_guide.md"
+    ],
+    "floor_0.35": [
+     "python_style_guide.md"
+    ],
+    "floor_0.40": [
+     "python_style_guide.md"
+    ],
+    "floor_0.45": [
+     "python_style_guide.md"
+    ],
+    "floor_0.50": [
+     "python_style_guide.md"
+    ],
+    "floor_0.55": [
+     "python_style_guide.md"
+    ],
+    "floor_0.60": [
+     "python_style_guide.md"
+    ],
+    "floor_0.65": [
+     "python_style_guide.md"
+    ],
+    "floor_0.70": [
+     "python_style_guide.md"
+    ]
+   },
+   "a40": {
+    "query": "Which testing framework should our Python code use?",
+    "vector_only": [
+     "python_style_guide.md"
+    ],
+    "bm25_only": [
+     "python_style_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "python_style_guide.md"
+    ],
+    "floor_0.35": [
+     "python_style_guide.md"
+    ],
+    "floor_0.40": [
+     "python_style_guide.md"
+    ],
+    "floor_0.45": [
+     "python_style_guide.md"
+    ],
+    "floor_0.50": [
+     "python_style_guide.md"
+    ],
+    "floor_0.55": [
+     "python_style_guide.md"
+    ],
+    "floor_0.60": [
+     "python_style_guide.md"
+    ],
+    "floor_0.65": [
+     "python_style_guide.md"
+    ],
+    "floor_0.70": [
+     "python_style_guide.md"
+    ]
+   },
+   "a41": {
+    "query": "What docstring style do we use?",
+    "vector_only": [],
+    "bm25_only": [
+     "python_style_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "python_style_guide.md"
+    ],
+    "floor_0.35": [
+     "python_style_guide.md"
+    ],
+    "floor_0.40": [
+     "python_style_guide.md"
+    ],
+    "floor_0.45": [
+     "python_style_guide.md"
+    ],
+    "floor_0.50": [
+     "python_style_guide.md"
+    ],
+    "floor_0.55": [
+     "python_style_guide.md"
+    ],
+    "floor_0.60": [
+     "python_style_guide.md"
+    ],
+    "floor_0.65": [
+     "python_style_guide.md"
+    ],
+    "floor_0.70": [
+     "python_style_guide.md"
+    ]
+   },
+   "a42": {
+    "query": "How many API requests per minute are allowed per key?",
+    "vector_only": [
+     "api_rate_limits.md"
+    ],
+    "bm25_only": [
+     "api_rate_limits.md"
+    ],
+    "hybrid_no_floor": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.35": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.40": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.45": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.50": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.55": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.60": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.65": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.70": [
+     "api_rate_limits.md"
+    ]
+   },
+   "a43": {
+    "query": "What happens when the API returns HTTP 429?",
+    "vector_only": [
+     "api_rate_limits.md"
+    ],
+    "bm25_only": [
+     "api_rate_limits.md"
+    ],
+    "hybrid_no_floor": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.35": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.40": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.45": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.50": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.55": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.60": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.65": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.70": [
+     "api_rate_limits.md"
+    ]
+   },
+   "a44": {
+    "query": "How often do we need to change our developer keys?",
+    "vector_only": [
+     "deployment_runbook.md"
+    ],
+    "bm25_only": [
+     "api_rate_limits.md"
+    ],
+    "hybrid_no_floor": [
+     "deployment_runbook.md",
+     "api_rate_limits.md"
+    ],
+    "floor_0.35": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.40": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.45": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.50": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.55": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.60": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.65": [
+     "api_rate_limits.md"
+    ],
+    "floor_0.70": [
+     "api_rate_limits.md"
+    ]
+   },
+   "a45": {
+    "query": "On which days are production deployments allowed?",
+    "vector_only": [
+     "deployment_runbook.md"
+    ],
+    "bm25_only": [
+     "deployment_runbook.md",
+     "expense_policy.md",
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "deployment_runbook.md",
+     "laptop_warranty.md",
+     "expense_policy.md"
+    ]
+   },
+   "a46": {
+    "query": "When is the December change freeze?",
+    "vector_only": [],
+    "bm25_only": [
+     "deployment_runbook.md"
+    ],
+    "hybrid_no_floor": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.35": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.40": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.45": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.50": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.55": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.60": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.65": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.70": [
+     "deployment_runbook.md"
+    ]
+   },
+   "a47": {
+    "query": "How do I undo a bad release?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a48": {
+    "query": "How much traffic does a canary release get, and for how long?",
+    "vector_only": [
+     "api_rate_limits.md"
+    ],
+    "bm25_only": [
+     "deployment_runbook.md"
+    ],
+    "hybrid_no_floor": [
+     "deployment_runbook.md",
+     "api_rate_limits.md"
+    ],
+    "floor_0.35": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.40": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.45": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.50": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.55": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.60": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.65": [
+     "deployment_runbook.md"
+    ],
+    "floor_0.70": [
+     "deployment_runbook.md"
+    ]
+   },
+   "a49": {
+    "query": "How long should spaghetti boil?",
+    "vector_only": [
+     "pasta_recipe.md"
+    ],
+    "bm25_only": [
+     "pasta_recipe.md"
+    ],
+    "hybrid_no_floor": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.35": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.40": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.45": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.50": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.55": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.60": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.65": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.70": [
+     "pasta_recipe.md"
+    ]
+   },
+   "a50": {
+    "query": "How much cheese goes into the lemon pasta?",
+    "vector_only": [
+     "pasta_recipe.md"
+    ],
+    "bm25_only": [
+     "pasta_recipe.md"
+    ],
+    "hybrid_no_floor": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.35": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.40": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.45": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.50": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.55": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.60": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.65": [
+     "pasta_recipe.md"
+    ],
+    "floor_0.70": [
+     "pasta_recipe.md"
+    ]
+   },
+   "a51": {
+    "query": "pasta mein kitne lehsun dalne hai",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a52": {
+    "query": "What is the hydration of the sourdough loaf?",
+    "vector_only": [
+     "bread_recipe.md"
+    ],
+    "bm25_only": [
+     "bread_recipe.md"
+    ],
+    "hybrid_no_floor": [
+     "bread_recipe.md"
+    ],
+    "floor_0.35": [
+     "bread_recipe.md"
+    ],
+    "floor_0.40": [
+     "bread_recipe.md"
+    ],
+    "floor_0.45": [
+     "bread_recipe.md"
+    ],
+    "floor_0.50": [
+     "bread_recipe.md"
+    ],
+    "floor_0.55": [
+     "bread_recipe.md"
+    ],
+    "floor_0.60": [
+     "bread_recipe.md"
+    ],
+    "floor_0.65": [
+     "bread_recipe.md"
+    ],
+    "floor_0.70": [
+     "bread_recipe.md"
+    ]
+   },
+   "a53": {
+    "query": "At what oven temperature do I bake the bread?",
+    "vector_only": [
+     "bread_recipe.md"
+    ],
+    "bm25_only": [
+     "bread_recipe.md"
+    ],
+    "hybrid_no_floor": [
+     "bread_recipe.md"
+    ],
+    "floor_0.35": [
+     "bread_recipe.md"
+    ],
+    "floor_0.40": [
+     "bread_recipe.md"
+    ],
+    "floor_0.45": [
+     "bread_recipe.md"
+    ],
+    "floor_0.50": [
+     "bread_recipe.md"
+    ],
+    "floor_0.55": [
+     "bread_recipe.md"
+    ],
+    "floor_0.60": [
+     "bread_recipe.md"
+    ],
+    "floor_0.65": [
+     "bread_recipe.md"
+    ],
+    "floor_0.70": [
+     "bread_recipe.md"
+    ]
+   },
+   "a54": {
+    "query": "How long is the bulk fermentation?",
+    "vector_only": [
+     "bread_recipe.md"
+    ],
+    "bm25_only": [
+     "bread_recipe.md"
+    ],
+    "hybrid_no_floor": [
+     "bread_recipe.md"
+    ],
+    "floor_0.35": [
+     "bread_recipe.md"
+    ],
+    "floor_0.40": [
+     "bread_recipe.md"
+    ],
+    "floor_0.45": [
+     "bread_recipe.md"
+    ],
+    "floor_0.50": [
+     "bread_recipe.md"
+    ],
+    "floor_0.55": [
+     "bread_recipe.md"
+    ],
+    "floor_0.60": [
+     "bread_recipe.md"
+    ],
+    "floor_0.65": [
+     "bread_recipe.md"
+    ],
+    "floor_0.70": [
+     "bread_recipe.md"
+    ]
+   },
+   "a55": {
+    "query": "What are the names of the moons of Mars?",
+    "vector_only": [
+     "solar_system_notes.md"
+    ],
+    "bm25_only": [
+     "solar_system_notes.md"
+    ],
+    "hybrid_no_floor": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.35": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.40": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.45": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.50": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.55": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.60": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.65": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.70": [
+     "solar_system_notes.md"
+    ]
+   },
+   "a56": {
+    "query": "Which planet has the highest surface temperature?",
+    "vector_only": [
+     "solar_system_notes.md"
+    ],
+    "bm25_only": [
+     "solar_system_notes.md"
+    ],
+    "hybrid_no_floor": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.35": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.40": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.45": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.50": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.55": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.60": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.65": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.70": [
+     "solar_system_notes.md"
+    ]
+   },
+   "a57": {
+    "query": "How long is a sol on Mars?",
+    "vector_only": [
+     "solar_system_notes.md"
+    ],
+    "bm25_only": [
+     "solar_system_notes.md"
+    ],
+    "hybrid_no_floor": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.35": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.40": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.45": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.50": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.55": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.60": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.65": [
+     "solar_system_notes.md"
+    ],
+    "floor_0.70": [
+     "solar_system_notes.md"
+    ]
+   },
+   "a58": {
+    "query": "Where does the Calvin cycle take place?",
+    "vector_only": [
+     "photosynthesis_notes.md"
+    ],
+    "bm25_only": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.35": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "photosynthesis_notes.md",
+     "laptop_warranty.md"
+    ]
+   },
+   "a59": {
+    "query": "Why do leaves look green?",
+    "vector_only": [
+     "photosynthesis_notes.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.35": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.40": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.45": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.50": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a60": {
+    "query": "What gas do plants give off when they make food from sunlight?",
+    "vector_only": [
+     "photosynthesis_notes.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.35": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.40": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.45": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.50": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.55": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a61": {
+    "query": "How much does a library membership cost?",
+    "vector_only": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "bm25_only": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "hybrid_no_floor": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.35": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.40": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.45": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.50": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.55": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.60": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.65": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ],
+    "floor_0.70": [
+     "library_membership.md",
+     "gym_membership_terms.md"
+    ]
+   },
+   "a62": {
+    "query": "How many novels can I take home at once from the library?",
+    "vector_only": [
+     "library_membership.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "library_membership.md"
+    ],
+    "floor_0.35": [
+     "library_membership.md"
+    ],
+    "floor_0.40": [
+     "library_membership.md"
+    ],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a63": {
+    "query": "library book late hone par fine kitna hai",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a64": {
+    "query": "How much notice is needed to cancel a FitZone membership?",
+    "vector_only": [
+     "gym_membership_terms.md",
+     "library_membership.md"
+    ],
+    "bm25_only": [
+     "gym_membership_terms.md"
+    ],
+    "hybrid_no_floor": [
+     "gym_membership_terms.md",
+     "library_membership.md"
+    ],
+    "floor_0.35": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.40": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.45": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.50": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.55": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.60": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.65": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.70": [
+     "gym_membership_terms.md"
+    ]
+   },
+   "a65": {
+    "query": "Can I pause my gym subscription while I travel?",
+    "vector_only": [
+     "gym_membership_terms.md"
+    ],
+    "bm25_only": [
+     "gym_membership_terms.md"
+    ],
+    "hybrid_no_floor": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.35": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.40": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.45": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.50": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.55": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.60": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.65": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.70": [
+     "gym_membership_terms.md"
+    ]
+   },
+   "a66": {
+    "query": "How many guest passes do gym members get?",
+    "vector_only": [
+     "gym_membership_terms.md"
+    ],
+    "bm25_only": [
+     "gym_membership_terms.md"
+    ],
+    "hybrid_no_floor": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.35": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.40": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.45": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.50": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.55": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.60": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.65": [
+     "gym_membership_terms.md"
+    ],
+    "floor_0.70": [
+     "gym_membership_terms.md"
+    ]
+   },
+   "a67": {
+    "query": "What medical cover does TI-Gold include?",
+    "vector_only": [
+     "travel_insurance_policy.md"
+    ],
+    "bm25_only": [
+     "travel_insurance_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.35": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.40": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.45": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.50": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.55": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.60": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.65": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.70": [
+     "travel_insurance_policy.md"
+    ]
+   },
+   "a68": {
+    "query": "My suitcase arrived a day late on holiday, can I claim anything?",
+    "vector_only": [
+     "returns_policy.md",
+     "expense_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "expense_policy.md",
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "a69": {
+    "query": "Is skydiving covered by the travel insurance?",
+    "vector_only": [
+     "travel_insurance_policy.md",
+     "expense_policy.md"
+    ],
+    "bm25_only": [
+     "travel_insurance_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "travel_insurance_policy.md",
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "travel_insurance_policy.md",
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.45": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.50": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.55": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.60": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.65": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.70": [
+     "travel_insurance_policy.md"
+    ]
+   },
+   "a70": {
+    "query": "trip cancel karne par kitna paisa wapas milega",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   }
+  },
+  "offtopic": {
+   "o01": {
+    "query": "What is the capital of Australia?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o02": {
+    "query": "Who wrote Pride and Prejudice?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o03": {
+    "query": "How do I tune a guitar to drop D?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o04": {
+    "query": "When is the best season to see the northern lights in Iceland?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o05": {
+    "query": "How do I house-train a puppy?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o06": {
+    "query": "What is the boiling point of nitrogen?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o07": {
+    "query": "Who won the 2019 Cricket World Cup?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o08": {
+    "query": "Explain how a blockchain reaches consensus.",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o09": {
+    "query": "What are the rules of chess castling?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o10": {
+    "query": "How many bones are in the human body?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o11": {
+    "query": "Translate good morning into Japanese.",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o12": {
+    "query": "What causes ocean tides?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o13": {
+    "query": "Recommend a good science fiction novel.",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o14": {
+    "query": "How do vaccines train the immune system?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o15": {
+    "query": "What is the plot of the movie Inception?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o16": {
+    "query": "How tall is Mount Kilimanjaro?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o17": {
+    "query": "Which programming language was created by Guido van Rossum?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o18": {
+    "query": "How do I change a flat bicycle tyre?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o19": {
+    "query": "What is the GDP of Brazil?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o20": {
+    "query": "Who painted the Starry Night?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o21": {
+    "query": "How long do elephants live?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o22": {
+    "query": "What is quantum entanglement?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o23": {
+    "query": "Suggest exercises for lower back pain.",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o24": {
+    "query": "How does a refrigerator keep food cold?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o25": {
+    "query": "What is the population of Tokyo?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o26": {
+    "query": "Explain the offside rule in football.",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o27": {
+    "query": "How do I knit a scarf?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o28": {
+    "query": "What year did the Berlin Wall fall?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o29": {
+    "query": "mujhe ek achhi hindi film batao",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o30": {
+    "query": "How are rainbows formed?",
+    "vector_only": [
+     "photosynthesis_notes.md"
+    ],
+    "bm25_only": [
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "laptop_warranty.md",
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.35": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "laptop_warranty.md"
+    ]
+   },
+   "o31": {
+    "query": "What is the speed of sound in water?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "o32": {
+    "query": "Name three famous jazz musicians.",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1871": {
+    "query": "Is there any US bank that does not charge for incoming wire transfers?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10246": {
+    "query": "Understanding the T + 3 settlement days rule",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_957": {
+    "query": "How can I withdraw money from my LLC?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2513": {
+    "query": "How does revenue shared with someone else go into my tax return in Canada?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6629": {
+    "query": "Tax treatment of a boxed trade?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10213": {
+    "query": "Looking for good investment vehicle for seasonal work and savings",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6199": {
+    "query": "How can all these countries owe so much money?  Why & where did they borrow it from?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5402": {
+    "query": "Is it impossible to get a home loan with a poor credit history after a divorce?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9403": {
+    "query": "Abundance of Cash - What should I do?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5763": {
+    "query": "What is the best way to get a \u201crough\u201d home appraisal prior to starting the refinance process?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9174": {
+    "query": "Which U.S. online discount broker is the best value for money?",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2348": {
+    "query": "Why can't you just have someone invest for you and split the profits (and losses) with him?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6467": {
+    "query": "Advice on strategy for when to sell",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5080": {
+    "query": "Is there a standard or best practice way to handle money from an expiring UTMA account?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_691": {
+    "query": "How to categorize credit card payments?",
+    "vector_only": [],
+    "bm25_only": [
+     "returns_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md"
+    ],
+    "floor_0.45": [
+     "returns_policy.md"
+    ],
+    "floor_0.50": [
+     "returns_policy.md"
+    ],
+    "floor_0.55": [
+     "returns_policy.md"
+    ],
+    "floor_0.60": [
+     "returns_policy.md"
+    ],
+    "floor_0.65": [
+     "returns_policy.md"
+    ],
+    "floor_0.70": [
+     "returns_policy.md"
+    ]
+   },
+   "fiqa_34": {
+    "query": "401k Transfer After Business Closure",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1391": {
+    "query": "How is taxation for youtube/twitch etc monetization handled in the UK?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9487": {
+    "query": "Is a public company allowed to issue new shares below market price without consulting shareholders?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4845": {
+    "query": "What is the difference between fund and portfolio?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9633": {
+    "query": "Video recommendation for stock market education",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_98": {
+    "query": "How can I make $250,000.00 from trading/investing/business within 5 years?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7080": {
+    "query": "Wash sale rule with dividend reinvestment",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_18": {
+    "query": "1 EIN doing business under multiple business names",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2204": {
+    "query": "What's an economic explanation for why greeting cards are so expensive?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2306": {
+    "query": "To whom should I report fraud on both of my credit cards?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3724": {
+    "query": "Should you always max out contributions to your 401k?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6625": {
+    "query": "What does a high theta mean for an option position?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4499": {
+    "query": "Is investing exlusively in a small-cap index fund a wise investment?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10497": {
+    "query": "Why would you elect to apply a refund to next year's tax bill?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9598": {
+    "query": "How do index funds actually work?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9979": {
+    "query": "What is the best way to invest in gold as a hedge against inflation without having to hold physical gold?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5054": {
+    "query": "How to stress test an investment plan?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2075": {
+    "query": "Are stories of turning a few thousands into millions by trading stocks real?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10812": {
+    "query": "Is is possible to dispute IRS underpayment penalties?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2264": {
+    "query": "Personal Tax Return software for Linux?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5616": {
+    "query": "How and where do companies publish financial reports?",
+    "vector_only": [],
+    "bm25_only": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "hybrid_no_floor": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.45": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.50": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.55": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.60": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.65": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ],
+    "floor_0.70": [
+     "annual_report_2024.md",
+     "it_security_guidelines.md"
+    ]
+   },
+   "fiqa_5086": {
+    "query": "Mortgage loan implications when tearing down existing house and building new one?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8855": {
+    "query": "How do i get into investing stocks [duplicate]",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_858": {
+    "query": "Is it bad practice to invest in stocks that fluctuate by single points throughout the day?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_604": {
+    "query": "Is there a dollar amount that, when adding Massachusetts Sales Tax, precisely equals $200?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1321": {
+    "query": "Are social media accounts (e.g. YouTube, Twitter, Instagram, etc.) considered assets?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3995": {
+    "query": "I have more than $250,000 in a US Bank account\u2026 mistake?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3625": {
+    "query": "What should I do with my paper financial documents?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2416": {
+    "query": "Why should a company go public?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7279": {
+    "query": "If I invest in securities denominated in a foreign currency, should I hedge my currency risk?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1670": {
+    "query": "Investing in hemp producers in advance of possible legalization in Canada?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5343": {
+    "query": "\u201cInternational credit report\u201d for French nationals?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8040": {
+    "query": "Best way to make most of savings with ISA and Offset mortgage",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4844": {
+    "query": "How to read bond yield quotes? What do the time, coupon, price, yield, and time mean?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6262": {
+    "query": "Help required on estimating SSA benefit amounts",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4019": {
+    "query": "How and Should I Invest (As a college 18 year old with minimal living expenses)?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1393": {
+    "query": "Which is better when working as a contractor, 1099 or incorporating?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7534": {
+    "query": "Can you explain why it's better to invest now rather than waiting for the market to dip?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1994": {
+    "query": "Does the IRS reprieve those who have to commute for work?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3480": {
+    "query": "Why is OkPay not allowed in the United States?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4037": {
+    "query": "How separate individual expenses from family expenses in Gnucash?",
+    "vector_only": [
+     "expense_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5993": {
+    "query": "Why would anyone want to pay off their debts in a way other than \u201chighest interest\u201d first?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1074": {
+    "query": "How common is \u201cpass-through\u201d health insurance?",
+    "vector_only": [
+     "travel_insurance_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4306": {
+    "query": "How do currency markets work? What factors are behind why currencies go up or down?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6835": {
+    "query": "Are bond ETF capital gains taxed similar to stock or stock funds if held for more than 1 year?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9643": {
+    "query": "Is there any public data available to determine an ETF's holdings?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1159": {
+    "query": "what is the best way to do a freelancing job over the summer for a student",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2407": {
+    "query": "How long to wait after getting a mortgage to increase my credit limit?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4641": {
+    "query": "Where should I park my rainy-day / emergency fund?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5150": {
+    "query": "What credit card information are offline US merchants allowed to collect for purposes other than the transaction?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9060": {
+    "query": "Buying puts without owning underlying",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6891": {
+    "query": "What is the theory behind Rick Van Ness's risk calculation in the video about diversification?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5264": {
+    "query": "Does a company's stock price give any indication to or affect their revenue?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3008": {
+    "query": "What are my chances at getting a mortgage with Terrible credit but High income",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4011": {
+    "query": "How can I deal with a spouse who compulsively spends?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2400": {
+    "query": "Will I be paid dividends if I own shares?",
+    "vector_only": [],
+    "bm25_only": [
+     "hr_leave_policy.md",
+     "annual_report_2024.md",
+     "onboarding_guide.md",
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.45": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.50": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.55": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.60": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.65": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.70": [
+     "annual_report_2024.md",
+     "expense_policy.md",
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ]
+   },
+   "fiqa_6441": {
+    "query": "Trading with Settled / Unsettled Funds (T+3)",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7925": {
+    "query": "Can I sell a stock immediately?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_594": {
+    "query": "Should a retail trader bother about reading SEC filings",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7329": {
+    "query": "Does Implied Volatilty factor in all known future events?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7141": {
+    "query": "Do investors go long option contracts when they cannot cover the exercise of the options?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_859": {
+    "query": "Any reason to keep around my account with my old, 'big' bank?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_570": {
+    "query": "Employer options when setting up 401k for employees",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4756": {
+    "query": "What is the formula for the Tesla Finance calculation?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3875": {
+    "query": "Does freedom to provide services allow me contracting in Germany without paying taxes there (but in my home EU country)?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2724": {
+    "query": "How do you determine the dividend payout date for Mutual Funds?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4265": {
+    "query": "Does it make any sense to directly contribute to reducing the US national debt?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1948": {
+    "query": "Which colors can one use to fill out a check in the US?",
+    "vector_only": [],
+    "bm25_only": [
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md"
+    ]
+   },
+   "fiqa_4447": {
+    "query": "Should I always hold short term bonds till maturity?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3612": {
+    "query": "How can I buy and sell the same stock on the same day?",
+    "vector_only": [],
+    "bm25_only": [
+     "laptop_warranty.md",
+     "returns_policy.md",
+     "travel_insurance_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.45": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.50": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.55": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.60": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.65": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.70": [
+     "returns_policy.md",
+     "laptop_warranty.md",
+     "travel_insurance_policy.md"
+    ]
+   },
+   "fiqa_2051": {
+    "query": "Where to find the 5 or 10 year returns for a mutual fund?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [
+     "returns_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "returns_policy.md",
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md"
+    ],
+    "floor_0.45": [
+     "returns_policy.md"
+    ],
+    "floor_0.50": [
+     "returns_policy.md"
+    ],
+    "floor_0.55": [
+     "returns_policy.md"
+    ],
+    "floor_0.60": [
+     "returns_policy.md"
+    ],
+    "floor_0.65": [
+     "returns_policy.md"
+    ],
+    "floor_0.70": [
+     "returns_policy.md"
+    ]
+   },
+   "fiqa_9565": {
+    "query": "What are the tax benefits of dividends vs selling stock",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8230": {
+    "query": "Why would this kind of penny stock increase so much in value?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10267": {
+    "query": "How should I prepare for the next financial crisis?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6713": {
+    "query": "Will my father still be eligible for SNAP if I claim him as my dependent?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4823": {
+    "query": "Close to retirement & we may move within 7 years. Should we re-finance our mortgage, or not?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_68": {
+    "query": "Intentions of Deductible Amount for Small Business",
+    "vector_only": [
+     "expense_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_849": {
+    "query": "Accounting for reimbursements that exceed actual expenses",
+    "vector_only": [
+     "expense_policy.md",
+     "travel_insurance_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "expense_policy.md",
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md"
+    ],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7463": {
+    "query": "Pros/cons of borrowing money using a mortgage loan and investing it in a low-fee index fund?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1198": {
+    "query": "What are the consequences of IRS \u201creclassification\u201d on both employer and employee?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7206": {
+    "query": "Who Bought A Large Number Of Shares?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_744": {
+    "query": "What options are available for a home loan with poor credit but a good rental history?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6792": {
+    "query": "Where to find the full book of outstanding bids/asks for a stock?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_750": {
+    "query": "Paid part of my state refund back last year; now must declare the initial amount as income?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9108": {
+    "query": "Starting an investment portfolio with Rs 5,000/-",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6252": {
+    "query": "Is this mortgage advice good, or is it hooey?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6525": {
+    "query": "Does it make sense to trade my GOOGL shares for GOOG and pocket the difference?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2549": {
+    "query": "How to graph the market year over year? for example Dow Jones Index",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5741": {
+    "query": "Learning investing and the stock market",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8507": {
+    "query": "When to sell a stock?",
+    "vector_only": [],
+    "bm25_only": [
+     "q3_sales_review.md"
+    ],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.45": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.50": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.55": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.60": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.65": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.70": [
+     "q3_sales_review.md"
+    ]
+   },
+   "fiqa_895": {
+    "query": "California tells me I didn't file documents for an LLC that isn't mine. What do I do?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6909": {
+    "query": "Why do stocks priced above $2.00 on the ASX sometimes move in $0.005 increments?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2296": {
+    "query": "How does a bank make money on an interest free secured loan?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6009": {
+    "query": "Why can low volume move a stock price drastically?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7754": {
+    "query": "Inverse Relationship between Volatility and Beta",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_549": {
+    "query": "Where to request ACH Direct DEBIT of funds from MY OWN personal bank account?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7674": {
+    "query": "Choosing the limit when making a limit order?",
+    "vector_only": [],
+    "bm25_only": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.35": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "api_rate_limits.md",
+     "laptop_warranty.md"
+    ]
+   },
+   "fiqa_3091": {
+    "query": "Am I considered in debt if I pay a mortgage?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3503": {
+    "query": "Is there any instance where less leverage will get you a better return on a rental property?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_810": {
+    "query": "Can I open a bank account in the US remotely? Will I pay taxes for the money on it?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10547": {
+    "query": "How much do brokerages pay exchanges per trade?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4813": {
+    "query": "Dealer Financing Fell Through on vehicle purchase: Scam?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5534": {
+    "query": "How does \u201ctaking over payments\u201d work?",
+    "vector_only": [],
+    "bm25_only": [
+     "laptop_warranty.md"
+    ],
+    "hybrid_no_floor": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.35": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.40": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.45": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.50": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.55": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.60": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.65": [
+     "laptop_warranty.md"
+    ],
+    "floor_0.70": [
+     "laptop_warranty.md"
+    ]
+   },
+   "fiqa_2108": {
+    "query": "Can I pay taxes using bill pay from my on-line checking account?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3369": {
+    "query": "Why should one only contribute up to the employer's match in a 401(k)?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2118": {
+    "query": "What happened in Argentina in 2001 bank sector? did the banks closed? all or some?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10979": {
+    "query": "Closing a futures position",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5981": {
+    "query": "Is it a good investment for a foreigner to purchase a flat/apartment in China?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3569": {
+    "query": "Funds in closed bank account have gone to the government",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6907": {
+    "query": "Nominal value of shares",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4785": {
+    "query": "What is the difference between a structured collar and a normal collar in finance?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_504": {
+    "query": "Have plenty of cash flow but bad credit",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5030": {
+    "query": "Why pay for end-of-day historical prices?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7484": {
+    "query": "Why sometimes payable date is BEFORE the ex-dividend date?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7344": {
+    "query": "How is the Dow divisor calculated?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5460": {
+    "query": "Paying off a loan with a loan to get a better interest rate",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8351": {
+    "query": "What happens when a calendar spread is assigned in a non-margin account?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8632": {
+    "query": "Is it best to exercise options shares when they vest, or wait",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3125": {
+    "query": "Claiming mileage allowances, what are the rules/guidelines?",
+    "vector_only": [
+     "expense_policy.md"
+    ],
+    "bm25_only": [
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md"
+    ]
+   },
+   "fiqa_7705": {
+    "query": "Why would I pick a specific ETF over an equivalent Mutual Fund?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8072": {
+    "query": "What does it mean \u201csell on ask\u201d , \u201csell on bid\u201d in stocks?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4205": {
+    "query": "How and why does the exchange rate of a currency change almost everyday?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6410": {
+    "query": "Will an ETF immediately reflect a reconstitution of underlying index",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8974": {
+    "query": "As a 22-year-old, how risky should I be with my 401(k) investments?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3859": {
+    "query": "Buying an investment property in Australia - what are the advantages and disadvantages of building a house vs buying an existing one?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7876": {
+    "query": "Why do stocks split?",
+    "vector_only": [],
+    "bm25_only": [
+     "photosynthesis_notes.md"
+    ],
+    "hybrid_no_floor": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.35": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.40": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.45": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.50": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.55": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.60": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.65": [
+     "photosynthesis_notes.md"
+    ],
+    "floor_0.70": [
+     "photosynthesis_notes.md"
+    ]
+   },
+   "fiqa_4289": {
+    "query": "Does the currency exchange rate contain any additional information at all?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7218": {
+    "query": "What margin is required to initiate and maintain a short sale",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2076": {
+    "query": "Can vet / veterinary bills be considered deductions (tax-deductible) for Income Tax purposes [Canada]?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1915": {
+    "query": "Should I pay a company who failed to collect VAT from me over 6 months ago?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9275": {
+    "query": "Do I have to pay a capital gains tax if I rebuy the same stock within 30 days?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3615": {
+    "query": "My previous and current employers both use Fidelity for 401(k). Does it make sense to rollover?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6611": {
+    "query": "How does Vanguard determine the optimal asset allocation for their Target Retirement Funds?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7448": {
+    "query": "If an index goes up because an underlying company issues more shares, what happens to the ETF",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9126": {
+    "query": "Short an option - random assignment?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2598": {
+    "query": "Is it possible for US retail forex traders to trade exotic currencies?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7533": {
+    "query": "Investing tax (savings)",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7071": {
+    "query": "ESPP strategy - Sell right away or hold?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7513": {
+    "query": "Where are Bogleheadian World ETFs or Index funds?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6647": {
+    "query": "What is meant by \u201cpriced in\u201d?",
+    "vector_only": [],
+    "bm25_only": [
+     "library_membership.md"
+    ],
+    "hybrid_no_floor": [
+     "library_membership.md"
+    ],
+    "floor_0.35": [
+     "library_membership.md"
+    ],
+    "floor_0.40": [
+     "library_membership.md"
+    ],
+    "floor_0.45": [
+     "library_membership.md"
+    ],
+    "floor_0.50": [
+     "library_membership.md"
+    ],
+    "floor_0.55": [
+     "library_membership.md"
+    ],
+    "floor_0.60": [
+     "library_membership.md"
+    ],
+    "floor_0.65": [
+     "library_membership.md"
+    ],
+    "floor_0.70": [
+     "library_membership.md"
+    ]
+   },
+   "fiqa_2388": {
+    "query": "Do financial advisors get better deals on mortgages?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5505": {
+    "query": "Can I deduct interest and fees on a loan for qualified medical expenses?",
+    "vector_only": [
+     "expense_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9961": {
+    "query": "Employer rollover from 403b to 401k?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_684": {
+    "query": "Beyond RRSP deductions, how does a high income earner save on taxes?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5710": {
+    "query": "Bucketing investments to track individual growths",
+    "vector_only": [
+     "annual_report_2024.md",
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md",
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2923": {
+    "query": "Should I give to charity by check or credit card?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_853": {
+    "query": "What will my taxes be as self employed?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1090": {
+    "query": "Need a formula to determine monthly payments received at time t if I'm reinvesting my returns",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6985": {
+    "query": "Bed and Breakfast, Same Day Capital Gains UK",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9735": {
+    "query": "What are \u201cequity assets\u201d?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_603": {
+    "query": "Will one\u2019s education loan application be rejected if one doesn't have a payslip providing collateral?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7911": {
+    "query": "What is the difference between a 'trader' and a 'stockbroker'?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_106": {
+    "query": "What approaches are there for pricing a small business?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3033": {
+    "query": "Tax consequences of changing state residency?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6635": {
+    "query": "Why don't share prices of a company rise every other Friday when the company buys shares for its own employees?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3771": {
+    "query": "Best way to buy Japanese yen for travel?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1736": {
+    "query": "How can people have such high credit card debts?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4767": {
+    "query": "New car: buy with cash or 0% financing",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2330": {
+    "query": "How can I determine if a debt consolidation offer is real or a scam?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8532": {
+    "query": "What do these options trading terms mean?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5862": {
+    "query": "Can I get a discount on merchandise by paying with cash instead of credit?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9115": {
+    "query": "Why does the calculation for percentage profit vary based on whether a position is short vs. long?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_15": {
+    "query": "Can I send a money order from USPS as a business?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1415": {
+    "query": "I am not VAT registered. Do I need to buy from my supplier with excl VAT prices or incl VAT?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4031": {
+    "query": "28 years old and just inherited large amount of money and real estate - unsure what to do with it",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2334": {
+    "query": "How do you determine \u201cexcess cash\u201d for Enterprise Value calculations from a balance sheet?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5067": {
+    "query": "LLC: Where should the funds for initial startup costs come from?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5134": {
+    "query": "Why does Yahoo Finance's data for a Vanguard fund's dividend per share not match the info from Vanguard?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4777": {
+    "query": "How to finance necessary repairs to our home in order to sell it?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7441": {
+    "query": "Since many brokers disallow investors from shorting sub-$5 stocks, why don't all companies split their stock until it is sub-$5",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6121": {
+    "query": "What are my best options if I don't have a lot of credit lines for housing loans?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8378": {
+    "query": "Should I wait a few days to sell ESPP Stock?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9329": {
+    "query": "Interactive Brokers: IOPTS and list of structured products",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6890": {
+    "query": "Where does the money go when I buy stocks?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7879": {
+    "query": "Any Tips on How to Get the Highest Returns Within 4 Months by Investing in Stocks?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2010": {
+    "query": "Paypal website donations without being a charity",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_620": {
+    "query": "Is it wise to have plenty of current accounts in different banks?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3830": {
+    "query": "US citizen transferring money to Indian fiance to buy property",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8544": {
+    "query": "Strategies to recover from a bad short-term call options purchase where the underlying dropped instead?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4700": {
+    "query": "Better to get loan from finance company or bank considering the drop of credit score?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4999": {
+    "query": "Looking for a good source for Financial Statements",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4105": {
+    "query": "As an investor what are side effects of Quantitative Easing in US and in EU?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8116": {
+    "query": "A-B-C Class Shares: What's the difference?",
+    "vector_only": [],
+    "bm25_only": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md",
+     "returns_policy.md",
+     "python_style_guide.md"
+    ]
+   },
+   "fiqa_7529": {
+    "query": "Does the expense ratio of a fund-of-funds include the expense ratios of its holdings?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3189": {
+    "query": "Diversify my retirement investments with a Roth IRA",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8296": {
+    "query": "Can the beta of a stock be used as a lagging indicator for the stock w.r.t the market",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8275": {
+    "query": "Buy/Selling prices at the stock exchange represent someone Selling/Buying at that price?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7633": {
+    "query": "Can a trade happen \u201cin between\u201d the bid and ask price?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5061": {
+    "query": "What fiscal scrutiny can be expected from IRS in early retirement?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7098": {
+    "query": "Can another tax loss be used to offset capital gains taxes? How does it work?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6668": {
+    "query": "Approximate IT company valuation (to proximate stock options value)",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5331": {
+    "query": "Exercises of employee share options",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10414": {
+    "query": "What is considered high or low when talking about volume?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9644": {
+    "query": "If early exercise is a bad idea, why American option is more expensive than European [duplicate]",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3177": {
+    "query": "Vanguard ETF vs mutual fund",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_56": {
+    "query": "Can a entrepreneur hire a self-employed business owner?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8332": {
+    "query": "Why do put option prices go higher when the underlying stock tanks (drops)?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10932": {
+    "query": "Transferring money from 403B to 401K?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_547": {
+    "query": "What percentage of my company should I have if I only put money?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6554": {
+    "query": "Mutual fund value went down, shares went up, no action taken by me",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7734": {
+    "query": "Can PE ratio of stocks be compared to other investments?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2181": {
+    "query": "What are the risks & rewards of being a self-employed independent contractor / consultant vs. being a permanent employee?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9733": {
+    "query": "Due Diligence - Dilution?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5271": {
+    "query": "Why are auto leases stubbornly strict about visa status and how to work around that?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7758": {
+    "query": "Bid/ask spreads for index funds",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8592": {
+    "query": "Tax implications of exercising ISOs and using proceeds to exercise more ISOs",
+    "vector_only": [
+     "expense_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4615": {
+    "query": "Are solar cell panels and wind mills worth the money?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4125": {
+    "query": "Alternative means of salary for my employees",
+    "vector_only": [],
+    "bm25_only": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.35": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.40": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.45": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.50": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.55": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.60": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.65": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ],
+    "floor_0.70": [
+     "onboarding_guide.md",
+     "hr_leave_policy.md"
+    ]
+   },
+   "fiqa_689": {
+    "query": "Receive credit card payment sending my customer details to a credit card processing company?",
+    "vector_only": [],
+    "bm25_only": [
+     "returns_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [
+     "returns_policy.md"
+    ],
+    "floor_0.45": [
+     "returns_policy.md"
+    ],
+    "floor_0.50": [
+     "returns_policy.md"
+    ],
+    "floor_0.55": [
+     "returns_policy.md"
+    ],
+    "floor_0.60": [
+     "returns_policy.md"
+    ],
+    "floor_0.65": [
+     "returns_policy.md"
+    ],
+    "floor_0.70": [
+     "returns_policy.md"
+    ]
+   },
+   "fiqa_4981": {
+    "query": "Where can I find open source portfolio management software?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5231": {
+    "query": "Where to find CSV or JSON data for publicly traded companies listed with their IPO date?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5228": {
+    "query": "How does the bank/IRS know whether a bank transfer over $14k is a gift or loan repayment?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4804": {
+    "query": "How do financial services aimed at women differ from conventional services?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7747": {
+    "query": "What happens to bonds values when interest rates rise? [duplicate]",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2383": {
+    "query": "Should I Purchase Health Insurance Through My S-Corp",
+    "vector_only": [
+     "travel_insurance_policy.md"
+    ],
+    "bm25_only": [
+     "travel_insurance_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.35": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.40": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.45": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.50": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.55": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.60": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.65": [
+     "travel_insurance_policy.md"
+    ],
+    "floor_0.70": [
+     "travel_insurance_policy.md"
+    ]
+   },
+   "fiqa_4640": {
+    "query": "What can my relatives do to minimize their out of pocket expenses on their fathers estate",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6679": {
+    "query": "Specifically when do options expire?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3781": {
+    "query": "What is the rough estimate of salary value for a taxpayer to pay AMT?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5172": {
+    "query": "does interest payment on loan stay the same if I pay early",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1889": {
+    "query": "Reporting financial gains from my online store",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2589": {
+    "query": "How can I detect potential fraud in a company before investing in them?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_109": {
+    "query": "How to account for money earned and spent prior to establishing business bank accounts?",
+    "vector_only": [
+     "expense_policy.md",
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "expense_policy.md",
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10034": {
+    "query": "Tax implications of holding EWU (or other such UK ETFs) as a US citizen?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1306": {
+    "query": "I made an investment with a company that contacted me, was it safe?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6133": {
+    "query": "What happens to all of the options when they expire?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5853": {
+    "query": "Paying Off Principal of Home vs. Investing In Mutual Fund",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6041": {
+    "query": "Most effective Fundamental Analysis indicators for market entry",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9332": {
+    "query": "What can I do with a physical stock certificate for a now-mutual company?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7803": {
+    "query": "Can the Delta be used to calculate the option premium given a certain target?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2695": {
+    "query": "Buy a parking spot and rent it out, or invest savings in an interest-bearing account?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2460": {
+    "query": "What are the consequences of not respecting a notice period when leaving a job?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4414": {
+    "query": "Do high interest rates lead to higher bond yields or lower?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5369": {
+    "query": "Paying for things on credit and immediately paying them off: any help for credit rating?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8271": {
+    "query": "Income in zero-interest environment",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4968": {
+    "query": "Reasons behind a large price movement of a penny stock without any recent news releases?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5206": {
+    "query": "Is it a good idea to get an unsecured loan to pay off a credit card that won't lower a high rate?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3534": {
+    "query": "Why do dishonour fees exist?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5374": {
+    "query": "What were the main causes of the spike and drop of DRYS's stock price?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3683": {
+    "query": "Can I trust the Motley Fool?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5888": {
+    "query": "Interest charges on balance transfer when purchases are involved",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7801": {
+    "query": "What are some well known or well regarded arguments against investing?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4153": {
+    "query": "How do I invest in emerging markets",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8121": {
+    "query": "Can I calculate stock value with Williams%R if I know the last set?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7880": {
+    "query": "Are there index tracking funds that avoid the \u201cbuy high - sell low\u201d problem?",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3039": {
+    "query": "Can increasing my tax withholding from my full-time job cover FICA taxes for my freelance work?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2318": {
+    "query": "F1 student and eBay selling tax",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1416": {
+    "query": "US resident with Canadian income via T4A-NR",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3490": {
+    "query": "Tax Witholding for Stock Sale",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3103": {
+    "query": "AVS Address Verification System of BOTH Credit and Debit Cards - WHERE, HOW?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2685": {
+    "query": "What ways are there for us to earn a little extra side money?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3932": {
+    "query": "How do historically low interest rates affect real estate prices?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10827": {
+    "query": "How much should I be contributing to my 401k given my employer's contribution?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3735": {
+    "query": "Shorting Stocks And Margin Account Minimum",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9668": {
+    "query": "Do stock option prices predicate the underlying stock's movement?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4335": {
+    "query": "What is the US Fair Tax?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3500": {
+    "query": "Why invest in becoming a landlord?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7594": {
+    "query": "Converting annual interbank rates into monthly rates",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5410": {
+    "query": "Dealership made me the secondary owner to my own car",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5090": {
+    "query": "Should I take a student loan to pursue my undergraduate studies in France?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_529": {
+    "query": "Sole proprietorship or LLC?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9808": {
+    "query": "Selling To Close",
+    "vector_only": [],
+    "bm25_only": [
+     "q3_sales_review.md"
+    ],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.40": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.45": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.50": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.55": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.60": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.65": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.70": [
+     "q3_sales_review.md"
+    ]
+   },
+   "fiqa_515": {
+    "query": "financial institution wants share member break down for single member LLC",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_1284": {
+    "query": "Tax consequences when foreign currency changes in value",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7345": {
+    "query": "What do these numbers mean? (futures)",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5241": {
+    "query": "Mortgage vs. Cash for U.S. home buy now",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8982": {
+    "query": "Are Exchange-Traded Funds (ETFs) less safe than regular mutual funds?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_5045": {
+    "query": "Why are we taxed on revenue and companies on profit?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [
+     "annual_report_2024.md"
+    ],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.40": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.45": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.50": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.55": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.60": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.65": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.70": [
+     "annual_report_2024.md"
+    ]
+   },
+   "fiqa_1150": {
+    "query": "How are the best way to make and save money at 22 years old",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_864": {
+    "query": "Why use accounting software like Quickbooks instead of Excel spreadsheets?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2399": {
+    "query": "Where do web sites get foreign exchange currency rate / quote information?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_6683": {
+    "query": "Who are the sellers for the new public stocks?",
+    "vector_only": [],
+    "bm25_only": [
+     "python_style_guide.md"
+    ],
+    "hybrid_no_floor": [
+     "python_style_guide.md"
+    ],
+    "floor_0.35": [
+     "python_style_guide.md"
+    ],
+    "floor_0.40": [
+     "python_style_guide.md"
+    ],
+    "floor_0.45": [
+     "python_style_guide.md"
+    ],
+    "floor_0.50": [
+     "python_style_guide.md"
+    ],
+    "floor_0.55": [
+     "python_style_guide.md"
+    ],
+    "floor_0.60": [
+     "python_style_guide.md"
+    ],
+    "floor_0.65": [
+     "python_style_guide.md"
+    ],
+    "floor_0.70": [
+     "python_style_guide.md"
+    ]
+   },
+   "fiqa_5196": {
+    "query": "I might use a credit card convenience check. What should I consider?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9188": {
+    "query": "Selling mutual fund and buying equivalent ETF: Can I 1031 exchange?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4102": {
+    "query": "How can I determine if my rate of return is \u201cgood\u201d for the market I am in?",
+    "vector_only": [
+     "q3_sales_review.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "q3_sales_review.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7178": {
+    "query": "Should an ADR that is being delisted be sold off?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_7431": {
+    "query": "Pay off mortgage or invest in high value saving account",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9296": {
+    "query": "Why would Two ETFs tracking Identical Indexes Produce different Returns?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_10152": {
+    "query": "What does a high operating margin but a small but positive ROE imply about a company?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_4415": {
+    "query": "How much is inflation?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_9381": {
+    "query": "Trade? Buy and hold? Or both?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_3801": {
+    "query": "Can a bunch of wealthy people force Facebook to go public?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_622": {
+    "query": "Accidentally opened a year term CD account, then realized I need the money sooner. What to do?",
+    "vector_only": [
+     "returns_policy.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "returns_policy.md"
+    ],
+    "floor_0.35": [
+     "returns_policy.md"
+    ],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_8635": {
+    "query": "Is there any flaw in this investment scheme?",
+    "vector_only": [
+     "annual_report_2024.md"
+    ],
+    "bm25_only": [],
+    "hybrid_no_floor": [
+     "annual_report_2024.md"
+    ],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   },
+   "fiqa_2385": {
+    "query": "As director, can I invoice my self-owned company?",
+    "vector_only": [],
+    "bm25_only": [
+     "expense_policy.md"
+    ],
+    "hybrid_no_floor": [
+     "expense_policy.md"
+    ],
+    "floor_0.35": [
+     "expense_policy.md"
+    ],
+    "floor_0.40": [
+     "expense_policy.md"
+    ],
+    "floor_0.45": [
+     "expense_policy.md"
+    ],
+    "floor_0.50": [
+     "expense_policy.md"
+    ],
+    "floor_0.55": [
+     "expense_policy.md"
+    ],
+    "floor_0.60": [
+     "expense_policy.md"
+    ],
+    "floor_0.65": [
+     "expense_policy.md"
+    ],
+    "floor_0.70": [
+     "expense_policy.md"
+    ]
+   },
+   "fiqa_3115": {
+    "query": "How can I live outside of the rat race of American life with 300k?",
+    "vector_only": [],
+    "bm25_only": [],
+    "hybrid_no_floor": [],
+    "floor_0.35": [],
+    "floor_0.40": [],
+    "floor_0.45": [],
+    "floor_0.50": [],
+    "floor_0.55": [],
+    "floor_0.60": [],
+    "floor_0.65": [],
+    "floor_0.70": []
+   }
+  },
+  "calib": {}
+ },
+ "generated": "2026-11-18 00:06"
+}

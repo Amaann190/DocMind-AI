@@ -1,0 +1,578 @@
+{
+  "_comment": "Run order = list order. A job is skipped when its output file exists in the output folder.",
+  "jobs": [
+    {
+      "name": "answers-qwen2.5-3b-full",
+      "args": [
+        "answers",
+        "--chat-model",
+        "qwen2.5:3b"
+      ],
+      "output": "answers-qwen2.5-3b-full.json",
+      "requires": [
+        "qwen2.5:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3.2-1b-full",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3.2:1b"
+      ],
+      "output": "answers-llama3.2-1b-full.json",
+      "requires": [
+        "llama3.2:1b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3.1-8b-full",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3.1:8b"
+      ],
+      "output": "answers-llama3.1-8b-full.json",
+      "requires": [
+        "llama3.1:8b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "endtoend-llama3-latest",
+      "args": [
+        "endtoend",
+        "--chat-model",
+        "llama3:latest"
+      ],
+      "output": "endtoend-llama3-latest.json",
+      "requires": [
+        "llama3:latest",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "endtoend-qwen2.5-7b",
+      "args": [
+        "endtoend",
+        "--chat-model",
+        "qwen2.5:7b"
+      ],
+      "output": "endtoend-qwen2.5-7b.json",
+      "requires": [
+        "qwen2.5:7b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "resources-qwen2.5-1.5b-eco-on",
+      "args": [
+        "resources",
+        "--chat-model",
+        "qwen2.5:1.5b",
+        "--eco",
+        "on"
+      ],
+      "output": "resources-qwen2.5-1.5b-eco-on.json",
+      "requires": [
+        "qwen2.5:1.5b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "resources-qwen2.5-1.5b-eco-off",
+      "args": [
+        "resources",
+        "--chat-model",
+        "qwen2.5:1.5b",
+        "--eco",
+        "off"
+      ],
+      "output": "resources-qwen2.5-1.5b-eco-off.json",
+      "requires": [
+        "qwen2.5:1.5b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "resources-llama3.2-3b-eco-on",
+      "args": [
+        "resources",
+        "--chat-model",
+        "llama3.2:3b",
+        "--eco",
+        "on"
+      ],
+      "output": "resources-llama3.2-3b-eco-on.json",
+      "requires": [
+        "llama3.2:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "resources-llama3.2-3b-eco-off",
+      "args": [
+        "resources",
+        "--chat-model",
+        "llama3.2:3b",
+        "--eco",
+        "off"
+      ],
+      "output": "resources-llama3.2-3b-eco-off.json",
+      "requires": [
+        "llama3.2:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "resources-llama3-latest-eco-on",
+      "args": [
+        "resources",
+        "--chat-model",
+        "llama3:latest",
+        "--eco",
+        "on"
+      ],
+      "output": "resources-llama3-latest-eco-on.json",
+      "requires": [
+        "llama3:latest",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "resources-llama3-latest-eco-off",
+      "args": [
+        "resources",
+        "--chat-model",
+        "llama3:latest",
+        "--eco",
+        "off"
+      ],
+      "output": "resources-llama3-latest-eco-off.json",
+      "requires": [
+        "llama3:latest",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-scifact-train-nomic-embed-text-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "scifact",
+        "--model",
+        "nomic-embed-text:latest",
+        "--split",
+        "train",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-scifact-train-nomic-embed-text-latest-plain-kw2.json",
+      "requires": [
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-scifact-train-all-minilm-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "scifact",
+        "--model",
+        "all-minilm:latest",
+        "--split",
+        "train",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-scifact-train-all-minilm-latest-plain-kw2.json",
+      "requires": [
+        "all-minilm:latest"
+      ]
+    },
+    {
+      "name": "sweep-nfcorpus-dev-nomic-embed-text-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "nfcorpus",
+        "--model",
+        "nomic-embed-text:latest",
+        "--split",
+        "dev",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-nfcorpus-dev-nomic-embed-text-latest-plain-kw2.json",
+      "requires": [
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-nfcorpus-dev-all-minilm-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "nfcorpus",
+        "--model",
+        "all-minilm:latest",
+        "--split",
+        "dev",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-nfcorpus-dev-all-minilm-latest-plain-kw2.json",
+      "requires": [
+        "all-minilm:latest"
+      ]
+    },
+    {
+      "name": "sweep-scifact-nomic-embed-text-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "scifact",
+        "--model",
+        "nomic-embed-text:latest",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-scifact-nomic-embed-text-latest-plain-kw2.json",
+      "requires": [
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-scifact-all-minilm-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "scifact",
+        "--model",
+        "all-minilm:latest",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-scifact-all-minilm-latest-plain-kw2.json",
+      "requires": [
+        "all-minilm:latest"
+      ]
+    },
+    {
+      "name": "sweep-nfcorpus-nomic-embed-text-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "nfcorpus",
+        "--model",
+        "nomic-embed-text:latest",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-nfcorpus-nomic-embed-text-latest-plain-kw2.json",
+      "requires": [
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-nfcorpus-all-minilm-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "nfcorpus",
+        "--model",
+        "all-minilm:latest",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-nfcorpus-all-minilm-latest-plain-kw2.json",
+      "requires": [
+        "all-minilm:latest"
+      ]
+    },
+    {
+      "name": "sweep-scifact-mxbai-embed-large-latest-plain",
+      "args": [
+        "sweep",
+        "--dataset",
+        "scifact",
+        "--model",
+        "mxbai-embed-large:latest",
+        "--plain"
+      ],
+      "output": "sweep-scifact-mxbai-embed-large-latest-plain.json",
+      "requires": [
+        "mxbai-embed-large:latest"
+      ]
+    },
+    {
+      "name": "sweep-nfcorpus-mxbai-embed-large-latest-plain",
+      "args": [
+        "sweep",
+        "--dataset",
+        "nfcorpus",
+        "--model",
+        "mxbai-embed-large:latest",
+        "--plain"
+      ],
+      "output": "sweep-nfcorpus-mxbai-embed-large-latest-plain.json",
+      "requires": [
+        "mxbai-embed-large:latest"
+      ]
+    },
+    {
+      "name": "sweep-scifact-nomic-embed-text-latest-prefix",
+      "args": [
+        "sweep",
+        "--dataset",
+        "scifact",
+        "--model",
+        "nomic-embed-text:latest",
+        "--nomic-prefixes"
+      ],
+      "output": "sweep-scifact-nomic-embed-text-latest-prefix.json",
+      "requires": [
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-nfcorpus-nomic-embed-text-latest-prefix",
+      "args": [
+        "sweep",
+        "--dataset",
+        "nfcorpus",
+        "--model",
+        "nomic-embed-text:latest",
+        "--nomic-prefixes"
+      ],
+      "output": "sweep-nfcorpus-nomic-embed-text-latest-prefix.json",
+      "requires": [
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3.2-3b-full-r1",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3.2:3b",
+        "--repeat",
+        "1"
+      ],
+      "output": "answers-llama3.2-3b-full-r1.json",
+      "requires": [
+        "llama3.2:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-qwen2.5-7b-full-r1",
+      "args": [
+        "answers",
+        "--chat-model",
+        "qwen2.5:7b",
+        "--repeat",
+        "1"
+      ],
+      "output": "answers-qwen2.5-7b-full-r1.json",
+      "requires": [
+        "qwen2.5:7b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3-latest-full-r1",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3:latest",
+        "--repeat",
+        "1"
+      ],
+      "output": "answers-llama3-latest-full-r1.json",
+      "requires": [
+        "llama3:latest",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-qwen2.5-3b-full-r1",
+      "args": [
+        "answers",
+        "--chat-model",
+        "qwen2.5:3b",
+        "--repeat",
+        "1"
+      ],
+      "output": "answers-qwen2.5-3b-full-r1.json",
+      "requires": [
+        "qwen2.5:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3.2-3b-full-r2",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3.2:3b",
+        "--repeat",
+        "2"
+      ],
+      "output": "answers-llama3.2-3b-full-r2.json",
+      "requires": [
+        "llama3.2:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-qwen2.5-7b-full-r2",
+      "args": [
+        "answers",
+        "--chat-model",
+        "qwen2.5:7b",
+        "--repeat",
+        "2"
+      ],
+      "output": "answers-qwen2.5-7b-full-r2.json",
+      "requires": [
+        "qwen2.5:7b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3-latest-full-r2",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3:latest",
+        "--repeat",
+        "2"
+      ],
+      "output": "answers-llama3-latest-full-r2.json",
+      "requires": [
+        "llama3:latest",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-qwen2.5-3b-full-r2",
+      "args": [
+        "answers",
+        "--chat-model",
+        "qwen2.5:3b",
+        "--repeat",
+        "2"
+      ],
+      "output": "answers-qwen2.5-3b-full-r2.json",
+      "requires": [
+        "qwen2.5:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3.2-3b-full-alt",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3.2:3b",
+        "--prompt-variant",
+        "alt"
+      ],
+      "output": "answers-llama3.2-3b-full-alt.json",
+      "requires": [
+        "llama3.2:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-qwen2.5-7b-full-alt",
+      "args": [
+        "answers",
+        "--chat-model",
+        "qwen2.5:7b",
+        "--prompt-variant",
+        "alt"
+      ],
+      "output": "answers-qwen2.5-7b-full-alt.json",
+      "requires": [
+        "qwen2.5:7b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-llama3-latest-full-alt",
+      "args": [
+        "answers",
+        "--chat-model",
+        "llama3:latest",
+        "--prompt-variant",
+        "alt"
+      ],
+      "output": "answers-llama3-latest-full-alt.json",
+      "requires": [
+        "llama3:latest",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "answers-qwen2.5-3b-full-alt",
+      "args": [
+        "answers",
+        "--chat-model",
+        "qwen2.5:3b",
+        "--prompt-variant",
+        "alt"
+      ],
+      "output": "answers-qwen2.5-3b-full-alt.json",
+      "requires": [
+        "qwen2.5:3b",
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-arguana-nomic-embed-text-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "arguana",
+        "--model",
+        "nomic-embed-text:latest",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-arguana-nomic-embed-text-latest-plain-kw2.json",
+      "requires": [
+        "nomic-embed-text:latest"
+      ]
+    },
+    {
+      "name": "sweep-arguana-all-minilm-latest-plain-kw2",
+      "args": [
+        "sweep",
+        "--dataset",
+        "arguana",
+        "--model",
+        "all-minilm:latest",
+        "--plain",
+        "--keyword-min-terms",
+        "2"
+      ],
+      "output": "sweep-arguana-all-minilm-latest-plain-kw2.json",
+      "requires": [
+        "all-minilm:latest"
+      ]
+    }
+  ]
+}

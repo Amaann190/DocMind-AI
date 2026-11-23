@@ -1,0 +1,101 @@
+﻿id,question,title,label,evidence_paragraph,evidence_quote,gold_answer,qwen2.5-0.5b_old_correct,qwen2.5-0.5b_new_correct,qwen2.5-0.5b_partial_supported,qwen2.5-1.5b_old_correct,qwen2.5-1.5b_new_correct,qwen2.5-1.5b_partial_supported,llama3.2-3b_old_correct,llama3.2-3b_new_correct,llama3.2-3b_partial_supported,qwen2.5-7b_old_correct,qwen2.5-7b_new_correct,qwen2.5-7b_partial_supported,llama3-latest_old_correct,llama3-latest_new_correct,llama3-latest_partial_supported,doubtful
+5ad03c7377cf76001a686ebe,How many earthquakes does the state of California have each year?,Southern_California,partial,,,,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0
+5a822dc931013a001a335297,What percentage of the student body was affected by grade inflation in 2004?,Harvard_University,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5acfef1b77cf76001a68657b,When did Eastern forces invade Iraq?,Islamism,partial,,,,0,0,0,0,0,1,1,1,,1,1,,1,1,,0
+5ad41260604f3c001a40023f,What is the exhaust's thermodynamic basis?,Steam_engine,partial,,,,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0
+5ad0331877cf76001a686e18,What formed in the Coachella Valley north of Orange County?,Southern_California,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5a551492134fea001a0e18e0,State educational and economic development where helped by what?,Packet_switching,answerable_in_own_paragraph,squad_13_013,explore computer networking between three of Michigan's public universities as a means to help the state's educational and economic development,computer networking (Merit Network),0,0,,0,1,,0,1,,0,1,,0,1,,1
+5ad14e86645df0001a2d16e2,What has the European Union not undertaken following the adoption of the Social Charter?,European_Union_law,partial,,,,0,0,1,0,0,0,1,1,,1,1,,1,1,,0
+5a2ecb43a83784001a7d248d,What was one of the Hanseatic cities?,Black_Death,unanswerable,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad2741ed7d075001a4294d7,What lake contains part of the Rhine Falls?,Rhine,partial,,,,0,0,0,0,0,0,0,0,0,1,1,,0,0,0,0
+5a234eef82b03a001a4aa76c,What does comprise 69 percent of?,Construction,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad409d6604f3c001a3fff5f,What type of languages flourished in the Yuan?,Yuan_dynasty,partial,,,,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0
+5ad54b035b96ef001a10ac54,How are complexity measures generally not defined?,Computational_complexity_theory,partial,,,,0,0,1,0,0,1,0,0,1,1,1,,0,0,1,0
+5ad03a3e77cf76001a686e75,What kinds of literature were Social Darwinism and theories of race?,Imperialism,partial,,,,0,0,1,0,0,1,0,0,1,1,1,,0,0,1,0
+5ad4b1895b96ef001a109dca,What chemical keeps immune cells away from the site of infection?,Immune_system,partial,,,,0,0,1,0,0,0,1,1,,1,1,,0,0,0,0
+5ad25d49d7d075001a428eec,In what year did the Wars of Religion start?,Huguenot,answerable_in_article,squad_05_000,"Wars of Religion, fought intermittently from 1562 to 1598",1562,0,1,,0,1,,0,1,,0,1,,0,1,,0
+5ad4ca235b96ef001a10a0ba,What was the role of phagocytosis before it was used to acquire nutrients?,Immune_system,partial,,,,0,0,0,0,0,0,0,0,1,1,1,,0,0,1,0
+5ad40b9a604f3c001a40001b,What type of valve is used by recent springs?,Steam_engine,partial,,,,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,1
+5acfe78477cf76001a6863e9,"Who did the US refuse aid to, to fight against the Soviet Union?",Islamism,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5a638b3668151a001a92235c,How many students were enrolled in public schools outside Victoria?,Victoria_(Australia),partial,,,,0,0,0,0,0,soft_refusal,1,1,,1,1,,1,1,,0
+5a838676e60761001a2eb763,How many lobes do plankton have?,Ctenophora,partial,,,,0,0,0,0,0,soft_refusal,1,1,,1,1,,1,1,,0
+5a665002846392001a1e1ab3,What two public agencies conflict under the defnintion of civil disobedience?,Civil_disobedience,partial,,,,0,0,0,0,0,1,0,0,1,1,1,,1,1,,1
+5ad0313b77cf76001a686dd3,Who has the task of ensuring that party members don't vote according to party line?,Scottish_Parliament,partial,,,,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0
+5ad39d53604f3c001a3fe8d1,Who gave their name to Normandy in the 1000's and 1100's,Normans,partial,,,,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,1
+5a5909b13e1742001a15cf4f,What happens to rock units under vertical pressure?,Geology,partial,,,,0,0,1,0,0,0,1,1,,1,1,,0,0,1,0
+5ad4ef8b5b96ef001a10a6b9,What are the least powerful anti-inflammatory drugs?,Immune_system,partial,,,,0,0,0,0,0,1,1,1,,1,1,,1,1,,0
+5ad02ef677cf76001a686d6b,What weapons were the Zulus using during the Anglo-Zulu War of 1880?,Imperialism,partial,,,,0,0,0,0,0,0,1,1,,0,0,1,0,0,1,1
+5a822bc531013a001a335281,How many classes outside of their concentration did the Carnegie Foundation require in 2007?,Harvard_University,partial,,,,0,0,0,0,0,1,1,1,,1,1,,1,1,,0
+5a551328134fea001a0e18d8,What was the worlds first commercial online service?,Packet_switching,answerable_in_own_paragraph,squad_13_012,"a computer time-sharing service, apparently the world's first commercial online service",a computer time-sharing service (GE data network),0,1,,0,1,,0,1,,0,1,,0,0,,0
+5ad53e615b96ef001a10abda,What is a computational solution where a single input is expected for every input?,Computational_complexity_theory,partial,,,,0,0,1,0,0,1,0,0,1,0,0,soft_refusal,0,0,1,1
+5ad27941d7d075001a4295aa,What type of forces act at very long distances?,Force,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad2b1e1d7d075001a429f69,What did the people of Rome accept as the only fertile plain?,Rhine,partial,,,,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,1
+5acfef9577cf76001a6865a1,How does HT strive to give up power?,Islamism,partial,,,,0,0,1,0,0,0,0,0,0,0,0,1,1,1,,0
+5a3e539a378766001a00258d,Who called for more government oversight into the IPCC?,Intergovernmental_Panel_on_Climate_Change,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad26105d7d075001a428ff7,"What type of pharmacological effect is most likely an explanation for the ""boost"" from oxygen?",Oxygen,partial,,,,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0
+5ad3dbc6604f3c001a3ff3e9,Who entered Italy soon after the Byzantine Empire?,Normans,partial,,,,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0
+5a6ced7d4eec6b001a80a6e3,What is the maximum distance between a patient's home and the nearest pharmacy that allows a physician in Austria to give out medicine?,Pharmacy,partial,,,,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1
+5ad56d3e5b96ef001a10ae88,What is known about the complexity between L and P that prevents determining the value between L and P?,Computational_complexity_theory,partial,,,,0,0,0,0,0,1,1,1,,0,0,1,0,0,1,0
+5a5817e3770dc0001aeeffec,What do geochronologists analyze fossils from drill cores for?,Geology,partial,,,,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0
+5a0c958bf5590b0018dab47d,Community-based conservation efforts are being replaced where,Amazon_rainforest,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad4d7395b96ef001a10a2f7,What is not present in breast milk?,Immune_system,partial,,,,1,1,,0,0,1,0,0,1,1,1,,0,0,1,0
+5ad40d89604f3c001a4000d2,Who governed the northern Region in the Yuan?,Yuan_dynasty,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad5719f5b96ef001a10aef0,Who was pioneer and studied specific complexity measure in 1948?,Computational_complexity_theory,partial,,,,0,0,1,0,0,1,1,1,,1,1,,1,1,,0
+5a3e2a95378766001a0024b0,What organization was responsible for setting up the IPCC?,Intergovernmental_Panel_on_Climate_Change,answerable_in_own_paragraph,squad_26_000,"established in 1988 by two United Nations organizations, the World Meteorological Organization (WMO) and the United Nations Environment Programme",WMO and UNEP,0,0,,0,1,,0,1,,0,1,,0,1,,0
+5ad254a5d7d075001a428d26,How much lighter is oxygen-18?,Oxygen,partial,,,,0,0,0,0,0,0,0,0,1,1,1,,0,0,1,0
+5ad3bd87604f3c001a3fef24,What made Ohio Country safe?,French_and_Indian_War,partial,,,,0,0,0,0,0,0,1,1,,1,1,,0,0,0,0
+5a1c6968b4fb5d0018714619,What I lent to the team of northern University students discover pottery?,"Jacksonville,_Florida",partial,,,,1,1,,0,0,1,1,1,,1,1,,1,1,,1
+5ad2594ed7d075001a428df8,What types of programs don't help to redistribute wealth?,Economic_inequality,partial,,,,0,0,0,0,0,0,1,1,,1,1,,0,0,0,0
+5ad0391f77cf76001a686e49,"When was the Russian Policy ""Indigenization"" funded?",Imperialism,partial,,,,0,0,1,0,0,1,0,0,1,1,1,,0,0,1,1
+5a89392f3b2508001a72a538,What type of zero distribution is characterized about x/log x of numbers less than x?,Prime_number,partial,,,,0,0,1,0,0,0,0,0,1,1,1,,0,0,1,0
+5ad4d8d65b96ef001a10a366,What is being described when simplicity of geometrical forms are teamed with inspiration from the French period?,Warsaw,partial,,,,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0
+5a6694dbf038b7001ab0c004,How was Tymnet connected to dozens of other private networks?,Packet_switching,partial,,,,0,0,0,0,0,0,0,0,1,1,1,,0,0,1,1
+5ad545545b96ef001a10ac07,What are three factors that directly effect how powerful a Turing machine may or may not be?,Computational_complexity_theory,partial,,,,0,0,1,0,0,0,1,1,,1,1,,0,0,0,0
+5a83a59be60761001a2eb84e,What did Vendobionta's descendants become?,Ctenophora,partial,,,,0,0,0,0,0,0,0,0,0,1,1,,0,0,0,0
+5ad4fd0f5b96ef001a10a899,How many beds does the Maria Memorial Health Institute have?,Warsaw,partial,,,,0,0,1,0,0,0,0,0,1,1,1,,1,1,,1
+5ad508665b96ef001a10aa68,Who was one of the most famous people born in Wola?,Warsaw,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad2bcdfd7d075001a42a0ae,What year was the German encyclopedia Knaurs Lexikon written?,Rhine,answerable_in_own_paragraph,squad_28_043,"In 1932 the German encyclopedia Knaurs Lexikon stated the length as 1,320 kilometres",1932,0,1,,0,1,,1,0,,1,0,,1,0,,1
+5a6cefd64eec6b001a80a706,What are the two symbols that signify pharmacy in non-English-speaking countries?,Pharmacy,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5acfe99177cf76001a686456,What is the French translation of tawhid?,Islamism,partial,,,,0,0,1,0,0,0,1,1,,1,1,,1,1,,0
+5ad28ea7d7d075001a429a53,What flows out of the former bay Hollands Diep?,Rhine,partial,,,,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0
+5a0c817df5590b0018dab458,"41,500 square kilometres of Amazon force were lost between what years?",Amazon_rainforest,partial,,,,0,0,1,0,0,1,0,0,1,0,0,0,1,1,,0
+5ad400b0604f3c001a3ffcdf,What precedes the period of Anglo-Saxon architecture?,Normans,partial,,,,0,0,0,0,0,1,1,1,,1,1,,0,0,1,0
+5acf99b577cf76001a6853ee,Which University's library system consists of 12 libraries?,University_of_Chicago,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5a6057f0eae51e001ab14d21,Does a packet of data have physical mass?,Packet_switching,unanswerable,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad5648b5b96ef001a10ad94,What is the least used type of reduction?,Computational_complexity_theory,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5a67986af038b7001ab0c312,What do public schools operate outside of in Germany?,Private_school,partial,,,,0,0,0,0,0,0,0,0,1,1,1,,0,0,0,0
+5ad28846d7d075001a429930,What is the rotational equivalent of velocity?,Force,answerable_in_own_paragraph,squad_34_038,angular velocity for velocity,angular velocity,0,1,,0,1,,0,1,,0,1,,0,1,,0
+5a3e3aa9378766001a00250c,Who is responsible for running the National Greenhouse Gas Inventories Programme?,Intergovernmental_Panel_on_Climate_Change,partial,,,,0,0,0,0,0,1,1,1,,1,1,,1,1,,0
+5a2c08aebfd06b001a5ae98d,What company no longer trades as Sky?,Sky_(United_Kingdom),partial,,,,0,0,0,0,0,0,1,1,,1,1,,0,0,0,0
+5a2ed525a83784001a7d2504,How many times did the plague visit Baghdad?,Black_Death,partial,,,,0,0,0,0,0,0,1,1,,0,0,1,0,0,1,0
+5a82001531013a001a3350a1,What group was trained at Cambridge in 1643?,Harvard_University,partial,,,,0,0,1,0,0,1,0,0,1,1,1,,0,0,1,1
+5ad542db5b96ef001a10abf4,How is time taken expressed as a function of x?,Computational_complexity_theory,partial,,,,0,0,1,0,0,1,1,1,,0,0,1,0,0,1,1
+5ad4cc135b96ef001a10a0f5,How many days did the Red ArmyWarsaw Uprising last?,Warsaw,partial,,,,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,1
+5a66413dc2b11c001a425ecb,In what country was the 2004 Velvet Revolution?,Civil_disobedience,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad3bc28604f3c001a3feee0,When did the South American French and Indian War end?,French_and_Indian_War,partial,,,,0,0,1,0,0,0,1,1,,1,1,,1,1,,0
+5a838b42e60761001a2eb7aa,What do all but one kind of Aboral lack?,Ctenophora,partial,,,,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0
+5ad24efad7d075001a428c77,What has presented problems to the UN economy more than other nations?,Economic_inequality,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad13ef3645df0001a2d1390,Which type of law did not concern the Eu's governance structure?,European_Union_law,partial,,,,0,0,0,0,0,0,0,0,1,1,1,,0,0,0,0
+5ad2a15ad7d075001a429cc8,How many years did it take for the frozen subsoil to warm up?,Rhine,partial,,,,0,0,0,0,0,0,1,1,,1,1,,0,0,1,0
+5ad21ebdd7d075001a42848b,Whose experiments with oxygen led to the popular theory of combustion and corrosion?,Oxygen,partial,,,,0,0,0,0,0,0,1,1,,1,1,,0,0,1,0
+5a8944653b2508001a72a57e,What is an additional meaning intended when the word component is used?,Prime_number,partial,,,,1,1,,0,0,0,0,0,0,0,0,0,0,0,1,1
+5ad408ed604f3c001a3fff10,When had the Eight Ministries existed?,Yuan_dynasty,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad4ff375b96ef001a10a8d8,How long was the Leon Theatre in operation?,Warsaw,partial,,,,0,0,0,0,0,0,1,1,,0,0,0,1,1,,0
+5a67a1e3f038b7001ab0c38c,What group fully funds preschool?,Private_school,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5ad3d689604f3c001a3ff30f,What type of heating element is often used in toy chamber engines?,Steam_engine,partial,,,,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,1
+5ad53b9d5b96ef001a10abc8,What kind of solutions are one of the central objects of study in computational complexity theory?,Computational_complexity_theory,partial,,,,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,1
+5ad406e9604f3c001a3ffe7e,What uprising ended in 1351?,Yuan_dynasty,partial,,,,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0
+5a0c7fb2f5590b0018dab444,Which animal living in the Amazon River produces a mild shock?,Amazon_rainforest,partial,,,,0,0,0,0,0,0,1,1,,0,0,1,0,0,1,1
+5a66a55af038b7001ab0c07e,Who decides if a law is moral?,Civil_disobedience,unanswerable,,,,0,0,1,0,0,0,1,1,,1,1,,0,0,soft_refusal,0
+5a6787d4f038b7001ab0c27e,What are public schools allowed to do to retain talented students?,Private_school,partial,,,,0,0,1,0,0,0,0,0,1,1,1,,1,1,,0
+5ad4faa45b96ef001a10a85d,Who designed the garden for the Marek Library?,Warsaw,partial,,,,1,1,,0,0,0,1,1,,1,1,,1,1,,1
+5acff3b377cf76001a6865fc,"Informal imperialism is still dominant; however, more what?",Imperialism,partial,,,,0,0,1,0,0,0,1,1,,0,0,0,0,0,0,0
+5ad050c877cf76001a686fc3,What Major Soccer League teams played in Los Angeles in 2014?,Southern_California,answerable_in_own_paragraph,squad_02_036,two Major League Soccer teams in Los Angeles — the LA Galaxy and Chivas USA,LA Galaxy and Chivas USA,0,0,,0,1,,0,1,,0,1,,0,1,,0
+5a63888168151a001a922344,How many Victorians are Muslim?,Victoria_(Australia),answerable_in_own_paragraph,squad_04_004,"Victoria is also home of 152,775 Muslims","152,775",0,0,,0,1,,0,1,,0,1,,0,1,,0
+5ad271c2d7d075001a429474,How many Huguenot settled in the Baden territory of Germany?,Huguenot,partial,,,,0,0,0,0,0,0,0,0,0,1,1,,0,0,0,1
+5ad24f27d7d075001a428c8a,How many people did Prussia lose due to war?,Huguenot,partial,,,,0,0,0,0,0,0,1,1,,1,1,,1,1,,0
+5a679cc7f038b7001ab0c348,What does poor academic achievement lead to according to critics?,Private_school,partial,,,,0,0,0,0,0,0,0,0,0,1,1,,0,0,0,0
+5a592f3f3e1742001a15cffe,What book did Darwin publish in 1830?,Geology,partial,,,,0,0,1,0,0,1,0,0,0,1,1,,0,0,1,0
+5a1c836ab4fb5d0018714639,What battle involve the Confederate Calvary in 1862?,"Jacksonville,_Florida",partial,,,,0,0,0,0,0,1,0,0,1,1,1,,1,1,,0
+5ad3ff1b604f3c001a3ffc73,What wars did France fight in the 1600s?,Normans,partial,,,,0,0,1,0,0,1,0,0,1,1,1,,1,1,,1
+5a837549e60761001a2eb73d,What do the vesticles on tentilla contain?,Ctenophora,answerable_in_own_paragraph,squad_11_014,a domed head with vesicles (chambers) that contain adhesive,adhesive,0,0,,0,1,,0,1,,1,0,,0,1,,1
